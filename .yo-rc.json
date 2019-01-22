@@ -36,6 +36,8 @@
     "languages": [
       "en",
       "pl"
-    ]
+    ],
+    "herokuAppName": "nitro-carriers",
+    "herokuDeployType": "git"
   }
 }
