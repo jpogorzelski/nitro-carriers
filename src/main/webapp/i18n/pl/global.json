@@ -14,7 +14,7 @@
                 "settings": "Ustawienia",
                 "password": "Hasło",
                 "sessions": "Sesje",
-                "login": "Autoryzacja",
+                "login": "Zaloguj się",
                 "logout": "Wyloguj",
                 "register": "Zarejestruj się"
             },
@@ -131,5 +131,5 @@
         "idexists": "Nowy {{entityName}} nie może jeszcze mieć przypisanego ID",
         "idnull": "Błędne ID"
     },
-    "footer": "To jest stopka"
+    "footer": "Copyright &copy; 2019 Jakub Pogorzelski"
 }
