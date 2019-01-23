@@ -1,0 +1,65 @@
+entity Country {
+	countryName String required
+}
+
+entity Address {
+	postalCode String required
+}
+
+
+entity Carrier {
+	name String required
+    transId Integer
+}
+
+entity Person {
+	firstName String,
+	lastName String,
+	companyId String required,
+	phoneNumber String
+}
+
+entity CargoType {
+	name String required
+}
+
+entity Rating {
+flexibiliy Integer min(1) max(6),
+contact Integer min(1) max(6),
+price Integer min(1) max(6),
+recommendation Grade,
+average Double min(1) max(6)
+
+}
+
+enum Grade {
+	DEF_YES, YES, FINE, NO, DEF_NO, BLACK_LIST
+}
+
+relationship OneToOne {
+	Address{country} to Country
+    Rating{person} to Person
+    Rating{chargeAddress} to Address
+    Rating{dischargeAddress} to Address
+    Rating{cargoType} to CargoType
+}
+
+
+relationship ManyToOne {
+	Person{carrier} to Carrier{people}
+    Rating{carrier} to Carrier{ratings}
+}
+
+filter Person
+
+// Set pagination options
+paginate Carrier, Rating with infinite-scroll
+paginate Person with pagination
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+

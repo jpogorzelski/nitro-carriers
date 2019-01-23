@@ -1,0 +1,13 @@
+{
+    "nitroCarriersApp": {
+        "Grade": {
+            "null": "",
+            "DEF_YES": "DEF_YES",
+            "YES": "YES",
+            "FINE": "FINE",
+            "NO": "NO",
+            "DEF_NO": "DEF_NO",
+            "BLACK_LIST": "BLACK_LIST"
+        }
+    }
+}
