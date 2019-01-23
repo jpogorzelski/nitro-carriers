@@ -32,13 +32,23 @@ public class RatingDTO implements Serializable {
 
     private Long personId;
 
+    private String personFirstName;
+
     private Long chargeAddressId;
+
+    private String chargeAddressPostalCode;
 
     private Long dischargeAddressId;
 
+    private String dischargeAddressPostalCode;
+
     private Long cargoTypeId;
 
+    private String cargoTypeName;
+
     private Long carrierId;
+
+    private String carrierName;
 
     public Long getId() {
         return id;
@@ -96,12 +106,28 @@ public class RatingDTO implements Serializable {
         this.personId = personId;
     }
 
+    public String getPersonFirstName() {
+        return personFirstName;
+    }
+
+    public void setPersonFirstName(String personFirstName) {
+        this.personFirstName = personFirstName;
+    }
+
     public Long getChargeAddressId() {
         return chargeAddressId;
     }
 
     public void setChargeAddressId(Long addressId) {
         this.chargeAddressId = addressId;
+    }
+
+    public String getChargeAddressPostalCode() {
+        return chargeAddressPostalCode;
+    }
+
+    public void setChargeAddressPostalCode(String addressPostalCode) {
+        this.chargeAddressPostalCode = addressPostalCode;
     }
 
     public Long getDischargeAddressId() {
@@ -112,6 +138,14 @@ public class RatingDTO implements Serializable {
         this.dischargeAddressId = addressId;
     }
 
+    public String getDischargeAddressPostalCode() {
+        return dischargeAddressPostalCode;
+    }
+
+    public void setDischargeAddressPostalCode(String addressPostalCode) {
+        this.dischargeAddressPostalCode = addressPostalCode;
+    }
+
     public Long getCargoTypeId() {
         return cargoTypeId;
     }
@@ -120,12 +154,28 @@ public class RatingDTO implements Serializable {
         this.cargoTypeId = cargoTypeId;
     }
 
+    public String getCargoTypeName() {
+        return cargoTypeName;
+    }
+
+    public void setCargoTypeName(String cargoTypeName) {
+        this.cargoTypeName = cargoTypeName;
+    }
+
     public Long getCarrierId() {
         return carrierId;
     }
 
     public void setCarrierId(Long carrierId) {
         this.carrierId = carrierId;
+    }
+
+    public String getCarrierName() {
+        return carrierName;
+    }
+
+    public void setCarrierName(String carrierName) {
+        this.carrierName = carrierName;
     }
 
     @Override
@@ -159,10 +209,15 @@ public class RatingDTO implements Serializable {
             ", recommendation='" + getRecommendation() + "'" +
             ", average=" + getAverage() +
             ", person=" + getPersonId() +
+            ", person='" + getPersonFirstName() + "'" +
             ", chargeAddress=" + getChargeAddressId() +
+            ", chargeAddress='" + getChargeAddressPostalCode() + "'" +
             ", dischargeAddress=" + getDischargeAddressId() +
+            ", dischargeAddress='" + getDischargeAddressPostalCode() + "'" +
             ", cargoType=" + getCargoTypeId() +
+            ", cargoType='" + getCargoTypeName() + "'" +
             ", carrier=" + getCarrierId() +
+            ", carrier='" + getCarrierName() + "'" +
             "}";
     }
 }

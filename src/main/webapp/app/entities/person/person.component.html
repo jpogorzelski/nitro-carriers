@@ -19,7 +19,7 @@
             <th jhiSortBy="lastName"><span jhiTranslate="nitroCarriersApp.person.lastName">Last Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="companyId"><span jhiTranslate="nitroCarriersApp.person.companyId">Company Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="phoneNumber"><span jhiTranslate="nitroCarriersApp.person.phoneNumber">Phone Number</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="carrierId"><span jhiTranslate="nitroCarriersApp.person.carrier">Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="carrierName"><span jhiTranslate="nitroCarriersApp.person.carrier">Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -32,7 +32,7 @@
                 <td>{{person.phoneNumber}}</td>
                 <td>
                     <div *ngIf="person.carrierId">
-                        <a [routerLink]="['../carrier', person.carrierId , 'view' ]" >{{person.carrierId}}</a>
+                        <a [routerLink]="['../carrier', person.carrierId , 'view' ]" >{{person.carrierName}}</a>
                     </div>
                 </td>
                 <td class="text-right">

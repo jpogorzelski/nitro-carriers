@@ -16,6 +16,8 @@ public class AddressDTO implements Serializable {
 
     private Long countryId;
 
+    private String countryCountryName;
+
     public Long getId() {
         return id;
     }
@@ -38,6 +40,14 @@ public class AddressDTO implements Serializable {
 
     public void setCountryId(Long countryId) {
         this.countryId = countryId;
+    }
+
+    public String getCountryCountryName() {
+        return countryCountryName;
+    }
+
+    public void setCountryCountryName(String countryCountryName) {
+        this.countryCountryName = countryCountryName;
     }
 
     @Override
@@ -67,6 +77,7 @@ public class AddressDTO implements Serializable {
             "id=" + getId() +
             ", postalCode='" + getPostalCode() + "'" +
             ", country=" + getCountryId() +
+            ", country='" + getCountryCountryName() + "'" +
             "}";
     }
 }

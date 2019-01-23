@@ -14,10 +14,15 @@ export interface IRating {
     price?: number;
     recommendation?: Grade;
     average?: number;
+    personFirstName?: string;
     personId?: number;
+    chargeAddressPostalCode?: string;
     chargeAddressId?: number;
+    dischargeAddressPostalCode?: string;
     dischargeAddressId?: number;
+    cargoTypeName?: string;
     cargoTypeId?: number;
+    carrierName?: string;
     carrierId?: number;
 }
 
@@ -29,10 +34,15 @@ export class Rating implements IRating {
         public price?: number,
         public recommendation?: Grade,
         public average?: number,
+        public personFirstName?: string,
         public personId?: number,
+        public chargeAddressPostalCode?: string,
         public chargeAddressId?: number,
+        public dischargeAddressPostalCode?: string,
         public dischargeAddressId?: number,
+        public cargoTypeName?: string,
         public cargoTypeId?: number,
+        public carrierName?: string,
         public carrierId?: number
     ) {}
 }

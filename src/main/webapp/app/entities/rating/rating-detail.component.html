@@ -28,31 +28,31 @@
                 <dt><span jhiTranslate="nitroCarriersApp.rating.person">Person</span></dt>
                 <dd>
                     <div *ngIf="rating.personId">
-                        <a [routerLink]="['/person', rating.personId, 'view']">{{rating.personId}}</a>
+                        <a [routerLink]="['/person', rating.personId, 'view']">{{rating.personFirstName}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.chargeAddress">Charge Address</span></dt>
                 <dd>
                     <div *ngIf="rating.chargeAddressId">
-                        <a [routerLink]="['/address', rating.chargeAddressId, 'view']">{{rating.chargeAddressId}}</a>
+                        <a [routerLink]="['/address', rating.chargeAddressId, 'view']">{{rating.chargeAddressPostalCode}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeAddress">Discharge Address</span></dt>
                 <dd>
                     <div *ngIf="rating.dischargeAddressId">
-                        <a [routerLink]="['/address', rating.dischargeAddressId, 'view']">{{rating.dischargeAddressId}}</a>
+                        <a [routerLink]="['/address', rating.dischargeAddressId, 'view']">{{rating.dischargeAddressPostalCode}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>
                 <dd>
                     <div *ngIf="rating.cargoTypeId">
-                        <a [routerLink]="['/cargo-type', rating.cargoTypeId, 'view']">{{rating.cargoTypeId}}</a>
+                        <a [routerLink]="['/cargo-type', rating.cargoTypeId, 'view']">{{rating.cargoTypeName}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span></dt>
                 <dd>
                     <div *ngIf="rating.carrierId">
-                        <a [routerLink]="['/carrier', rating.carrierId, 'view']">{{rating.carrierId}}</a>
+                        <a [routerLink]="['/carrier', rating.carrierId, 'view']">{{rating.carrierName}}</a>
                     </div>
                 </dd>
             </dl>

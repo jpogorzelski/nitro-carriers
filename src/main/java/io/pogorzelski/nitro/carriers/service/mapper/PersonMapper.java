@@ -12,6 +12,7 @@ import org.mapstruct.*;
 public interface PersonMapper extends EntityMapper<PersonDTO, Person> {
 
     @Mapping(source = "carrier.id", target = "carrierId")
+    @Mapping(source = "carrier.name", target = "carrierName")
     PersonDTO toDto(Person person);
 
     @Mapping(source = "carrierId", target = "carrier")

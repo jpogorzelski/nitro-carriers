@@ -11,8 +11,10 @@ public class PersonDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private String firstName;
 
+    @NotNull
     private String lastName;
 
     @NotNull
@@ -21,6 +23,8 @@ public class PersonDTO implements Serializable {
     private String phoneNumber;
 
     private Long carrierId;
+
+    private String carrierName;
 
     public Long getId() {
         return id;
@@ -70,6 +74,14 @@ public class PersonDTO implements Serializable {
         this.carrierId = carrierId;
     }
 
+    public String getCarrierName() {
+        return carrierName;
+    }
+
+    public void setCarrierName(String carrierName) {
+        this.carrierName = carrierName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -100,6 +112,7 @@ public class PersonDTO implements Serializable {
             ", companyId='" + getCompanyId() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", carrier=" + getCarrierId() +
+            ", carrier='" + getCarrierName() + "'" +
             "}";
     }
 }

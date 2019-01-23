@@ -14,7 +14,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "country",
             "otherEntityName": "country",
-            "otherEntityField": "id",
+            "otherEntityField": "countryName",
             "ownerSide": true,
             "otherEntityRelationshipName": "address"
         }

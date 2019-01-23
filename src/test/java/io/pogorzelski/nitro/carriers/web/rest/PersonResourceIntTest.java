@@ -160,6 +160,44 @@ public class PersonResourceIntTest {
 
     @Test
     @Transactional
+    public void checkFirstNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = personRepository.findAll().size();
+        // set the field null
+        person.setFirstName(null);
+
+        // Create the Person, which fails.
+        PersonDTO personDTO = personMapper.toDto(person);
+
+        restPersonMockMvc.perform(post("/api/people")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(personDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Person> personList = personRepository.findAll();
+        assertThat(personList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkLastNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = personRepository.findAll().size();
+        // set the field null
+        person.setLastName(null);
+
+        // Create the Person, which fails.
+        PersonDTO personDTO = personMapper.toDto(person);
+
+        restPersonMockMvc.perform(post("/api/people")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(personDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Person> personList = personRepository.findAll();
+        assertThat(personList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void checkCompanyIdIsRequired() throws Exception {
         int databaseSizeBeforeTest = personRepository.findAll().size();
         // set the field null

@@ -12,10 +12,15 @@ import org.mapstruct.*;
 public interface RatingMapper extends EntityMapper<RatingDTO, Rating> {
 
     @Mapping(source = "person.id", target = "personId")
+    @Mapping(source = "person.firstName", target = "personFirstName")
     @Mapping(source = "chargeAddress.id", target = "chargeAddressId")
+    @Mapping(source = "chargeAddress.postalCode", target = "chargeAddressPostalCode")
     @Mapping(source = "dischargeAddress.id", target = "dischargeAddressId")
+    @Mapping(source = "dischargeAddress.postalCode", target = "dischargeAddressPostalCode")
     @Mapping(source = "cargoType.id", target = "cargoTypeId")
+    @Mapping(source = "cargoType.name", target = "cargoTypeName")
     @Mapping(source = "carrier.id", target = "carrierId")
+    @Mapping(source = "carrier.name", target = "carrierName")
     RatingDTO toDto(Rating rating);
 
     @Mapping(source = "personId", target = "person")

@@ -13,8 +13,8 @@ entity Carrier {
 }
 
 entity Person {
-	firstName String,
-	lastName String,
+	firstName String required,
+	lastName String required,
 	companyId String required,
 	phoneNumber String
 }
@@ -37,17 +37,17 @@ enum Grade {
 }
 
 relationship OneToOne {
-	Address{country} to Country
-    Rating{person} to Person
-    Rating{chargeAddress} to Address
-    Rating{dischargeAddress} to Address
-    Rating{cargoType} to CargoType
+	Address{country(countryName)} to Country
+    Rating{person(firstName)} to Person	
+    Rating{chargeAddress(postalCode)} to Address
+    Rating{dischargeAddress(postalCode)} to Address
+    Rating{cargoType(name)} to CargoType
 }
 
 
 relationship ManyToOne {
-	Person{carrier} to Carrier{people}
-    Rating{carrier} to Carrier{ratings}
+	Person{carrier(name)} to Carrier{people(firstName)}
+    Rating{carrier(name)} to Carrier{ratings(carrier)}
 }
 
 filter Person

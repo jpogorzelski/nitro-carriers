@@ -12,12 +12,24 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.person.firstName" for="field_firstName">First Name</label>
                     <input type="text" class="form-control" name="firstName" id="field_firstName"
-                        [(ngModel)]="person.firstName" />
+                        [(ngModel)]="person.firstName" required/>
+                    <div [hidden]="!(editForm.controls.firstName?.dirty && editForm.controls.firstName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.firstName?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.person.lastName" for="field_lastName">Last Name</label>
                     <input type="text" class="form-control" name="lastName" id="field_lastName"
-                        [(ngModel)]="person.lastName" />
+                        [(ngModel)]="person.lastName" required/>
+                    <div [hidden]="!(editForm.controls.lastName?.dirty && editForm.controls.lastName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.lastName?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.person.companyId" for="field_companyId">Company Id</label>
@@ -40,7 +52,7 @@
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.person.carrier" for="field_carrier">Carrier</label>
                     <select class="form-control" id="field_carrier" name="carrier" [(ngModel)]="person.carrierId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="carrierOption.id" *ngFor="let carrierOption of carriers; trackBy: trackCarrierById">{{carrierOption.id}}</option>
+                        <option [ngValue]="carrierOption.id" *ngFor="let carrierOption of carriers; trackBy: trackCarrierById">{{carrierOption.name}}</option>
                     </select>
                 </div>
             </div>

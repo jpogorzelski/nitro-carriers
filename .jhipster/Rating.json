@@ -52,7 +52,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "person",
             "otherEntityName": "person",
-            "otherEntityField": "id",
+            "otherEntityField": "firstName",
             "ownerSide": true,
             "otherEntityRelationshipName": "rating"
         },
@@ -60,7 +60,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "chargeAddress",
             "otherEntityName": "address",
-            "otherEntityField": "id",
+            "otherEntityField": "postalCode",
             "ownerSide": true,
             "otherEntityRelationshipName": "rating"
         },
@@ -68,7 +68,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "dischargeAddress",
             "otherEntityName": "address",
-            "otherEntityField": "id",
+            "otherEntityField": "postalCode",
             "ownerSide": true,
             "otherEntityRelationshipName": "rating"
         },
@@ -76,7 +76,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "cargoType",
             "otherEntityName": "cargoType",
-            "otherEntityField": "id",
+            "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "rating"
         },
@@ -84,7 +84,7 @@
             "relationshipType": "many-to-one",
             "relationshipName": "carrier",
             "otherEntityName": "carrier",
-            "otherEntityField": "id"
+            "otherEntityField": "name"
         }
     ],
     "changelogDate": "20190123145855",

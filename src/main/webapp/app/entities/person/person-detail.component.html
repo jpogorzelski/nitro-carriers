@@ -24,7 +24,7 @@
                 <dt><span jhiTranslate="nitroCarriersApp.person.carrier">Carrier</span></dt>
                 <dd>
                     <div *ngIf="person.carrierId">
-                        <a [routerLink]="['/carrier', person.carrierId, 'view']">{{person.carrierId}}</a>
+                        <a [routerLink]="['/carrier', person.carrierId, 'view']">{{person.carrierName}}</a>
                     </div>
                 </dd>
             </dl>

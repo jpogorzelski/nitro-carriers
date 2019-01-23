@@ -3,11 +3,17 @@
     "fields": [
         {
             "fieldName": "firstName",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "lastName",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "companyId",
@@ -26,7 +32,7 @@
             "relationshipType": "many-to-one",
             "relationshipName": "carrier",
             "otherEntityName": "carrier",
-            "otherEntityField": "id"
+            "otherEntityField": "name"
         }
     ],
     "changelogDate": "20190123145853",

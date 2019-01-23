@@ -4,6 +4,7 @@ export interface IPerson {
     lastName?: string;
     companyId?: string;
     phoneNumber?: string;
+    carrierName?: string;
     carrierId?: number;
 }
 
@@ -14,6 +15,7 @@ export class Person implements IPerson {
         public lastName?: string,
         public companyId?: string,
         public phoneNumber?: string,
+        public carrierName?: string,
         public carrierId?: number
     ) {}
 }
