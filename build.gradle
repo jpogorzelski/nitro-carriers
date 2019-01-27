@@ -41,6 +41,12 @@ apply plugin: 'com.moowork.node'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'idea'
 
+idea {
+  module {
+    excludeDirs += files('node_modules')
+  }
+}
+
 dependencyManagement {
   imports {
     mavenBom 'io.github.jhipster:jhipster-dependencies:' + jhipster_dependencies_version
@@ -56,16 +62,17 @@ version = '0.0.1-SNAPSHOT'
 description = ''
 
 bootWar {
-   mainClassName = 'io.pogorzelski.nitro.carriers.NitroCarriersApp'
+    mainClassName = 'io.pogorzelski.nitro.carriers.NitroCarriersApp'
 }
 
 war {
-
+    webAppDirName = 'build/www/'
+    enabled = true
+    extension = 'war.original'
 }
 
 springBoot {
     mainClassName = 'io.pogorzelski.nitro.carriers.NitroCarriersApp'
-    buildInfo()
 }
 
 if (OperatingSystem.current().isWindows()) {
@@ -186,14 +193,7 @@ dependencies {
     compile group: "io.github.jhipster", name: "jhipster-framework"
     compile "org.springframework.boot:spring-boot-starter-cache"
     compile "io.dropwizard.metrics:metrics-core"
-    compile "io.dropwizard.metrics:metrics-jcache"
-    compile "io.dropwizard.metrics:metrics-json"
-    compile "io.dropwizard.metrics:metrics-jvm"
-    compile "io.dropwizard.metrics:metrics-servlet"
-    compile "io.dropwizard.metrics:metrics-servlets"
-    compile "io.prometheus:simpleclient"
-    compile "io.prometheus:simpleclient_dropwizard"
-    compile "io.prometheus:simpleclient_servlet"
+    compile 'io.micrometer:micrometer-registry-prometheus'
     compile "net.logstash.logback:logstash-logback-encoder"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-hppc"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
@@ -201,7 +201,6 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-annotations"
     compile "com.fasterxml.jackson.core:jackson-databind"
     compile "com.fasterxml.jackson.module:jackson-module-afterburner"
-    compile "com.ryantenney.metrics:metrics-spring"
     compile "javax.cache:cache-api"
     compile "org.hibernate:hibernate-core"
     compile "com.zaxxer:HikariCP"
@@ -289,7 +288,3 @@ if (project.hasProperty('nodeInstall')) {
         download = true
     }
 }
-
-compileJava.dependsOn processResources
-processResources.dependsOn cleanResources,bootBuildInfo
-bootBuildInfo.mustRunAfter cleanResources

@@ -42,7 +42,6 @@ public class CarrierServiceImpl implements CarrierService {
     @Override
     public CarrierDTO save(CarrierDTO carrierDTO) {
         log.debug("Request to save Carrier : {}", carrierDTO);
-
         Carrier carrier = carrierMapper.toEntity(carrierDTO);
         carrier = carrierRepository.save(carrier);
         return carrierMapper.toDto(carrier);
@@ -84,7 +83,6 @@ public class CarrierServiceImpl implements CarrierService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Carrier : {}", id);
-        carrierRepository.deleteById(id);
+        log.debug("Request to delete Carrier : {}", id);        carrierRepository.deleteById(id);
     }
 }

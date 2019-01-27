@@ -14,7 +14,7 @@ import { CarrierService } from './carrier.service';
 export class CarrierDeleteDialogComponent {
     carrier: ICarrier;
 
-    constructor(private carrierService: CarrierService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
+    constructor(protected carrierService: CarrierService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
@@ -36,9 +36,9 @@ export class CarrierDeleteDialogComponent {
     template: ''
 })
 export class CarrierDeletePopupComponent implements OnInit, OnDestroy {
-    private ngbModalRef: NgbModalRef;
+    protected ngbModalRef: NgbModalRef;
 
-    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
+    constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ carrier }) => {
@@ -47,11 +47,11 @@ export class CarrierDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.carrier = carrier;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/carrier', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/carrier', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

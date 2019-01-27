@@ -42,7 +42,6 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonDTO save(PersonDTO personDTO) {
         log.debug("Request to save Person : {}", personDTO);
-
         Person person = personMapper.toEntity(personDTO);
         person = personRepository.save(person);
         return personMapper.toDto(person);
@@ -84,7 +83,6 @@ public class PersonServiceImpl implements PersonService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Person : {}", id);
-        personRepository.deleteById(id);
+        log.debug("Request to delete Person : {}", id);        personRepository.deleteById(id);
     }
 }

@@ -13,7 +13,7 @@ type EntityArrayResponseType = HttpResponse<ICargoType[]>;
 export class CargoTypeService {
     public resourceUrl = SERVER_API_URL + 'api/cargo-types';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(cargoType: ICargoType): Observable<EntityResponseType> {
         return this.http.post<ICargoType>(this.resourceUrl, cargoType, { observe: 'response' });

@@ -10,7 +10,7 @@ import { IPerson } from 'app/shared/model/person.model';
 export class PersonDetailComponent implements OnInit {
     person: IPerson;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ person }) => {

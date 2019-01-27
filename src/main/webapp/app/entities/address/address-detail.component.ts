@@ -10,7 +10,7 @@ import { IAddress } from 'app/shared/model/address.model';
 export class AddressDetailComponent implements OnInit {
     address: IAddress;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ address }) => {

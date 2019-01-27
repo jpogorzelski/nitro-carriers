@@ -13,7 +13,7 @@ type EntityArrayResponseType = HttpResponse<IAddress[]>;
 export class AddressService {
     public resourceUrl = SERVER_API_URL + 'api/addresses';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(address: IAddress): Observable<EntityResponseType> {
         return this.http.post<IAddress>(this.resourceUrl, address, { observe: 'response' });

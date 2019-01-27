@@ -13,7 +13,7 @@ type EntityArrayResponseType = HttpResponse<IRating[]>;
 export class RatingService {
     public resourceUrl = SERVER_API_URL + 'api/ratings';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(rating: IRating): Observable<EntityResponseType> {
         return this.http.post<IRating>(this.resourceUrl, rating, { observe: 'response' });

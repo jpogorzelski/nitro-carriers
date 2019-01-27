@@ -1,6 +1,4 @@
 package io.pogorzelski.nitro.carriers.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import io.pogorzelski.nitro.carriers.service.CarrierService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
@@ -48,7 +46,6 @@ public class CarrierResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/carriers")
-    @Timed
     public ResponseEntity<CarrierDTO> createCarrier(@Valid @RequestBody CarrierDTO carrierDTO) throws URISyntaxException {
         log.debug("REST request to save Carrier : {}", carrierDTO);
         if (carrierDTO.getId() != null) {
@@ -70,7 +67,6 @@ public class CarrierResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/carriers")
-    @Timed
     public ResponseEntity<CarrierDTO> updateCarrier(@Valid @RequestBody CarrierDTO carrierDTO) throws URISyntaxException {
         log.debug("REST request to update Carrier : {}", carrierDTO);
         if (carrierDTO.getId() == null) {
@@ -89,7 +85,6 @@ public class CarrierResource {
      * @return the ResponseEntity with status 200 (OK) and the list of carriers in body
      */
     @GetMapping("/carriers")
-    @Timed
     public ResponseEntity<List<CarrierDTO>> getAllCarriers(Pageable pageable) {
         log.debug("REST request to get a page of Carriers");
         Page<CarrierDTO> page = carrierService.findAll(pageable);
@@ -104,7 +99,6 @@ public class CarrierResource {
      * @return the ResponseEntity with status 200 (OK) and with body the carrierDTO, or with status 404 (Not Found)
      */
     @GetMapping("/carriers/{id}")
-    @Timed
     public ResponseEntity<CarrierDTO> getCarrier(@PathVariable Long id) {
         log.debug("REST request to get Carrier : {}", id);
         Optional<CarrierDTO> carrierDTO = carrierService.findOne(id);
@@ -118,7 +112,6 @@ public class CarrierResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/carriers/{id}")
-    @Timed
     public ResponseEntity<Void> deleteCarrier(@PathVariable Long id) {
         log.debug("REST request to delete Carrier : {}", id);
         carrierService.delete(id);

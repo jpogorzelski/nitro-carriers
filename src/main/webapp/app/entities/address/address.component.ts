@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { IAddress } from 'app/shared/model/address.model';
-import { Principal } from 'app/core';
+import { AccountService } from 'app/core';
 import { AddressService } from './address.service';
 
 @Component({
@@ -17,24 +18,30 @@ export class AddressComponent implements OnInit, OnDestroy {
     eventSubscriber: Subscription;
 
     constructor(
-        private addressService: AddressService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal
+        protected addressService: AddressService,
+        protected jhiAlertService: JhiAlertService,
+        protected eventManager: JhiEventManager,
+        protected accountService: AccountService
     ) {}
 
     loadAll() {
-        this.addressService.query().subscribe(
-            (res: HttpResponse<IAddress[]>) => {
-                this.addresses = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.addressService
+            .query()
+            .pipe(
+                filter((res: HttpResponse<IAddress[]>) => res.ok),
+                map((res: HttpResponse<IAddress[]>) => res.body)
+            )
+            .subscribe(
+                (res: IAddress[]) => {
+                    this.addresses = res;
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then(account => {
+        this.accountService.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInAddresses();
@@ -52,7 +59,7 @@ export class AddressComponent implements OnInit, OnDestroy {
         this.eventSubscriber = this.eventManager.subscribe('addressListModification', response => this.loadAll());
     }
 
-    private onError(errorMessage: string) {
+    protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 }

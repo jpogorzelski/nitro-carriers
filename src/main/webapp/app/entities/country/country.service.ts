@@ -13,7 +13,7 @@ type EntityArrayResponseType = HttpResponse<ICountry[]>;
 export class CountryService {
     public resourceUrl = SERVER_API_URL + 'api/countries';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(country: ICountry): Observable<EntityResponseType> {
         return this.http.post<ICountry>(this.resourceUrl, country, { observe: 'response' });

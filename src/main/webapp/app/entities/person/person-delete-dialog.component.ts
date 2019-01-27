@@ -14,7 +14,7 @@ import { PersonService } from './person.service';
 export class PersonDeleteDialogComponent {
     person: IPerson;
 
-    constructor(private personService: PersonService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
+    constructor(protected personService: PersonService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
@@ -36,9 +36,9 @@ export class PersonDeleteDialogComponent {
     template: ''
 })
 export class PersonDeletePopupComponent implements OnInit, OnDestroy {
-    private ngbModalRef: NgbModalRef;
+    protected ngbModalRef: NgbModalRef;
 
-    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
+    constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ person }) => {
@@ -47,11 +47,11 @@ export class PersonDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.person = person;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/person', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/person', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

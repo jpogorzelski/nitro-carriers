@@ -13,7 +13,7 @@ type EntityArrayResponseType = HttpResponse<ICarrier[]>;
 export class CarrierService {
     public resourceUrl = SERVER_API_URL + 'api/carriers';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(carrier: ICarrier): Observable<EntityResponseType> {
         return this.http.post<ICarrier>(this.resourceUrl, carrier, { observe: 'response' });

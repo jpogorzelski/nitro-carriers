@@ -1,6 +1,4 @@
 package io.pogorzelski.nitro.carriers.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import io.pogorzelski.nitro.carriers.service.PersonService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
@@ -53,7 +51,6 @@ public class PersonResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/people")
-    @Timed
     public ResponseEntity<PersonDTO> createPerson(@Valid @RequestBody PersonDTO personDTO) throws URISyntaxException {
         log.debug("REST request to save Person : {}", personDTO);
         if (personDTO.getId() != null) {
@@ -75,7 +72,6 @@ public class PersonResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/people")
-    @Timed
     public ResponseEntity<PersonDTO> updatePerson(@Valid @RequestBody PersonDTO personDTO) throws URISyntaxException {
         log.debug("REST request to update Person : {}", personDTO);
         if (personDTO.getId() == null) {
@@ -95,7 +91,6 @@ public class PersonResource {
      * @return the ResponseEntity with status 200 (OK) and the list of people in body
      */
     @GetMapping("/people")
-    @Timed
     public ResponseEntity<List<PersonDTO>> getAllPeople(PersonCriteria criteria, Pageable pageable) {
         log.debug("REST request to get People by criteria: {}", criteria);
         Page<PersonDTO> page = personQueryService.findByCriteria(criteria, pageable);
@@ -110,7 +105,6 @@ public class PersonResource {
     * @return the ResponseEntity with status 200 (OK) and the count in body
     */
     @GetMapping("/people/count")
-    @Timed
     public ResponseEntity<Long> countPeople(PersonCriteria criteria) {
         log.debug("REST request to count People by criteria: {}", criteria);
         return ResponseEntity.ok().body(personQueryService.countByCriteria(criteria));
@@ -123,7 +117,6 @@ public class PersonResource {
      * @return the ResponseEntity with status 200 (OK) and with body the personDTO, or with status 404 (Not Found)
      */
     @GetMapping("/people/{id}")
-    @Timed
     public ResponseEntity<PersonDTO> getPerson(@PathVariable Long id) {
         log.debug("REST request to get Person : {}", id);
         Optional<PersonDTO> personDTO = personService.findOne(id);
@@ -137,7 +130,6 @@ public class PersonResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/people/{id}")
-    @Timed
     public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
         log.debug("REST request to delete Person : {}", id);
         personService.delete(id);

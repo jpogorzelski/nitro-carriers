@@ -1,6 +1,4 @@
 package io.pogorzelski.nitro.carriers.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import io.pogorzelski.nitro.carriers.service.AddressService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
@@ -43,7 +41,6 @@ public class AddressResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/addresses")
-    @Timed
     public ResponseEntity<AddressDTO> createAddress(@Valid @RequestBody AddressDTO addressDTO) throws URISyntaxException {
         log.debug("REST request to save Address : {}", addressDTO);
         if (addressDTO.getId() != null) {
@@ -65,7 +62,6 @@ public class AddressResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/addresses")
-    @Timed
     public ResponseEntity<AddressDTO> updateAddress(@Valid @RequestBody AddressDTO addressDTO) throws URISyntaxException {
         log.debug("REST request to update Address : {}", addressDTO);
         if (addressDTO.getId() == null) {
@@ -83,7 +79,6 @@ public class AddressResource {
      * @return the ResponseEntity with status 200 (OK) and the list of addresses in body
      */
     @GetMapping("/addresses")
-    @Timed
     public List<AddressDTO> getAllAddresses() {
         log.debug("REST request to get all Addresses");
         return addressService.findAll();
@@ -96,7 +91,6 @@ public class AddressResource {
      * @return the ResponseEntity with status 200 (OK) and with body the addressDTO, or with status 404 (Not Found)
      */
     @GetMapping("/addresses/{id}")
-    @Timed
     public ResponseEntity<AddressDTO> getAddress(@PathVariable Long id) {
         log.debug("REST request to get Address : {}", id);
         Optional<AddressDTO> addressDTO = addressService.findOne(id);
@@ -110,7 +104,6 @@ public class AddressResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/addresses/{id}")
-    @Timed
     public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
         log.debug("REST request to delete Address : {}", id);
         addressService.delete(id);

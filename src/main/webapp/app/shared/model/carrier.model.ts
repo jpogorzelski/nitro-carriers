@@ -1,5 +1,5 @@
-import { IPerson } from 'app/shared/model//person.model';
-import { IRating } from 'app/shared/model//rating.model';
+import { IPerson } from 'app/shared/model/person.model';
+import { IRating } from 'app/shared/model/rating.model';
 
 export interface ICarrier {
     id?: number;

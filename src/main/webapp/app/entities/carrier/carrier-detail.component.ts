@@ -10,7 +10,7 @@ import { ICarrier } from 'app/shared/model/carrier.model';
 export class CarrierDetailComponent implements OnInit {
     carrier: ICarrier;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ carrier }) => {

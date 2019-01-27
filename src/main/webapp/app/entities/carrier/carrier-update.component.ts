@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { filter, map } from 'rxjs/operators';
 import { ICarrier } from 'app/shared/model/carrier.model';
 import { CarrierService } from './carrier.service';
 
@@ -14,7 +14,7 @@ export class CarrierUpdateComponent implements OnInit {
     carrier: ICarrier;
     isSaving: boolean;
 
-    constructor(private carrierService: CarrierService, private activatedRoute: ActivatedRoute) {}
+    constructor(protected carrierService: CarrierService, protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.isSaving = false;
@@ -36,16 +36,16 @@ export class CarrierUpdateComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<ICarrier>>) {
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<ICarrier>>) {
         result.subscribe((res: HttpResponse<ICarrier>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
     }
 }

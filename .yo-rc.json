@@ -1,43 +1,40 @@
 {
-  "generator-jhipster": {
-    "promptValues": {
-      "packageName": "io.pogorzelski.nitro.carriers",
-      "nativeLanguage": "en"
-    },
-    "jhipsterVersion": "5.7.0",
-    "applicationType": "monolith",
-    "baseName": "NitroCarriers",
-    "packageName": "io.pogorzelski.nitro.carriers",
-    "packageFolder": "io/pogorzelski/nitro/carriers",
-    "serverPort": "8080",
-    "authenticationType": "jwt",
-    "cacheProvider": "ehcache",
-    "enableHibernateCache": true,
-    "websocket": false,
-    "databaseType": "sql",
-    "devDatabaseType": "h2Disk",
-    "prodDatabaseType": "postgresql",
-    "searchEngine": false,
-    "messageBroker": false,
-    "serviceDiscoveryType": false,
-    "buildTool": "gradle",
-    "enableSwaggerCodegen": false,
-    "jwtSecretKey": "NTFlMTQyZjI1YTgwMThjMTAxNTdiMWQzNDUyYmJkNGI4YzNlMjRhYjI3NTdhNDY0Y2E1YjI0ZDU4MzQ3NGUwMzZjYTRjOTRlMGM1MmRjYWFmZTBkYmY1YTg1ZGNmMmRiYjdiMjE5ZTBkYmY3YTdkNzBkZGY0NWFiMjMxMGE5M2Q=",
-    "clientFramework": "angularX",
-    "useSass": true,
-    "clientPackageManager": "npm",
-    "testFrameworks": [
-      "cucumber"
-    ],
-    "jhiPrefix": "jhi",
-    "otherModules": [],
-    "enableTranslation": true,
-    "nativeLanguage": "en",
-    "languages": [
-      "en",
-      "pl"
-    ],
-    "herokuAppName": "nitro-carriers",
-    "herokuDeployType": "git"
-  }
+    "generator-jhipster": {
+        "promptValues": {
+            "packageName": "io.pogorzelski.nitro.carriers",
+            "nativeLanguage": "en"
+        },
+        "jhipsterVersion": "5.8.0",
+        "applicationType": "monolith",
+        "baseName": "NitroCarriers",
+        "packageName": "io.pogorzelski.nitro.carriers",
+        "packageFolder": "io/pogorzelski/nitro/carriers",
+        "serverPort": "8080",
+        "authenticationType": "jwt",
+        "cacheProvider": "ehcache",
+        "enableHibernateCache": true,
+        "websocket": false,
+        "databaseType": "sql",
+        "devDatabaseType": "h2Disk",
+        "prodDatabaseType": "postgresql",
+        "searchEngine": false,
+        "messageBroker": false,
+        "serviceDiscoveryType": false,
+        "buildTool": "gradle",
+        "enableSwaggerCodegen": false,
+        "jwtSecretKey": "NTFlMTQyZjI1YTgwMThjMTAxNTdiMWQzNDUyYmJkNGI4YzNlMjRhYjI3NTdhNDY0Y2E1YjI0ZDU4MzQ3NGUwMzZjYTRjOTRlMGM1MmRjYWFmZTBkYmY1YTg1ZGNmMmRiYjdiMjE5ZTBkYmY3YTdkNzBkZGY0NWFiMjMxMGE5M2Q=",
+        "clientFramework": "angularX",
+        "useSass": true,
+        "clientPackageManager": "npm",
+        "testFrameworks": ["cucumber"],
+        "jhiPrefix": "jhi",
+        "otherModules": [],
+        "enableTranslation": true,
+        "nativeLanguage": "en",
+        "languages": ["en", "pl"],
+        "herokuAppName": "nitro-carriers",
+        "herokuDeployType": "git",
+        "entitySuffix": "",
+        "dtoSuffix": "DTO"
+    }
 }

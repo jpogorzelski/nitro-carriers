@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-
 import { IAddress } from 'app/shared/model/address.model';
 import { AddressService } from './address.service';
 import { ICountry } from 'app/shared/model/country.model';
@@ -20,10 +20,10 @@ export class AddressUpdateComponent implements OnInit {
     countries: ICountry[];
 
     constructor(
-        private jhiAlertService: JhiAlertService,
-        private addressService: AddressService,
-        private countryService: CountryService,
-        private activatedRoute: ActivatedRoute
+        protected jhiAlertService: JhiAlertService,
+        protected addressService: AddressService,
+        protected countryService: CountryService,
+        protected activatedRoute: ActivatedRoute
     ) {}
 
     ngOnInit() {
@@ -31,21 +31,31 @@ export class AddressUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ address }) => {
             this.address = address;
         });
-        this.countryService.query({ filter: 'address-is-null' }).subscribe(
-            (res: HttpResponse<ICountry[]>) => {
-                if (!this.address.countryId) {
-                    this.countries = res.body;
-                } else {
-                    this.countryService.find(this.address.countryId).subscribe(
-                        (subRes: HttpResponse<ICountry>) => {
-                            this.countries = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.countryService
+            .query({ filter: 'address-is-null' })
+            .pipe(
+                filter((mayBeOk: HttpResponse<ICountry[]>) => mayBeOk.ok),
+                map((response: HttpResponse<ICountry[]>) => response.body)
+            )
+            .subscribe(
+                (res: ICountry[]) => {
+                    if (!this.address.countryId) {
+                        this.countries = res;
+                    } else {
+                        this.countryService
+                            .find(this.address.countryId)
+                            .pipe(
+                                filter((subResMayBeOk: HttpResponse<ICountry>) => subResMayBeOk.ok),
+                                map((subResponse: HttpResponse<ICountry>) => subResponse.body)
+                            )
+                            .subscribe(
+                                (subRes: ICountry) => (this.countries = [subRes].concat(res)),
+                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                            );
+                    }
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 
     previousState() {
@@ -61,20 +71,20 @@ export class AddressUpdateComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IAddress>>) {
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IAddress>>) {
         result.subscribe((res: HttpResponse<IAddress>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
     }
 
-    private onError(errorMessage: string) {
+    protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 

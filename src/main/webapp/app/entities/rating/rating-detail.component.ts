@@ -10,7 +10,7 @@ import { IRating } from 'app/shared/model/rating.model';
 export class RatingDetailComponent implements OnInit {
     rating: IRating;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ rating }) => {
