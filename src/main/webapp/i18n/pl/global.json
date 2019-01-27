@@ -13,7 +13,6 @@
                 "person": "Person",
                 "cargoType": "Cargo Type",
                 "rating": "Rating",
-                "nitroRating": "Nitro Rating",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -21,7 +20,7 @@
                 "settings": "Ustawienia",
                 "password": "Hasło",
                 "sessions": "Sesje",
-                "login": "Zaloguj się",
+                "login": "Autoryzacja",
                 "logout": "Wyloguj",
                 "register": "Zarejestruj się"
             },
@@ -138,5 +137,5 @@
         "idexists": "Nowy {{entityName}} nie może jeszcze mieć przypisanego ID",
         "idnull": "Błędne ID"
     },
-    "footer": "Copyright &copy; 2019 Jakub Pogorzelski"
+    "footer": "To jest stopka"
 }

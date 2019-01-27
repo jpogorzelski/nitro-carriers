@@ -13,7 +13,6 @@
                 "person": "Person",
                 "cargoType": "Cargo Type",
                 "rating": "Rating",
-                "nitroRating": "Nitro Rating",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -139,5 +138,5 @@
         "idexists": "A new {{ entityName }} cannot already have an ID",
         "idnull": "Invalid ID"
     },
-    "footer": "Copyright &copy; 2019 Jakub Pogorzelski"
+    "footer": "This is your footer"
 }

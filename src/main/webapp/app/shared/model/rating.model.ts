@@ -9,7 +9,7 @@ export const enum Grade {
 
 export interface IRating {
     id?: number;
-    flexibiliy?: number;
+    flexibility?: number;
     contact?: number;
     price?: number;
     recommendation?: Grade;
@@ -29,7 +29,7 @@ export interface IRating {
 export class Rating implements IRating {
     constructor(
         public id?: number,
-        public flexibiliy?: number,
+        public flexibility?: number,
         public contact?: number,
         public price?: number,
         public recommendation?: Grade,

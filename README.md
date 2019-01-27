@@ -91,8 +91,12 @@ will generate few files:
 
 To optimize the NitroCarriers application for production, run:
 
+    ./gradlew -Pprod clean bootWar
+
 This will concatenate and minify the client CSS and JavaScript files. It will also modify `index.html` so it references these new files.
 To ensure everything worked, run:
+
+    java -jar build/libs/*.war
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
@@ -132,16 +136,18 @@ For more information, refer to the [Code quality page][].
 
 You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
 
-For example, to start a database in a docker container, run:
+For example, to start a postgresql database in a docker container, run:
 
-    docker-compose -f src/main/docker/.yml up -d
+    docker-compose -f src/main/docker/postgresql.yml up -d
 
 To stop it and remove the container, run:
 
-    docker-compose -f src/main/docker/.yml down
+    docker-compose -f src/main/docker/postgresql.yml down
 
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
+
+    ./gradlew bootWar -Pprod jibDockerBuild
 
 Then run:
 

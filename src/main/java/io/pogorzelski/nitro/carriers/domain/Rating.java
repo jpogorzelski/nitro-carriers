@@ -30,8 +30,8 @@ public class Rating implements Serializable {
 
     @Min(value = 1)
     @Max(value = 6)
-    @Column(name = "flexibiliy")
-    private Integer flexibiliy;
+    @Column(name = "flexibility")
+    private Integer flexibility;
 
     @Min(value = 1)
     @Max(value = 6)
@@ -52,23 +52,28 @@ public class Rating implements Serializable {
     @Column(name = "average")
     private Double average;
 
-    @OneToOne
+    @OneToOne(optional = false)    @NotNull
+
     @JoinColumn(unique = true)
     private Person person;
 
-    @OneToOne
+    @OneToOne(optional = false)    @NotNull
+
     @JoinColumn(unique = true)
     private Address chargeAddress;
 
-    @OneToOne
+    @OneToOne(optional = false)    @NotNull
+
     @JoinColumn(unique = true)
     private Address dischargeAddress;
 
-    @OneToOne
+    @OneToOne(optional = false)    @NotNull
+
     @JoinColumn(unique = true)
     private CargoType cargoType;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties("ratings")
     private Carrier carrier;
 
@@ -81,17 +86,17 @@ public class Rating implements Serializable {
         this.id = id;
     }
 
-    public Integer getFlexibiliy() {
-        return flexibiliy;
+    public Integer getFlexibility() {
+        return flexibility;
     }
 
-    public Rating flexibiliy(Integer flexibiliy) {
-        this.flexibiliy = flexibiliy;
+    public Rating flexibility(Integer flexibility) {
+        this.flexibility = flexibility;
         return this;
     }
 
-    public void setFlexibiliy(Integer flexibiliy) {
-        this.flexibiliy = flexibiliy;
+    public void setFlexibility(Integer flexibility) {
+        this.flexibility = flexibility;
     }
 
     public Integer getContact() {
@@ -236,7 +241,7 @@ public class Rating implements Serializable {
     public String toString() {
         return "Rating{" +
             "id=" + getId() +
-            ", flexibiliy=" + getFlexibiliy() +
+            ", flexibility=" + getFlexibility() +
             ", contact=" + getContact() +
             ", price=" + getPrice() +
             ", recommendation='" + getRecommendation() + "'" +

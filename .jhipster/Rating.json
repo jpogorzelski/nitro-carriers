@@ -2,7 +2,7 @@
     "name": "Rating",
     "fields": [
         {
-            "fieldName": "flexibiliy",
+            "fieldName": "flexibility",
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "min",
@@ -50,6 +50,7 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "person",
             "otherEntityName": "person",
             "otherEntityField": "firstName",
@@ -58,6 +59,7 @@
         },
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "chargeAddress",
             "otherEntityName": "address",
             "otherEntityField": "postalCode",
@@ -66,6 +68,7 @@
         },
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "dischargeAddress",
             "otherEntityName": "address",
             "otherEntityField": "postalCode",
@@ -74,6 +77,7 @@
         },
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "cargoType",
             "otherEntityName": "cargoType",
             "otherEntityField": "name",
@@ -82,6 +86,7 @@
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "carrier",
             "otherEntityName": "carrier",
             "otherEntityField": "name"

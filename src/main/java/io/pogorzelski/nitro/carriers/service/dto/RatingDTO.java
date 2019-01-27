@@ -14,7 +14,7 @@ public class RatingDTO implements Serializable {
 
     @Min(value = 1)
     @Max(value = 6)
-    private Integer flexibiliy;
+    private Integer flexibility;
 
     @Min(value = 1)
     @Max(value = 6)
@@ -58,12 +58,12 @@ public class RatingDTO implements Serializable {
         this.id = id;
     }
 
-    public Integer getFlexibiliy() {
-        return flexibiliy;
+    public Integer getFlexibility() {
+        return flexibility;
     }
 
-    public void setFlexibiliy(Integer flexibiliy) {
-        this.flexibiliy = flexibiliy;
+    public void setFlexibility(Integer flexibility) {
+        this.flexibility = flexibility;
     }
 
     public Integer getContact() {
@@ -203,7 +203,7 @@ public class RatingDTO implements Serializable {
     public String toString() {
         return "RatingDTO{" +
             "id=" + getId() +
-            ", flexibiliy=" + getFlexibiliy() +
+            ", flexibility=" + getFlexibility() +
             ", contact=" + getContact() +
             ", price=" + getPrice() +
             ", recommendation='" + getRecommendation() + "'" +

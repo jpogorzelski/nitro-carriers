@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -27,10 +27,6 @@ import { RouterModule } from '@angular/router';
             {
                 path: 'rating',
                 loadChildren: './rating/rating.module#NitroCarriersRatingModule'
-            },
-            {
-                path: 'nitro-rating',
-                loadChildren: './nitro-rating/nitro-rating.module#NitroCarriersNitroRatingModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])
