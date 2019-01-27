@@ -1,0 +1,32 @@
+{
+    "nitroCarriersApp": {
+        "nitroRating": {
+            "home": {
+                "title": "Ratings",
+                "createLabel": "Create a new Rating",
+                "createOrEditLabel": "Create or edit a Rating"
+            },
+            "created": "A new Rating is created with identifier {{ param }}",
+            "updated": "A Rating is updated with identifier {{ param }}",
+            "deleted": "A Rating is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Rating {{ id }}?"
+            },
+            "detail": {
+                "title": "Rating"
+            },
+            "flexibiliy": "Flexibiliy",
+            "contact": "Contact",
+            "price": "Price",
+            "recommendation": "Recommendation",
+            "average": "Average",
+            "person": "Person",
+            "chargeAddressCountry": "Charge country",
+            "chargeAddressPostalCode": "Charge postal code",
+            "dischargeAddressCountry": "Discharge country",
+            "dischargeAddressPostalCode": "Discharge postal code",
+            "cargoType": "Cargo Type",
+            "carrier": "Carrier"
+        }
+    }
+}

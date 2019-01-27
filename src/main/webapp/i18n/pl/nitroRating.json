@@ -1,0 +1,32 @@
+{
+    "nitroCarriersApp": {
+        "nitroRating": {
+            "home": {
+                "title": "Ocena",
+                "createLabel": "Dodaj ocenę",
+                "createOrEditLabel": "Dodaj lub edytuj: Ocena"
+            },
+            "created": "Utworzono nowy obiekt typu Ocena z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono obiekt typu Ocena z identyfikatorem {{ param }}",
+            "deleted": "Usunięto obiekt typu Ocena z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Ocena {{ id }}?"
+            },
+            "detail": {
+                "title": "Ocena"
+            },
+            "flexibiliy": "Elastyczność",
+            "contact": "Kontakt",
+            "price": "Cena",
+            "recommendation": "Polecam",
+            "average": "Średnia ocena",
+            "person": "Osoba kontaktowa",
+            "chargeAddressCountry": "Kraj załadunku",
+            "chargeAddressPostalCode": "Kod pocztowy załadunku",
+            "dischargeAddressCountry": "Kraj rozładunku",
+            "dischargeAddressPostalCode": "Kod pocztowy rozładunku",
+            "cargoType": "Typ ładunku",
+            "carrier": "Przewoźnik"
+        }
+    }
+}
