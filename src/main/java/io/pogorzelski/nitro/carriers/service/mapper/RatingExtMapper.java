@@ -1,19 +1,18 @@
 package io.pogorzelski.nitro.carriers.service.mapper;
 
-import io.pogorzelski.nitro.carriers.domain.Country;
-import io.pogorzelski.nitro.carriers.domain.Rating;
-import io.pogorzelski.nitro.carriers.service.dto.RatingExtDTO;
-
-import io.pogorzelski.nitro.carriers.domain.Address;
-import io.pogorzelski.nitro.carriers.domain.CargoType;
-import io.pogorzelski.nitro.carriers.domain.Carrier;
-import io.pogorzelski.nitro.carriers.domain.Person;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import io.pogorzelski.nitro.carriers.domain.Address;
+import io.pogorzelski.nitro.carriers.domain.CargoType;
+import io.pogorzelski.nitro.carriers.domain.Carrier;
+import io.pogorzelski.nitro.carriers.domain.Country;
+import io.pogorzelski.nitro.carriers.domain.Person;
+import io.pogorzelski.nitro.carriers.domain.Rating;
+import io.pogorzelski.nitro.carriers.service.dto.RatingExtDTO;
 
 @Component
 public class RatingExtMapper {
@@ -102,7 +101,7 @@ public class RatingExtMapper {
             ratingExtDTO.setCargoTypeId(id4);
         }
         ratingExtDTO.setId(rating.getId());
-        ratingExtDTO.setFlexibiliy(rating.getFlexibiliy());
+        ratingExtDTO.setFlexibility(rating.getFlexibility());
         ratingExtDTO.setContact(rating.getContact());
         ratingExtDTO.setPrice(rating.getPrice());
         ratingExtDTO.setRecommendation(rating.getRecommendation());
@@ -130,7 +129,7 @@ public class RatingExtMapper {
         rating.setDischargeAddress(dischargeAddress);
         rating.setCargoType(cargoType);*/
         rating.setId(ratingExtDTO.getId());
-        rating.setFlexibiliy(ratingExtDTO.getFlexibiliy());
+        rating.setFlexibility(ratingExtDTO.getFlexibility());
         rating.setContact(ratingExtDTO.getContact());
         rating.setPrice(ratingExtDTO.getPrice());
         rating.setRecommendation(ratingExtDTO.getRecommendation());

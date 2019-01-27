@@ -45,7 +45,7 @@ public class RatingExtDTO {
 
     @Min(value = 1)
     @Max(value = 6)
-    private Integer flexibiliy;
+    private Integer flexibility;
 
     private Grade recommendation;
 
@@ -165,12 +165,12 @@ public class RatingExtDTO {
         this.price = price;
     }
 
-    public Integer getFlexibiliy() {
-        return flexibiliy;
+    public Integer getFlexibility() {
+        return flexibility;
     }
 
-    public void setFlexibiliy(final Integer flexibiliy) {
-        this.flexibiliy = flexibiliy;
+    public void setFlexibility(final Integer flexibility) {
+        this.flexibility = flexibility;
     }
 
     public Grade getRecommendation() {

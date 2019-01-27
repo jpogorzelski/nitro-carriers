@@ -22,7 +22,7 @@ export interface INitroRating {
     cargoTypeId?: number;
     contact?: number;
     price?: number;
-    flexibiliy?: number;
+    flexibility?: number;
     recommendation?: Grade;
     average?: number;
 }
@@ -43,7 +43,7 @@ export class NitroRating implements INitroRating {
         public cargoTypeId?: number,
         public contact?: number,
         public price?: number,
-        public flexibiliy?: number,
+        public flexibility?: number,
         public recommendation?: Grade,
         public average?: number
     ) {}

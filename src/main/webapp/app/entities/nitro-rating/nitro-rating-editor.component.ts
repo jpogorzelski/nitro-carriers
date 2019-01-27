@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-import { INitroRating } from 'app/shared/model/nitro-rating.model';
+import { Grade, INitroRating } from 'app/shared/model/nitro-rating.model';
 import { NitroRatingService } from './nitro-rating.service';
 import { IPerson } from 'app/shared/model/person.model';
 import { PersonService } from 'app/entities/person';
@@ -19,16 +19,13 @@ import { CountryService } from 'app/entities/country';
     selector: 'jhi-ext-rating-update',
     templateUrl: './nitro-rating-editor.component.html'
 })
-export class NitroRatingEditorComponent implements OnInit {
+export class NitroRatingEditorComponent implements OnInit, DoCheck {
     rating: INitroRating;
     isSaving: boolean;
 
     people: IPerson[];
-
     countries: ICountry[];
-
     cargotypes: ICargoType[];
-
     carriers: ICarrier[];
 
     constructor(
@@ -115,6 +112,35 @@ export class NitroRatingEditorComponent implements OnInit {
                 map((response: HttpResponse<ICarrier[]>) => response.body)
             )
             .subscribe((res: ICarrier[]) => (this.carriers = res), (res: HttpErrorResponse) => this.onError(res.message));
+    }
+
+    ngDoCheck(): void {
+        if (this.rating.contact && this.rating.price && this.rating.flexibility && this.rating.recommendation) {
+            let recommendation: number = 0;
+            switch (this.rating.recommendation) {
+                case Grade.BLACK_LIST:
+                    recommendation = 1;
+                    break;
+                case Grade.DEF_NO:
+                    recommendation = 2;
+                    break;
+                case Grade.NO:
+                    recommendation = 3;
+                    break;
+                case Grade.FINE:
+                    recommendation = 4;
+                    break;
+                case Grade.YES:
+                    recommendation = 5;
+                    break;
+                case Grade.DEF_YES:
+                    recommendation = 6;
+                    break;
+                default:
+                    break;
+            }
+            this.rating.average = (this.rating.contact + this.rating.price + this.rating.flexibility + recommendation) / 4;
+        }
     }
 
     previousState() {
