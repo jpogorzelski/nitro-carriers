@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { filter, map } from 'rxjs/operators';
 import { ICargoType } from 'app/shared/model/cargo-type.model';
 import { CargoTypeService } from './cargo-type.service';
 
@@ -14,7 +14,7 @@ export class CargoTypeUpdateComponent implements OnInit {
     cargoType: ICargoType;
     isSaving: boolean;
 
-    constructor(private cargoTypeService: CargoTypeService, private activatedRoute: ActivatedRoute) {}
+    constructor(protected cargoTypeService: CargoTypeService, protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.isSaving = false;
@@ -36,16 +36,16 @@ export class CargoTypeUpdateComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<ICargoType>>) {
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<ICargoType>>) {
         result.subscribe((res: HttpResponse<ICargoType>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
     }
 }

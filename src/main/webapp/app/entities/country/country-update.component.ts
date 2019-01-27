@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { filter, map } from 'rxjs/operators';
 import { ICountry } from 'app/shared/model/country.model';
 import { CountryService } from './country.service';
 
@@ -14,7 +14,7 @@ export class CountryUpdateComponent implements OnInit {
     country: ICountry;
     isSaving: boolean;
 
-    constructor(private countryService: CountryService, private activatedRoute: ActivatedRoute) {}
+    constructor(protected countryService: CountryService, protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.isSaving = false;
@@ -36,16 +36,16 @@ export class CountryUpdateComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<ICountry>>) {
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<ICountry>>) {
         result.subscribe((res: HttpResponse<ICountry>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
     }
 }

@@ -16,7 +16,7 @@ import { ICargoType } from 'app/shared/model/cargo-type.model';
 export class CargoTypeResolve implements Resolve<ICargoType> {
     constructor(private service: CargoTypeService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CargoType> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ICargoType> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -30,7 +30,7 @@ export class CargoTypeResolve implements Resolve<ICargoType> {
 
 export const cargoTypeRoute: Routes = [
     {
-        path: 'cargo-type',
+        path: '',
         component: CargoTypeComponent,
         data: {
             authorities: ['ROLE_USER'],
@@ -39,7 +39,7 @@ export const cargoTypeRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'cargo-type/:id/view',
+        path: ':id/view',
         component: CargoTypeDetailComponent,
         resolve: {
             cargoType: CargoTypeResolve
@@ -51,7 +51,7 @@ export const cargoTypeRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'cargo-type/new',
+        path: 'new',
         component: CargoTypeUpdateComponent,
         resolve: {
             cargoType: CargoTypeResolve
@@ -63,7 +63,7 @@ export const cargoTypeRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'cargo-type/:id/edit',
+        path: ':id/edit',
         component: CargoTypeUpdateComponent,
         resolve: {
             cargoType: CargoTypeResolve
@@ -78,7 +78,7 @@ export const cargoTypeRoute: Routes = [
 
 export const cargoTypePopupRoute: Routes = [
     {
-        path: 'cargo-type/:id/delete',
+        path: ':id/delete',
         component: CargoTypeDeletePopupComponent,
         resolve: {
             cargoType: CargoTypeResolve

@@ -1,5 +1,6 @@
 package io.pogorzelski.nitro.carriers.domain;
 
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -18,7 +19,7 @@ import java.util.Objects;
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -28,7 +29,8 @@ public class Address implements Serializable {
     @Column(name = "postal_code", nullable = false)
     private String postalCode;
 
-    @OneToOne    @JoinColumn(unique = true)
+    @OneToOne
+    @JoinColumn(unique = true)
     private Country country;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

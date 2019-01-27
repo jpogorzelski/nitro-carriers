@@ -4,7 +4,7 @@
       "packageName": "io.pogorzelski.nitro.carriers",
       "nativeLanguage": "en"
     },
-    "jhipsterVersion": "5.7.0",
+    "jhipsterVersion": "5.8.0",
     "applicationType": "monolith",
     "baseName": "NitroCarriers",
     "packageName": "io.pogorzelski.nitro.carriers",
@@ -38,6 +38,8 @@
       "pl"
     ],
     "herokuAppName": "nitro-carriers",
-    "herokuDeployType": "git"
+    "herokuDeployType": "git",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO"
   }
 }

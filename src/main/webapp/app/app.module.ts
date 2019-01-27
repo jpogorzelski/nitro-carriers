@@ -24,7 +24,6 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
 @NgModule({
     imports: [
         BrowserModule,
-        NitroCarriersAppRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-' }),
         NgJhipsterModule.forRoot({
             // set below to true to make alerts look like toast
@@ -38,7 +37,8 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         NitroCarriersHomeModule,
         NitroCarriersAccountModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
-        NitroCarriersEntityModule
+        NitroCarriersEntityModule,
+        NitroCarriersAppRoutingModule
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
     providers: [

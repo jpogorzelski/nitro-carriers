@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { ICountry } from 'app/shared/model/country.model';
-import { Principal } from 'app/core';
+import { AccountService } from 'app/core';
 import { CountryService } from './country.service';
 
 @Component({
@@ -17,24 +18,30 @@ export class CountryComponent implements OnInit, OnDestroy {
     eventSubscriber: Subscription;
 
     constructor(
-        private countryService: CountryService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal
+        protected countryService: CountryService,
+        protected jhiAlertService: JhiAlertService,
+        protected eventManager: JhiEventManager,
+        protected accountService: AccountService
     ) {}
 
     loadAll() {
-        this.countryService.query().subscribe(
-            (res: HttpResponse<ICountry[]>) => {
-                this.countries = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.countryService
+            .query()
+            .pipe(
+                filter((res: HttpResponse<ICountry[]>) => res.ok),
+                map((res: HttpResponse<ICountry[]>) => res.body)
+            )
+            .subscribe(
+                (res: ICountry[]) => {
+                    this.countries = res;
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then(account => {
+        this.accountService.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInCountries();
@@ -52,7 +59,7 @@ export class CountryComponent implements OnInit, OnDestroy {
         this.eventSubscriber = this.eventManager.subscribe('countryListModification', response => this.loadAll());
     }
 
-    private onError(errorMessage: string) {
+    protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 }

@@ -42,7 +42,6 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public RatingDTO save(RatingDTO ratingDTO) {
         log.debug("Request to save Rating : {}", ratingDTO);
-
         Rating rating = ratingMapper.toEntity(ratingDTO);
         rating = ratingRepository.save(rating);
         return ratingMapper.toDto(rating);
@@ -84,7 +83,6 @@ public class RatingServiceImpl implements RatingService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Rating : {}", id);
-        ratingRepository.deleteById(id);
+        log.debug("Request to delete Rating : {}", id);        ratingRepository.deleteById(id);
     }
 }

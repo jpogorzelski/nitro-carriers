@@ -1,23 +1,35 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
-import { NitroCarriersCountryModule } from './country/country.module';
-import { NitroCarriersAddressModule } from './address/address.module';
-import { NitroCarriersCarrierModule } from './carrier/carrier.module';
-import { NitroCarriersPersonModule } from './person/person.module';
-import { NitroCarriersCargoTypeModule } from './cargo-type/cargo-type.module';
-import { NitroCarriersRatingModule } from './rating/rating.module';
-/* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-    // prettier-ignore
     imports: [
-        NitroCarriersCountryModule,
-        NitroCarriersAddressModule,
-        NitroCarriersCarrierModule,
-        NitroCarriersPersonModule,
-        NitroCarriersCargoTypeModule,
-        NitroCarriersRatingModule,
-        /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
+        RouterModule.forChild([
+            {
+                path: 'country',
+                loadChildren: './country/country.module#NitroCarriersCountryModule'
+            },
+            {
+                path: 'address',
+                loadChildren: './address/address.module#NitroCarriersAddressModule'
+            },
+            {
+                path: 'carrier',
+                loadChildren: './carrier/carrier.module#NitroCarriersCarrierModule'
+            },
+            {
+                path: 'person',
+                loadChildren: './person/person.module#NitroCarriersPersonModule'
+            },
+            {
+                path: 'cargo-type',
+                loadChildren: './cargo-type/cargo-type.module#NitroCarriersCargoTypeModule'
+            },
+            {
+                path: 'rating',
+                loadChildren: './rating/rating.module#NitroCarriersRatingModule'
+            }
+            /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
+        ])
     ],
     declarations: [],
     entryComponents: [],

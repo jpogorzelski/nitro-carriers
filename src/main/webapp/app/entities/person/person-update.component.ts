@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-
 import { IPerson } from 'app/shared/model/person.model';
 import { PersonService } from './person.service';
 import { ICarrier } from 'app/shared/model/carrier.model';
@@ -20,10 +20,10 @@ export class PersonUpdateComponent implements OnInit {
     carriers: ICarrier[];
 
     constructor(
-        private jhiAlertService: JhiAlertService,
-        private personService: PersonService,
-        private carrierService: CarrierService,
-        private activatedRoute: ActivatedRoute
+        protected jhiAlertService: JhiAlertService,
+        protected personService: PersonService,
+        protected carrierService: CarrierService,
+        protected activatedRoute: ActivatedRoute
     ) {}
 
     ngOnInit() {
@@ -31,12 +31,13 @@ export class PersonUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ person }) => {
             this.person = person;
         });
-        this.carrierService.query().subscribe(
-            (res: HttpResponse<ICarrier[]>) => {
-                this.carriers = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.carrierService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<ICarrier[]>) => mayBeOk.ok),
+                map((response: HttpResponse<ICarrier[]>) => response.body)
+            )
+            .subscribe((res: ICarrier[]) => (this.carriers = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {
@@ -52,20 +53,20 @@ export class PersonUpdateComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IPerson>>) {
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IPerson>>) {
         result.subscribe((res: HttpResponse<IPerson>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess() {
+    protected onSaveSuccess() {
         this.isSaving = false;
         this.previousState();
     }
 
-    private onSaveError() {
+    protected onSaveError() {
         this.isSaving = false;
     }
 
-    private onError(errorMessage: string) {
+    protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 

@@ -16,7 +16,7 @@ import { IRating } from 'app/shared/model/rating.model';
 export class RatingResolve implements Resolve<IRating> {
     constructor(private service: RatingService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Rating> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRating> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -30,7 +30,7 @@ export class RatingResolve implements Resolve<IRating> {
 
 export const ratingRoute: Routes = [
     {
-        path: 'rating',
+        path: '',
         component: RatingComponent,
         data: {
             authorities: ['ROLE_USER'],
@@ -39,7 +39,7 @@ export const ratingRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'rating/:id/view',
+        path: ':id/view',
         component: RatingDetailComponent,
         resolve: {
             rating: RatingResolve
@@ -51,7 +51,7 @@ export const ratingRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'rating/new',
+        path: 'new',
         component: RatingUpdateComponent,
         resolve: {
             rating: RatingResolve
@@ -63,7 +63,7 @@ export const ratingRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'rating/:id/edit',
+        path: ':id/edit',
         component: RatingUpdateComponent,
         resolve: {
             rating: RatingResolve
@@ -78,7 +78,7 @@ export const ratingRoute: Routes = [
 
 export const ratingPopupRoute: Routes = [
     {
-        path: 'rating/:id/delete',
+        path: ':id/delete',
         component: RatingDeletePopupComponent,
         resolve: {
             rating: RatingResolve

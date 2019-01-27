@@ -10,7 +10,7 @@ import { ICargoType } from 'app/shared/model/cargo-type.model';
 export class CargoTypeDetailComponent implements OnInit {
     cargoType: ICargoType;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ cargoType }) => {

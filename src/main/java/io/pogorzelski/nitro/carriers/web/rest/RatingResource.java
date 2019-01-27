@@ -1,6 +1,4 @@
 package io.pogorzelski.nitro.carriers.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import io.pogorzelski.nitro.carriers.service.RatingService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
@@ -48,7 +46,6 @@ public class RatingResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/ratings")
-    @Timed
     public ResponseEntity<RatingDTO> createRating(@Valid @RequestBody RatingDTO ratingDTO) throws URISyntaxException {
         log.debug("REST request to save Rating : {}", ratingDTO);
         if (ratingDTO.getId() != null) {
@@ -70,7 +67,6 @@ public class RatingResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/ratings")
-    @Timed
     public ResponseEntity<RatingDTO> updateRating(@Valid @RequestBody RatingDTO ratingDTO) throws URISyntaxException {
         log.debug("REST request to update Rating : {}", ratingDTO);
         if (ratingDTO.getId() == null) {
@@ -89,7 +85,6 @@ public class RatingResource {
      * @return the ResponseEntity with status 200 (OK) and the list of ratings in body
      */
     @GetMapping("/ratings")
-    @Timed
     public ResponseEntity<List<RatingDTO>> getAllRatings(Pageable pageable) {
         log.debug("REST request to get a page of Ratings");
         Page<RatingDTO> page = ratingService.findAll(pageable);
@@ -104,7 +99,6 @@ public class RatingResource {
      * @return the ResponseEntity with status 200 (OK) and with body the ratingDTO, or with status 404 (Not Found)
      */
     @GetMapping("/ratings/{id}")
-    @Timed
     public ResponseEntity<RatingDTO> getRating(@PathVariable Long id) {
         log.debug("REST request to get Rating : {}", id);
         Optional<RatingDTO> ratingDTO = ratingService.findOne(id);
@@ -118,7 +112,6 @@ public class RatingResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/ratings/{id}")
-    @Timed
     public ResponseEntity<Void> deleteRating(@PathVariable Long id) {
         log.debug("REST request to delete Rating : {}", id);
         ratingService.delete(id);

@@ -43,7 +43,6 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDTO save(AddressDTO addressDTO) {
         log.debug("Request to save Address : {}", addressDTO);
-
         Address address = addressMapper.toEntity(addressDTO);
         address = addressRepository.save(address);
         return addressMapper.toDto(address);
@@ -85,7 +84,6 @@ public class AddressServiceImpl implements AddressService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Address : {}", id);
-        addressRepository.deleteById(id);
+        log.debug("Request to delete Address : {}", id);        addressRepository.deleteById(id);
     }
 }

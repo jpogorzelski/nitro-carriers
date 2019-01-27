@@ -34,9 +34,6 @@ public class PersonCriteria implements Serializable {
 
     private LongFilter carrierId;
 
-    public PersonCriteria() {
-    }
-
     public LongFilter getId() {
         return id;
     }

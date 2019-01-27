@@ -16,7 +16,7 @@ import { ICarrier } from 'app/shared/model/carrier.model';
 export class CarrierResolve implements Resolve<ICarrier> {
     constructor(private service: CarrierService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Carrier> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ICarrier> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -30,7 +30,7 @@ export class CarrierResolve implements Resolve<ICarrier> {
 
 export const carrierRoute: Routes = [
     {
-        path: 'carrier',
+        path: '',
         component: CarrierComponent,
         data: {
             authorities: ['ROLE_USER'],
@@ -39,7 +39,7 @@ export const carrierRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'carrier/:id/view',
+        path: ':id/view',
         component: CarrierDetailComponent,
         resolve: {
             carrier: CarrierResolve
@@ -51,7 +51,7 @@ export const carrierRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'carrier/new',
+        path: 'new',
         component: CarrierUpdateComponent,
         resolve: {
             carrier: CarrierResolve
@@ -63,7 +63,7 @@ export const carrierRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'carrier/:id/edit',
+        path: ':id/edit',
         component: CarrierUpdateComponent,
         resolve: {
             carrier: CarrierResolve
@@ -78,7 +78,7 @@ export const carrierRoute: Routes = [
 
 export const carrierPopupRoute: Routes = [
     {
-        path: 'carrier/:id/delete',
+        path: ':id/delete',
         component: CarrierDeletePopupComponent,
         resolve: {
             carrier: CarrierResolve

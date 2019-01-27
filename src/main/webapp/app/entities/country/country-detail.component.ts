@@ -10,7 +10,7 @@ import { ICountry } from 'app/shared/model/country.model';
 export class CountryDetailComponent implements OnInit {
     country: ICountry;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+    constructor(protected activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ country }) => {

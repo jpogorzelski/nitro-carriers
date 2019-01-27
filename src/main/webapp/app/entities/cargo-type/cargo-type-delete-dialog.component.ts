@@ -14,7 +14,11 @@ import { CargoTypeService } from './cargo-type.service';
 export class CargoTypeDeleteDialogComponent {
     cargoType: ICargoType;
 
-    constructor(private cargoTypeService: CargoTypeService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
+    constructor(
+        protected cargoTypeService: CargoTypeService,
+        public activeModal: NgbActiveModal,
+        protected eventManager: JhiEventManager
+    ) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
@@ -36,9 +40,9 @@ export class CargoTypeDeleteDialogComponent {
     template: ''
 })
 export class CargoTypeDeletePopupComponent implements OnInit, OnDestroy {
-    private ngbModalRef: NgbModalRef;
+    protected ngbModalRef: NgbModalRef;
 
-    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
+    constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ cargoType }) => {
@@ -47,11 +51,11 @@ export class CargoTypeDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.cargoType = cargoType;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/cargo-type', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/cargo-type', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );

@@ -43,7 +43,6 @@ public class CargoTypeServiceImpl implements CargoTypeService {
     @Override
     public CargoTypeDTO save(CargoTypeDTO cargoTypeDTO) {
         log.debug("Request to save CargoType : {}", cargoTypeDTO);
-
         CargoType cargoType = cargoTypeMapper.toEntity(cargoTypeDTO);
         cargoType = cargoTypeRepository.save(cargoType);
         return cargoTypeMapper.toDto(cargoType);
@@ -85,7 +84,6 @@ public class CargoTypeServiceImpl implements CargoTypeService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete CargoType : {}", id);
-        cargoTypeRepository.deleteById(id);
+        log.debug("Request to delete CargoType : {}", id);        cargoTypeRepository.deleteById(id);
     }
 }

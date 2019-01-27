@@ -17,7 +17,7 @@ import { IPerson } from 'app/shared/model/person.model';
 export class PersonResolve implements Resolve<IPerson> {
     constructor(private service: PersonService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Person> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IPerson> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
@@ -31,7 +31,7 @@ export class PersonResolve implements Resolve<IPerson> {
 
 export const personRoute: Routes = [
     {
-        path: 'person',
+        path: '',
         component: PersonComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams
@@ -44,7 +44,7 @@ export const personRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'person/:id/view',
+        path: ':id/view',
         component: PersonDetailComponent,
         resolve: {
             person: PersonResolve
@@ -56,7 +56,7 @@ export const personRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'person/new',
+        path: 'new',
         component: PersonUpdateComponent,
         resolve: {
             person: PersonResolve
@@ -68,7 +68,7 @@ export const personRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'person/:id/edit',
+        path: ':id/edit',
         component: PersonUpdateComponent,
         resolve: {
             person: PersonResolve
@@ -83,7 +83,7 @@ export const personRoute: Routes = [
 
 export const personPopupRoute: Routes = [
     {
-        path: 'person/:id/delete',
+        path: ':id/delete',
         component: PersonDeletePopupComponent,
         resolve: {
             person: PersonResolve

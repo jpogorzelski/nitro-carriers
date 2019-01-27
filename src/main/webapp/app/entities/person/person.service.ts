@@ -13,7 +13,7 @@ type EntityArrayResponseType = HttpResponse<IPerson[]>;
 export class PersonService {
     public resourceUrl = SERVER_API_URL + 'api/people';
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     create(person: IPerson): Observable<EntityResponseType> {
         return this.http.post<IPerson>(this.resourceUrl, person, { observe: 'response' });

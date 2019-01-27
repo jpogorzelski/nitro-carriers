@@ -1,6 +1,4 @@
 package io.pogorzelski.nitro.carriers.web.rest;
-
-import com.codahale.metrics.annotation.Timed;
 import io.pogorzelski.nitro.carriers.service.CargoTypeService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
@@ -43,7 +41,6 @@ public class CargoTypeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/cargo-types")
-    @Timed
     public ResponseEntity<CargoTypeDTO> createCargoType(@Valid @RequestBody CargoTypeDTO cargoTypeDTO) throws URISyntaxException {
         log.debug("REST request to save CargoType : {}", cargoTypeDTO);
         if (cargoTypeDTO.getId() != null) {
@@ -65,7 +62,6 @@ public class CargoTypeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/cargo-types")
-    @Timed
     public ResponseEntity<CargoTypeDTO> updateCargoType(@Valid @RequestBody CargoTypeDTO cargoTypeDTO) throws URISyntaxException {
         log.debug("REST request to update CargoType : {}", cargoTypeDTO);
         if (cargoTypeDTO.getId() == null) {
@@ -83,7 +79,6 @@ public class CargoTypeResource {
      * @return the ResponseEntity with status 200 (OK) and the list of cargoTypes in body
      */
     @GetMapping("/cargo-types")
-    @Timed
     public List<CargoTypeDTO> getAllCargoTypes() {
         log.debug("REST request to get all CargoTypes");
         return cargoTypeService.findAll();
@@ -96,7 +91,6 @@ public class CargoTypeResource {
      * @return the ResponseEntity with status 200 (OK) and with body the cargoTypeDTO, or with status 404 (Not Found)
      */
     @GetMapping("/cargo-types/{id}")
-    @Timed
     public ResponseEntity<CargoTypeDTO> getCargoType(@PathVariable Long id) {
         log.debug("REST request to get CargoType : {}", id);
         Optional<CargoTypeDTO> cargoTypeDTO = cargoTypeService.findOne(id);
@@ -110,7 +104,6 @@ public class CargoTypeResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/cargo-types/{id}")
-    @Timed
     public ResponseEntity<Void> deleteCargoType(@PathVariable Long id) {
         log.debug("REST request to delete CargoType : {}", id);
         cargoTypeService.delete(id);

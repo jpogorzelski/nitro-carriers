@@ -14,7 +14,7 @@ import { CountryService } from './country.service';
 export class CountryDeleteDialogComponent {
     country: ICountry;
 
-    constructor(private countryService: CountryService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
+    constructor(protected countryService: CountryService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
@@ -36,9 +36,9 @@ export class CountryDeleteDialogComponent {
     template: ''
 })
 export class CountryDeletePopupComponent implements OnInit, OnDestroy {
-    private ngbModalRef: NgbModalRef;
+    protected ngbModalRef: NgbModalRef;
 
-    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
+    constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ country }) => {
@@ -47,11 +47,11 @@ export class CountryDeletePopupComponent implements OnInit, OnDestroy {
                 this.ngbModalRef.componentInstance.country = country;
                 this.ngbModalRef.result.then(
                     result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/country', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     },
                     reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.router.navigate(['/country', { outlets: { popup: null } }]);
                         this.ngbModalRef = null;
                     }
                 );
