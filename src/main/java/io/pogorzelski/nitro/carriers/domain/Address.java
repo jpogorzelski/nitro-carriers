@@ -30,7 +30,6 @@ public class Address implements Serializable {
     private String postalCode;
 
     @OneToOne
-    @JoinColumn(unique = true)
     private Country country;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

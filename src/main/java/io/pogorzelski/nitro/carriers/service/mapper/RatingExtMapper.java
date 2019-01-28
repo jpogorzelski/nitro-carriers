@@ -3,6 +3,7 @@ package io.pogorzelski.nitro.carriers.service.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.pogorzelski.nitro.carriers.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,9 @@ public class RatingExtMapper {
     private CargoTypeMapper cargoTypeMapper;
     @Autowired
     private CarrierMapper carrierMapper;
+
+    @Autowired
+    private CountryRepository countryRepository;
 
     public List<Rating> toEntity(List<RatingExtDTO> dtoList) {
         if (dtoList == null) {
@@ -117,17 +121,34 @@ public class RatingExtMapper {
 
         Rating rating = new Rating();
 
-       /* final CargoType cargoType = cargoTypeMapper.fromId(ratingExtDTO.getCargoTypeId());
-        final Address chargeAddress = addressMapper.fromId(ratingExtDTO.getChargeAddressId());
-        final Carrier carrier = carrierMapper.fromId(ratingExtDTO.getCarrierId());
-        final Person person = personMapper.fromId(ratingExtDTO.getPersonId());
-        final Address dischargeAddress = addressMapper.fromId(ratingExtDTO.getDischargeAddressId());
+
+        Carrier carrier = new Carrier();
+        carrier.setName(ratingExtDTO.getCarrierName());
+        carrier.setTransId(ratingExtDTO.getCarrierTransId());
+
+        Person person = new Person();
+        person.setCarrier(carrier);
+        person.setCompanyId(ratingExtDTO.getCarrierTransId());
+        person.setFirstName(ratingExtDTO.getPersonFirstName());
+        person.setLastName(ratingExtDTO.getPersonLastName());
+
+        Country chargeCountry = countryRepository.findByCountryName(ratingExtDTO.getDischargeAddressCountry());
+//        chargeCountry.setCountryName(ratingExtDTO.getChargeAddressCountry());
+        Address chargeAddress = new Address();
+        chargeAddress.setCountry(chargeCountry);
+        chargeAddress.setPostalCode(ratingExtDTO.getChargeAddressPostalCode());
+
+        Country dischargeCountry = countryRepository.findByCountryName(ratingExtDTO.getDischargeAddressCountry());
+//        dischargeCountry.setCountryName(ratingExtDTO.getDischargeAddressCountry());
+        Address dischargeAddress = new Address();
+        dischargeAddress.setCountry(dischargeCountry);
+        dischargeAddress.setPostalCode(ratingExtDTO.getDischargeAddressPostalCode());
 
         rating.setCarrier(carrier);
         rating.setPerson(person);
         rating.setChargeAddress(chargeAddress);
         rating.setDischargeAddress(dischargeAddress);
-        rating.setCargoType(cargoType);*/
+
         rating.setId(ratingExtDTO.getId());
         rating.setFlexibility(ratingExtDTO.getFlexibility());
         rating.setContact(ratingExtDTO.getContact());
@@ -206,11 +227,11 @@ public class RatingExtMapper {
         if (person == null) {
             return null;
         }
-        String id = person.getCompanyId();
+        Integer id = person.getCompanyId();
         if (id == null) {
             return null;
         }
-        return Integer.valueOf(id);
+        return id;
     }
 
     private String ratingPersonFirstName(Rating rating) {

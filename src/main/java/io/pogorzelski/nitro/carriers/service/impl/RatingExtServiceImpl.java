@@ -1,7 +1,6 @@
 package io.pogorzelski.nitro.carriers.service.impl;
 
-import io.pogorzelski.nitro.carriers.domain.Carrier;
-import io.pogorzelski.nitro.carriers.domain.Person;
+import io.pogorzelski.nitro.carriers.domain.*;
 import io.pogorzelski.nitro.carriers.repository.AddressRepository;
 import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
 import io.pogorzelski.nitro.carriers.repository.PersonRepository;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.pogorzelski.nitro.carriers.domain.Rating;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import io.pogorzelski.nitro.carriers.service.dto.RatingExtDTO;
@@ -52,7 +50,7 @@ public class RatingExtServiceImpl implements RatingExtService {
     @Override
     public RatingExtDTO save(RatingExtDTO ratingExtDTO) {
         log.debug("Request to save Rating : {}", ratingExtDTO);
-
+/*
         Carrier carrier = new Carrier();
         carrier.setName(ratingExtDTO.getCarrierName());
         carrier.setTransId(ratingExtDTO.getCarrierTransId());
@@ -60,10 +58,26 @@ public class RatingExtServiceImpl implements RatingExtService {
         Person person = new Person();
         person.setCarrier(carrier);
         person.setCompanyId(ratingExtDTO.getCarrierTransId());
+        person.setFirstName(ratingExtDTO.getPersonFirstName());
+        person.setLastName(ratingExtDTO.getPersonLastName());
 
+        Country chargeCountry = new Country();
+        chargeCountry.setCountryName(ratingExtDTO.getChargeAddressCountry());
+        Address chargeAddress = new Address();
+        chargeAddress.setCountry(chargeCountry);
+        chargeAddress.setPostalCode(ratingExtDTO.getChargeAddressPostalCode());
+
+        Country dischargeCountry = new Country();
+        dischargeCountry.setCountryName(ratingExtDTO.getDischargeAddressCountry());
+        Address dischargeAddress = new Address();
+        dischargeAddress.setCountry(dischargeCountry);
+        dischargeAddress.setPostalCode(ratingExtDTO.getDischargeAddressPostalCode());*/
+        /*
         carrierRepository.save(carrier);
         personRepository.save(person);
-
+        addressRepository.save(chargeAddress);
+        addressRepository.save(dischargeAddress);
+*/
         Rating rating = ratingExtMapper.toEntity(ratingExtDTO);
         rating = ratingRepository.save(rating);
         return ratingExtMapper.toDto(rating);

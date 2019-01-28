@@ -22,7 +22,7 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 public class Rating implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -54,29 +54,29 @@ public class Rating implements Serializable {
     @Column(name = "average")
     private Double average;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Carrier carrier;
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
+    @OneToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @NotNull
+    @JoinColumn
     private Person person;
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
+    @OneToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @NotNull
+    @JoinColumn
     private Address chargeAddress;
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
+    @OneToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @NotNull
+    @JoinColumn
     private Address dischargeAddress;
 
-    @OneToOne(optional = false)    @NotNull
-
-    @JoinColumn(unique = true)
+    @OneToOne(optional = false)
+    @NotNull
+    @JoinColumn
     private CargoType cargoType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
