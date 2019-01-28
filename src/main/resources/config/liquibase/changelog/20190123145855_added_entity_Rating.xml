@@ -21,15 +21,15 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="flexibility" type="integer">
-                <constraints nullable="false" />
-            </column>
-
             <column name="contact" type="integer">
                 <constraints nullable="false" />
             </column>
 
             <column name="price" type="integer">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="flexibility" type="integer">
                 <constraints nullable="false" />
             </column>
 
@@ -40,6 +40,10 @@
             <column name="average" type="double">
                 <constraints nullable="true" />
             </column>
+
+            <column name="carrier_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <column name="person_id" type="bigint">
                 <constraints unique="true" nullable="false" uniqueConstraintName="ux_rating_person_id" />
             </column>            <column name="charge_address_id" type="bigint">
@@ -49,10 +53,6 @@
             </column>            <column name="cargo_type_id" type="bigint">
                 <constraints unique="true" nullable="false" uniqueConstraintName="ux_rating_cargo_type_id" />
             </column>
-            <column name="carrier_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
-
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

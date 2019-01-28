@@ -31,12 +31,6 @@ public class Rating implements Serializable {
     @NotNull
     @Min(value = 1)
     @Max(value = 6)
-    @Column(name = "flexibility", nullable = false)
-    private Integer flexibility;
-
-    @NotNull
-    @Min(value = 1)
-    @Max(value = 6)
     @Column(name = "contact", nullable = false)
     private Integer contact;
 
@@ -47,12 +41,23 @@ public class Rating implements Serializable {
     private Integer price;
 
     @NotNull
+    @Min(value = 1)
+    @Max(value = 6)
+    @Column(name = "flexibility", nullable = false)
+    private Integer flexibility;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "recommendation", nullable = false)
     private Grade recommendation;
 
     @Column(name = "average")
     private Double average;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("ratings")
+    private Carrier carrier;
 
     @OneToOne(optional = false)    @NotNull
 
@@ -74,11 +79,6 @@ public class Rating implements Serializable {
     @JoinColumn(unique = true)
     private CargoType cargoType;
 
-    @ManyToOne(optional = false)
-    @NotNull
-    @JsonIgnoreProperties("ratings")
-    private Carrier carrier;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -86,19 +86,6 @@ public class Rating implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getFlexibility() {
-        return flexibility;
-    }
-
-    public Rating flexibility(Integer flexibility) {
-        this.flexibility = flexibility;
-        return this;
-    }
-
-    public void setFlexibility(Integer flexibility) {
-        this.flexibility = flexibility;
     }
 
     public Integer getContact() {
@@ -127,6 +114,19 @@ public class Rating implements Serializable {
         this.price = price;
     }
 
+    public Integer getFlexibility() {
+        return flexibility;
+    }
+
+    public Rating flexibility(Integer flexibility) {
+        this.flexibility = flexibility;
+        return this;
+    }
+
+    public void setFlexibility(Integer flexibility) {
+        this.flexibility = flexibility;
+    }
+
     public Grade getRecommendation() {
         return recommendation;
     }
@@ -151,6 +151,19 @@ public class Rating implements Serializable {
 
     public void setAverage(Double average) {
         this.average = average;
+    }
+
+    public Carrier getCarrier() {
+        return carrier;
+    }
+
+    public Rating carrier(Carrier carrier) {
+        this.carrier = carrier;
+        return this;
+    }
+
+    public void setCarrier(Carrier carrier) {
+        this.carrier = carrier;
     }
 
     public Person getPerson() {
@@ -204,19 +217,6 @@ public class Rating implements Serializable {
     public void setCargoType(CargoType cargoType) {
         this.cargoType = cargoType;
     }
-
-    public Carrier getCarrier() {
-        return carrier;
-    }
-
-    public Rating carrier(Carrier carrier) {
-        this.carrier = carrier;
-        return this;
-    }
-
-    public void setCarrier(Carrier carrier) {
-        this.carrier = carrier;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -243,9 +243,9 @@ public class Rating implements Serializable {
     public String toString() {
         return "Rating{" +
             "id=" + getId() +
-            ", flexibility=" + getFlexibility() +
             ", contact=" + getContact() +
             ", price=" + getPrice() +
+            ", flexibility=" + getFlexibility() +
             ", recommendation='" + getRecommendation() + "'" +
             ", average=" + getAverage() +
             "}";

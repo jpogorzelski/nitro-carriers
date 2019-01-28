@@ -2,17 +2,6 @@
     "name": "Rating",
     "fields": [
         {
-            "fieldName": "flexibility",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "min",
-                "max",
-                "required"
-            ],
-            "fieldValidateRulesMin": 1,
-            "fieldValidateRulesMax": 6
-        },
-        {
             "fieldName": "contact",
             "fieldType": "Integer",
             "fieldValidateRules": [
@@ -25,6 +14,17 @@
         },
         {
             "fieldName": "price",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max",
+                "required"
+            ],
+            "fieldValidateRulesMin": 1,
+            "fieldValidateRulesMax": 6
+        },
+        {
+            "fieldName": "flexibility",
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "min",
@@ -48,6 +48,13 @@
         }
     ],
     "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "carrier",
+            "otherEntityName": "carrier",
+            "otherEntityField": "name"
+        },
         {
             "relationshipType": "one-to-one",
             "relationshipValidateRules": "required",
@@ -83,13 +90,6 @@
             "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "rating"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipValidateRules": "required",
-            "relationshipName": "carrier",
-            "otherEntityName": "carrier",
-            "otherEntityField": "name"
         }
     ],
     "changelogDate": "20190123145855",

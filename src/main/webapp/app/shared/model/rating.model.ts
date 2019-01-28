@@ -9,11 +9,13 @@ export const enum Grade {
 
 export interface IRating {
     id?: number;
-    flexibility?: number;
     contact?: number;
     price?: number;
+    flexibility?: number;
     recommendation?: Grade;
     average?: number;
+    carrierName?: string;
+    carrierId?: number;
     personFirstName?: string;
     personId?: number;
     chargeAddressPostalCode?: string;
@@ -22,18 +24,18 @@ export interface IRating {
     dischargeAddressId?: number;
     cargoTypeName?: string;
     cargoTypeId?: number;
-    carrierName?: string;
-    carrierId?: number;
 }
 
 export class Rating implements IRating {
     constructor(
         public id?: number,
-        public flexibility?: number,
         public contact?: number,
         public price?: number,
+        public flexibility?: number,
         public recommendation?: Grade,
         public average?: number,
+        public carrierName?: string,
+        public carrierId?: number,
         public personFirstName?: string,
         public personId?: number,
         public chargeAddressPostalCode?: string,
@@ -41,8 +43,6 @@ export class Rating implements IRating {
         public dischargeAddressPostalCode?: string,
         public dischargeAddressId?: number,
         public cargoTypeName?: string,
-        public cargoTypeId?: number,
-        public carrierName?: string,
-        public carrierId?: number
+        public cargoTypeId?: number
     ) {}
 }

@@ -15,27 +15,32 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="flexibility"><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="contact"><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="price"><span jhiTranslate="nitroCarriersApp.rating.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="flexibility"><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="recommendation"><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="average"><span jhiTranslate="nitroCarriersApp.rating.average">Average</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="carrierName"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="personFirstName"><span jhiTranslate="nitroCarriersApp.rating.person">Person</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="chargeAddressPostalCode"><span jhiTranslate="nitroCarriersApp.rating.chargeAddress">Charge Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="dischargeAddressPostalCode"><span jhiTranslate="nitroCarriersApp.rating.dischargeAddress">Discharge Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="cargoTypeName"><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="carrierName"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let rating of ratings ;trackBy: trackId">
                 <td><a [routerLink]="['/rating', rating.id, 'view' ]">{{rating.id}}</a></td>
-                <td>{{rating.flexibility}}</td>
                 <td>{{rating.contact}}</td>
                 <td>{{rating.price}}</td>
+                <td>{{rating.flexibility}}</td>
                 <td jhiTranslate="{{'nitroCarriersApp.Grade.' + rating.recommendation}}">{{rating.recommendation}}</td>
                 <td>{{rating.average}}</td>
+                <td>
+                    <div *ngIf="rating.carrierId">
+                        <a [routerLink]="['../carrier', rating.carrierId , 'view' ]" >{{rating.carrierName}}</a>
+                    </div>
+                </td>
                 <td>
                     <div *ngIf="rating.personId">
                         <a [routerLink]="['../person', rating.personId , 'view' ]" >{{rating.personFirstName}}</a>
@@ -54,11 +59,6 @@
                 <td>
                     <div *ngIf="rating.cargoTypeId">
                         <a [routerLink]="['../cargo-type', rating.cargoTypeId , 'view' ]" >{{rating.cargoTypeName}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="rating.carrierId">
-                        <a [routerLink]="['../carrier', rating.carrierId , 'view' ]" >{{rating.carrierName}}</a>
                     </div>
                 </td>
                 <td class="text-right">

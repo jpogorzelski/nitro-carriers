@@ -15,11 +15,6 @@ public class RatingDTO implements Serializable {
     @NotNull
     @Min(value = 1)
     @Max(value = 6)
-    private Integer flexibility;
-
-    @NotNull
-    @Min(value = 1)
-    @Max(value = 6)
     private Integer contact;
 
     @NotNull
@@ -28,9 +23,18 @@ public class RatingDTO implements Serializable {
     private Integer price;
 
     @NotNull
+    @Min(value = 1)
+    @Max(value = 6)
+    private Integer flexibility;
+
+    @NotNull
     private Grade recommendation;
 
     private Double average;
+
+    private Long carrierId;
+
+    private String carrierName;
 
     private Long personId;
 
@@ -48,24 +52,12 @@ public class RatingDTO implements Serializable {
 
     private String cargoTypeName;
 
-    private Long carrierId;
-
-    private String carrierName;
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getFlexibility() {
-        return flexibility;
-    }
-
-    public void setFlexibility(Integer flexibility) {
-        this.flexibility = flexibility;
     }
 
     public Integer getContact() {
@@ -84,6 +76,14 @@ public class RatingDTO implements Serializable {
         this.price = price;
     }
 
+    public Integer getFlexibility() {
+        return flexibility;
+    }
+
+    public void setFlexibility(Integer flexibility) {
+        this.flexibility = flexibility;
+    }
+
     public Grade getRecommendation() {
         return recommendation;
     }
@@ -98,6 +98,22 @@ public class RatingDTO implements Serializable {
 
     public void setAverage(Double average) {
         this.average = average;
+    }
+
+    public Long getCarrierId() {
+        return carrierId;
+    }
+
+    public void setCarrierId(Long carrierId) {
+        this.carrierId = carrierId;
+    }
+
+    public String getCarrierName() {
+        return carrierName;
+    }
+
+    public void setCarrierName(String carrierName) {
+        this.carrierName = carrierName;
     }
 
     public Long getPersonId() {
@@ -164,22 +180,6 @@ public class RatingDTO implements Serializable {
         this.cargoTypeName = cargoTypeName;
     }
 
-    public Long getCarrierId() {
-        return carrierId;
-    }
-
-    public void setCarrierId(Long carrierId) {
-        this.carrierId = carrierId;
-    }
-
-    public String getCarrierName() {
-        return carrierName;
-    }
-
-    public void setCarrierName(String carrierName) {
-        this.carrierName = carrierName;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -205,11 +205,13 @@ public class RatingDTO implements Serializable {
     public String toString() {
         return "RatingDTO{" +
             "id=" + getId() +
-            ", flexibility=" + getFlexibility() +
             ", contact=" + getContact() +
             ", price=" + getPrice() +
+            ", flexibility=" + getFlexibility() +
             ", recommendation='" + getRecommendation() + "'" +
             ", average=" + getAverage() +
+            ", carrier=" + getCarrierId() +
+            ", carrier='" + getCarrierName() + "'" +
             ", person=" + getPersonId() +
             ", person='" + getPersonFirstName() + "'" +
             ", chargeAddress=" + getChargeAddressId() +
@@ -218,8 +220,6 @@ public class RatingDTO implements Serializable {
             ", dischargeAddress='" + getDischargeAddressPostalCode() + "'" +
             ", cargoType=" + getCargoTypeId() +
             ", cargoType='" + getCargoTypeName() + "'" +
-            ", carrier=" + getCarrierId() +
-            ", carrier='" + getCarrierName() + "'" +
             "}";
     }
 }

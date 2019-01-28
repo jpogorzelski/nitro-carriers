@@ -5,10 +5,6 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span></dt>
-                <dd>
-                    <span>{{rating.flexibility}}</span>
-                </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span></dt>
                 <dd>
                     <span>{{rating.contact}}</span>
@@ -17,6 +13,10 @@
                 <dd>
                     <span>{{rating.price}}</span>
                 </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span></dt>
+                <dd>
+                    <span>{{rating.flexibility}}</span>
+                </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span></dt>
                 <dd>
                     <span jhiTranslate="{{'nitroCarriersApp.Grade.' + rating.recommendation}}">{{rating.recommendation}}</span>
@@ -24,6 +24,12 @@
                 <dt><span jhiTranslate="nitroCarriersApp.rating.average">Average</span></dt>
                 <dd>
                     <span>{{rating.average}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span></dt>
+                <dd>
+                    <div *ngIf="rating.carrierId">
+                        <a [routerLink]="['/carrier', rating.carrierId, 'view']">{{rating.carrierName}}</a>
+                    </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.person">Person</span></dt>
                 <dd>
@@ -47,12 +53,6 @@
                 <dd>
                     <div *ngIf="rating.cargoTypeId">
                         <a [routerLink]="['/cargo-type', rating.cargoTypeId, 'view']">{{rating.cargoTypeName}}</a>
-                    </div>
-                </dd>
-                <dt><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span></dt>
-                <dd>
-                    <div *ngIf="rating.carrierId">
-                        <a [routerLink]="['/carrier', rating.carrierId, 'view']">{{rating.carrierName}}</a>
                     </div>
                 </dd>
             </dl>

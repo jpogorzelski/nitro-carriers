@@ -3,10 +3,10 @@ package io.pogorzelski.nitro.carriers.web.rest;
 import io.pogorzelski.nitro.carriers.NitroCarriersApp;
 
 import io.pogorzelski.nitro.carriers.domain.Rating;
+import io.pogorzelski.nitro.carriers.domain.Carrier;
 import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.domain.Address;
 import io.pogorzelski.nitro.carriers.domain.CargoType;
-import io.pogorzelski.nitro.carriers.domain.Carrier;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.service.RatingService;
 import io.pogorzelski.nitro.carriers.service.dto.RatingDTO;
@@ -48,14 +48,14 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 @SpringBootTest(classes = NitroCarriersApp.class)
 public class RatingResourceIntTest {
 
-    private static final Integer DEFAULT_FLEXIBILITY = 1;
-    private static final Integer UPDATED_FLEXIBILITY = 2;
-
     private static final Integer DEFAULT_CONTACT = 1;
     private static final Integer UPDATED_CONTACT = 2;
 
     private static final Integer DEFAULT_PRICE = 1;
     private static final Integer UPDATED_PRICE = 2;
+
+    private static final Integer DEFAULT_FLEXIBILITY = 1;
+    private static final Integer UPDATED_FLEXIBILITY = 2;
 
     private static final Grade DEFAULT_RECOMMENDATION = Grade.DEF_YES;
     private static final Grade UPDATED_RECOMMENDATION = Grade.YES;
@@ -111,11 +111,16 @@ public class RatingResourceIntTest {
      */
     public static Rating createEntity(EntityManager em) {
         Rating rating = new Rating()
-            .flexibility(DEFAULT_FLEXIBILITY)
             .contact(DEFAULT_CONTACT)
             .price(DEFAULT_PRICE)
+            .flexibility(DEFAULT_FLEXIBILITY)
             .recommendation(DEFAULT_RECOMMENDATION)
             .average(DEFAULT_AVERAGE);
+        // Add required entity
+        Carrier carrier = CarrierResourceIntTest.createEntity(em);
+        em.persist(carrier);
+        em.flush();
+        rating.setCarrier(carrier);
         // Add required entity
         Person person = PersonResourceIntTest.createEntity(em);
         em.persist(person);
@@ -133,11 +138,6 @@ public class RatingResourceIntTest {
         em.persist(cargoType);
         em.flush();
         rating.setCargoType(cargoType);
-        // Add required entity
-        Carrier carrier = CarrierResourceIntTest.createEntity(em);
-        em.persist(carrier);
-        em.flush();
-        rating.setCarrier(carrier);
         return rating;
     }
 
@@ -162,9 +162,9 @@ public class RatingResourceIntTest {
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeCreate + 1);
         Rating testRating = ratingList.get(ratingList.size() - 1);
-        assertThat(testRating.getFlexibility()).isEqualTo(DEFAULT_FLEXIBILITY);
         assertThat(testRating.getContact()).isEqualTo(DEFAULT_CONTACT);
         assertThat(testRating.getPrice()).isEqualTo(DEFAULT_PRICE);
+        assertThat(testRating.getFlexibility()).isEqualTo(DEFAULT_FLEXIBILITY);
         assertThat(testRating.getRecommendation()).isEqualTo(DEFAULT_RECOMMENDATION);
         assertThat(testRating.getAverage()).isEqualTo(DEFAULT_AVERAGE);
     }
@@ -187,25 +187,6 @@ public class RatingResourceIntTest {
         // Validate the Rating in the database
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    public void checkFlexibilityIsRequired() throws Exception {
-        int databaseSizeBeforeTest = ratingRepository.findAll().size();
-        // set the field null
-        rating.setFlexibility(null);
-
-        // Create the Rating, which fails.
-        RatingDTO ratingDTO = ratingMapper.toDto(rating);
-
-        restRatingMockMvc.perform(post("/api/ratings")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -233,6 +214,25 @@ public class RatingResourceIntTest {
         int databaseSizeBeforeTest = ratingRepository.findAll().size();
         // set the field null
         rating.setPrice(null);
+
+        // Create the Rating, which fails.
+        RatingDTO ratingDTO = ratingMapper.toDto(rating);
+
+        restRatingMockMvc.perform(post("/api/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkFlexibilityIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ratingRepository.findAll().size();
+        // set the field null
+        rating.setFlexibility(null);
 
         // Create the Rating, which fails.
         RatingDTO ratingDTO = ratingMapper.toDto(rating);
@@ -276,9 +276,9 @@ public class RatingResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
-            .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))
             .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
+            .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))
             .andExpect(jsonPath("$.[*].recommendation").value(hasItem(DEFAULT_RECOMMENDATION.toString())))
             .andExpect(jsonPath("$.[*].average").value(hasItem(DEFAULT_AVERAGE.doubleValue())));
     }
@@ -294,9 +294,9 @@ public class RatingResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(rating.getId().intValue()))
-            .andExpect(jsonPath("$.flexibility").value(DEFAULT_FLEXIBILITY))
             .andExpect(jsonPath("$.contact").value(DEFAULT_CONTACT))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE))
+            .andExpect(jsonPath("$.flexibility").value(DEFAULT_FLEXIBILITY))
             .andExpect(jsonPath("$.recommendation").value(DEFAULT_RECOMMENDATION.toString()))
             .andExpect(jsonPath("$.average").value(DEFAULT_AVERAGE.doubleValue()));
     }
@@ -322,9 +322,9 @@ public class RatingResourceIntTest {
         // Disconnect from session so that the updates on updatedRating are not directly saved in db
         em.detach(updatedRating);
         updatedRating
-            .flexibility(UPDATED_FLEXIBILITY)
             .contact(UPDATED_CONTACT)
             .price(UPDATED_PRICE)
+            .flexibility(UPDATED_FLEXIBILITY)
             .recommendation(UPDATED_RECOMMENDATION)
             .average(UPDATED_AVERAGE);
         RatingDTO ratingDTO = ratingMapper.toDto(updatedRating);
@@ -338,9 +338,9 @@ public class RatingResourceIntTest {
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
         Rating testRating = ratingList.get(ratingList.size() - 1);
-        assertThat(testRating.getFlexibility()).isEqualTo(UPDATED_FLEXIBILITY);
         assertThat(testRating.getContact()).isEqualTo(UPDATED_CONTACT);
         assertThat(testRating.getPrice()).isEqualTo(UPDATED_PRICE);
+        assertThat(testRating.getFlexibility()).isEqualTo(UPDATED_FLEXIBILITY);
         assertThat(testRating.getRecommendation()).isEqualTo(UPDATED_RECOMMENDATION);
         assertThat(testRating.getAverage()).isEqualTo(UPDATED_AVERAGE);
     }

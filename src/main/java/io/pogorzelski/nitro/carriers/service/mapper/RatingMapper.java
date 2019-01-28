@@ -8,9 +8,11 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Rating and its DTO RatingDTO.
  */
-@Mapper(componentModel = "spring", uses = {PersonMapper.class, AddressMapper.class, CargoTypeMapper.class, CarrierMapper.class})
+@Mapper(componentModel = "spring", uses = {CarrierMapper.class, PersonMapper.class, AddressMapper.class, CargoTypeMapper.class})
 public interface RatingMapper extends EntityMapper<RatingDTO, Rating> {
 
+    @Mapping(source = "carrier.id", target = "carrierId")
+    @Mapping(source = "carrier.name", target = "carrierName")
     @Mapping(source = "person.id", target = "personId")
     @Mapping(source = "person.firstName", target = "personFirstName")
     @Mapping(source = "chargeAddress.id", target = "chargeAddressId")
@@ -19,15 +21,13 @@ public interface RatingMapper extends EntityMapper<RatingDTO, Rating> {
     @Mapping(source = "dischargeAddress.postalCode", target = "dischargeAddressPostalCode")
     @Mapping(source = "cargoType.id", target = "cargoTypeId")
     @Mapping(source = "cargoType.name", target = "cargoTypeName")
-    @Mapping(source = "carrier.id", target = "carrierId")
-    @Mapping(source = "carrier.name", target = "carrierName")
     RatingDTO toDto(Rating rating);
 
+    @Mapping(source = "carrierId", target = "carrier")
     @Mapping(source = "personId", target = "person")
     @Mapping(source = "chargeAddressId", target = "chargeAddress")
     @Mapping(source = "dischargeAddressId", target = "dischargeAddress")
     @Mapping(source = "cargoTypeId", target = "cargoType")
-    @Mapping(source = "carrierId", target = "carrier")
     Rating toEntity(RatingDTO ratingDTO);
 
     default Rating fromId(Long id) {

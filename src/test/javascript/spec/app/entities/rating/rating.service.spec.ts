@@ -55,9 +55,9 @@ describe('Service Tests', () => {
             it('should update a Rating', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        flexibility: 1,
                         contact: 1,
                         price: 1,
+                        flexibility: 1,
                         recommendation: 'BBBBBB',
                         average: 1
                     },
@@ -76,9 +76,9 @@ describe('Service Tests', () => {
             it('should return a list of Rating', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        flexibility: 1,
                         contact: 1,
                         price: 1,
+                        flexibility: 1,
                         recommendation: 'BBBBBB',
                         average: 1
                     },
