@@ -28,27 +28,29 @@ public class Rating implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
-    @Column(name = "flexibility")
+    @Column(name = "flexibility", nullable = false)
     private Integer flexibility;
 
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
-    @Column(name = "contact")
+    @Column(name = "contact", nullable = false)
     private Integer contact;
 
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Integer price;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "recommendation")
+    @Column(name = "recommendation", nullable = false)
     private Grade recommendation;
 
-    @DecimalMin(value = "1")
-    @DecimalMax(value = "6")
     @Column(name = "average")
     private Double average;
 

@@ -12,22 +12,24 @@ public class RatingDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
     private Integer flexibility;
 
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
     private Integer contact;
 
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
     private Integer price;
 
+    @NotNull
     private Grade recommendation;
 
-    @DecimalMin(value = "1")
-    @DecimalMax(value = "6")
     private Double average;
 
     private Long personId;

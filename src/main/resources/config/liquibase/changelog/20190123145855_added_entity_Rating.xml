@@ -22,19 +22,19 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="flexibility" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="contact" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="price" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="recommendation" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="average" type="double">

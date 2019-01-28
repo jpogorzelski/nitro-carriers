@@ -6,7 +6,8 @@
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "min",
-                "max"
+                "max",
+                "required"
             ],
             "fieldValidateRulesMin": 1,
             "fieldValidateRulesMax": 6
@@ -16,7 +17,8 @@
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "min",
-                "max"
+                "max",
+                "required"
             ],
             "fieldValidateRulesMin": 1,
             "fieldValidateRulesMax": 6
@@ -26,7 +28,8 @@
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "min",
-                "max"
+                "max",
+                "required"
             ],
             "fieldValidateRulesMin": 1,
             "fieldValidateRulesMax": 6
@@ -34,17 +37,14 @@
         {
             "fieldName": "recommendation",
             "fieldType": "Grade",
-            "fieldValues": "DEF_YES,YES,FINE,NO,DEF_NO,BLACK_LIST"
+            "fieldValues": "DEF_YES,YES,FINE,NO,DEF_NO,BLACK_LIST",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "average",
-            "fieldType": "Double",
-            "fieldValidateRules": [
-                "min",
-                "max"
-            ],
-            "fieldValidateRulesMin": 1,
-            "fieldValidateRulesMax": 6
+            "fieldType": "Double"
         }
     ],
     "relationships": [

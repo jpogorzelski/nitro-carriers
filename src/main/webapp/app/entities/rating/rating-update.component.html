@@ -12,8 +12,12 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.flexibility" for="field_flexibility">Flexibility</label>
                     <input type="number" class="form-control" name="flexibility" id="field_flexibility"
-                        [(ngModel)]="rating.flexibility" min="1" jhiMin="1" max="6" jhiMax="6"/>
+                        [(ngModel)]="rating.flexibility" required min="1" jhiMin="1" max="6" jhiMax="6"/>
                     <div [hidden]="!(editForm.controls.flexibility?.dirty && editForm.controls.flexibility?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.flexibility?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
                         <small class="form-text text-danger"
                             [hidden]="!editForm.controls.flexibility?.errors?.min" jhiTranslate="entity.validation.min" [translateValues]="{ min: 1 }">
                             This field should be at least 1.
@@ -31,8 +35,12 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.contact" for="field_contact">Contact</label>
                     <input type="number" class="form-control" name="contact" id="field_contact"
-                        [(ngModel)]="rating.contact" min="1" jhiMin="1" max="6" jhiMax="6"/>
+                        [(ngModel)]="rating.contact" required min="1" jhiMin="1" max="6" jhiMax="6"/>
                     <div [hidden]="!(editForm.controls.contact?.dirty && editForm.controls.contact?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.contact?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
                         <small class="form-text text-danger"
                             [hidden]="!editForm.controls.contact?.errors?.min" jhiTranslate="entity.validation.min" [translateValues]="{ min: 1 }">
                             This field should be at least 1.
@@ -50,8 +58,12 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.price" for="field_price">Price</label>
                     <input type="number" class="form-control" name="price" id="field_price"
-                        [(ngModel)]="rating.price" min="1" jhiMin="1" max="6" jhiMax="6"/>
+                        [(ngModel)]="rating.price" required min="1" jhiMin="1" max="6" jhiMax="6"/>
                     <div [hidden]="!(editForm.controls.price?.dirty && editForm.controls.price?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.price?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
                         <small class="form-text text-danger"
                             [hidden]="!editForm.controls.price?.errors?.min" jhiTranslate="entity.validation.min" [translateValues]="{ min: 1 }">
                             This field should be at least 1.
@@ -68,7 +80,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.recommendation" for="field_recommendation">Recommendation</label>
-                    <select class="form-control" name="recommendation" [(ngModel)]="rating.recommendation" id="field_recommendation" >
+                    <select class="form-control" name="recommendation" [(ngModel)]="rating.recommendation" id="field_recommendation"  required>
                         <option value="DEF_YES">{{'nitroCarriersApp.Grade.DEF_YES' | translate}}</option>
                         <option value="YES">{{'nitroCarriersApp.Grade.YES' | translate}}</option>
                         <option value="FINE">{{'nitroCarriersApp.Grade.FINE' | translate}}</option>
@@ -76,25 +88,17 @@
                         <option value="DEF_NO">{{'nitroCarriersApp.Grade.DEF_NO' | translate}}</option>
                         <option value="BLACK_LIST">{{'nitroCarriersApp.Grade.BLACK_LIST' | translate}}</option>
                     </select>
+                    <div [hidden]="!(editForm.controls.recommendation?.dirty && editForm.controls.recommendation?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.recommendation?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.average" for="field_average">Average</label>
                     <input type="number" class="form-control" name="average" id="field_average"
-                        [(ngModel)]="rating.average" min="1" jhiMin="1" max="6" jhiMax="6"/>
-                    <div [hidden]="!(editForm.controls.average?.dirty && editForm.controls.average?.invalid)">
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.controls.average?.errors?.min" jhiTranslate="entity.validation.min" [translateValues]="{ min: 1 }">
-                            This field should be at least 1.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.controls.average?.errors?.max" jhiTranslate="entity.validation.max" [translateValues]="{ max: 6 }">
-                            This field cannot be more than 6.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.controls.average?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
-                        </small>
-                    </div>
+                        [(ngModel)]="rating.average" />
                 </div>
 
                 <div class="form-group">
