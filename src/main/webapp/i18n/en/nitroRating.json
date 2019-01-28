@@ -21,11 +21,18 @@
             "recommendation": "Recommendation",
             "average": "Average",
             "person": "Person",
-            "chargeAddressCountry": "Charge country",
-            "chargeAddressPostalCode": "Charge postal code",
-            "dischargeAddressCountry": "Discharge country",
-            "dischargeAddressPostalCode": "Discharge postal code",
+            "personFirstName": "Contact person first name",
+            "personLastName": "Contact person last name",
+            "personTransId": "Contact person Trans ID",
+            "chargeAddress": "Charge address",
+            "chargeAddressCountry": "Country",
+            "chargeAddressPostalCode": "Postal code",
+            "dischargeAddress": "Discharge address",
+            "dischargeAddressCountry": "Country",
+            "dischargeAddressPostalCode": "Postal code",
             "cargoType": "Cargo Type",
+            "carrierTransId": "Carrier Trans ID",
+            "carrierName": "Carrier Name",
             "carrier": "Carrier"
         }
     }

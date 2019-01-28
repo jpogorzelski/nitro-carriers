@@ -21,12 +21,19 @@
             "recommendation": "Polecam",
             "average": "Średnia ocena",
             "person": "Osoba kontaktowa",
-            "chargeAddressCountry": "Kraj załadunku",
-            "chargeAddressPostalCode": "Kod pocztowy załadunku",
-            "dischargeAddressCountry": "Kraj rozładunku",
-            "dischargeAddressPostalCode": "Kod pocztowy rozładunku",
+            "personFirstName": "Imię",
+            "personLastName": "Nazwisko",
+            "personTransId": "Trans ID",
+            "chargeAddress": "Adres załadunku",
+            "chargeAddressCountry": "Kraj",
+            "chargeAddressPostalCode": "Kod pocztowy",
+            "dischargeAddress": "Adres rozładunku",
+            "dischargeAddressCountry": "Kraj",
+            "dischargeAddressPostalCode": "Kod pocztowy",
             "cargoType": "Typ ładunku",
-            "carrier": "Przewoźnik"
+            "carrierName": "Nazwa firmy",
+            "carrierTransId": "Trans ID firmy",
+            "carrier": "Firma"
         }
     }
 }
