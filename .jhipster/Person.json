@@ -17,7 +17,7 @@
         },
         {
             "fieldName": "companyId",
-            "fieldType": "String",
+            "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]

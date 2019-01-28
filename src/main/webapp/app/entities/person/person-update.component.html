@@ -33,12 +33,16 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.person.companyId" for="field_companyId">Company Id</label>
-                    <input type="text" class="form-control" name="companyId" id="field_companyId"
+                    <input type="number" class="form-control" name="companyId" id="field_companyId"
                         [(ngModel)]="person.companyId" required/>
                     <div [hidden]="!(editForm.controls.companyId?.dirty && editForm.controls.companyId?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.companyId?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.companyId?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
                         </small>
                     </div>
                 </div>

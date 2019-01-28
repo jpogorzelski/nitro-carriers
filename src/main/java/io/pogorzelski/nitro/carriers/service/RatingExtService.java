@@ -19,28 +19,4 @@ public interface RatingExtService {
      * @return the persisted entity
      */
     RatingExtDTO save(RatingExtDTO ratingExtDTO);
-
-    /**
-     * Get all the ratings.
-     *
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    Page<RatingExtDTO> findAll(Pageable pageable);
-
-
-    /**
-     * Get the "id" rating.
-     *
-     * @param id the id of the entity
-     * @return the entity
-     */
-    Optional<RatingExtDTO> findOne(Long id);
-
-    /**
-     * Delete the "id" rating.
-     *
-     * @param id the id of the entity
-     */
-    void delete(Long id);
 }

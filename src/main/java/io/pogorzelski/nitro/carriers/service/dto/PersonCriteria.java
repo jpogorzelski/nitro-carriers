@@ -28,7 +28,7 @@ public class PersonCriteria implements Serializable {
 
     private StringFilter lastName;
 
-    private StringFilter companyId;
+    private IntegerFilter companyId;
 
     private StringFilter phoneNumber;
 
@@ -58,11 +58,11 @@ public class PersonCriteria implements Serializable {
         this.lastName = lastName;
     }
 
-    public StringFilter getCompanyId() {
+    public IntegerFilter getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(StringFilter companyId) {
+    public void setCompanyId(IntegerFilter companyId) {
         this.companyId = companyId;
     }
 

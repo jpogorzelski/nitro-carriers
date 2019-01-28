@@ -18,7 +18,7 @@ public class PersonDTO implements Serializable {
     private String lastName;
 
     @NotNull
-    private String companyId;
+    private Integer companyId;
 
     private String phoneNumber;
 
@@ -50,11 +50,11 @@ public class PersonDTO implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getCompanyId() {
+    public Integer getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
 
@@ -109,7 +109,7 @@ public class PersonDTO implements Serializable {
             "id=" + getId() +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", companyId='" + getCompanyId() + "'" +
+            ", companyId=" + getCompanyId() +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", carrier=" + getCarrierId() +
             ", carrier='" + getCarrierName() + "'" +

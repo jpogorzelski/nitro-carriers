@@ -52,8 +52,8 @@ public class PersonResourceIntTest {
     private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_COMPANY_ID = "AAAAAAAAAA";
-    private static final String UPDATED_COMPANY_ID = "BBBBBBBBBB";
+    private static final Integer DEFAULT_COMPANY_ID = 1;
+    private static final Integer UPDATED_COMPANY_ID = 2;
 
     private static final String DEFAULT_PHONE_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
@@ -233,7 +233,7 @@ public class PersonResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(person.getId().intValue())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME.toString())))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME.toString())))
-            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID.toString())))
+            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID)))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.toString())));
     }
     
@@ -250,7 +250,7 @@ public class PersonResourceIntTest {
             .andExpect(jsonPath("$.id").value(person.getId().intValue()))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME.toString()))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME.toString()))
-            .andExpect(jsonPath("$.companyId").value(DEFAULT_COMPANY_ID.toString()))
+            .andExpect(jsonPath("$.companyId").value(DEFAULT_COMPANY_ID))
             .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER.toString()));
     }
 
@@ -373,6 +373,33 @@ public class PersonResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllPeopleByCompanyIdIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        personRepository.saveAndFlush(person);
+
+        // Get all the personList where companyId greater than or equals to DEFAULT_COMPANY_ID
+        defaultPersonShouldBeFound("companyId.greaterOrEqualThan=" + DEFAULT_COMPANY_ID);
+
+        // Get all the personList where companyId greater than or equals to UPDATED_COMPANY_ID
+        defaultPersonShouldNotBeFound("companyId.greaterOrEqualThan=" + UPDATED_COMPANY_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPeopleByCompanyIdIsLessThanSomething() throws Exception {
+        // Initialize the database
+        personRepository.saveAndFlush(person);
+
+        // Get all the personList where companyId less than or equals to DEFAULT_COMPANY_ID
+        defaultPersonShouldNotBeFound("companyId.lessThan=" + DEFAULT_COMPANY_ID);
+
+        // Get all the personList where companyId less than or equals to UPDATED_COMPANY_ID
+        defaultPersonShouldBeFound("companyId.lessThan=" + UPDATED_COMPANY_ID);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllPeopleByPhoneNumberIsEqualToSomething() throws Exception {
         // Initialize the database
         personRepository.saveAndFlush(person);
@@ -438,7 +465,7 @@ public class PersonResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(person.getId().intValue())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME.toString())))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME.toString())))
-            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID.toString())))
+            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID)))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.toString())));
 
         // Check, that the count call also returns 1

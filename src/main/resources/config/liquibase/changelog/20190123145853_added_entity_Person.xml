@@ -29,7 +29,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="company_id" type="varchar(255)">
+            <column name="company_id" type="integer">
                 <constraints nullable="false" />
             </column>
 

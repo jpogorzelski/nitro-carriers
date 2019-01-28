@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(PersonService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Person(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+            elemDefault = new Person(0, 'AAAAAAA', 'AAAAAAA', 0, 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
@@ -57,7 +57,7 @@ describe('Service Tests', () => {
                     {
                         firstName: 'BBBBBB',
                         lastName: 'BBBBBB',
-                        companyId: 'BBBBBB',
+                        companyId: 1,
                         phoneNumber: 'BBBBBB'
                     },
                     elemDefault
@@ -77,7 +77,7 @@ describe('Service Tests', () => {
                     {
                         firstName: 'BBBBBB',
                         lastName: 'BBBBBB',
-                        companyId: 'BBBBBB',
+                        companyId: 1,
                         phoneNumber: 'BBBBBB'
                     },
                     elemDefault

@@ -96,7 +96,7 @@ public class PersonQueryService extends QueryService<Person> {
                 specification = specification.and(buildStringSpecification(criteria.getLastName(), Person_.lastName));
             }
             if (criteria.getCompanyId() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getCompanyId(), Person_.companyId));
+                specification = specification.and(buildRangeSpecification(criteria.getCompanyId(), Person_.companyId));
             }
             if (criteria.getPhoneNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getPhoneNumber(), Person_.phoneNumber));

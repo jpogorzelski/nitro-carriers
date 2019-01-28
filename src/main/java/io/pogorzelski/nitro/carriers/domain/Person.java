@@ -36,7 +36,7 @@ public class Person implements Serializable {
 
     @NotNull
     @Column(name = "company_id", nullable = false)
-    private String companyId;
+    private Integer companyId;
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -80,16 +80,16 @@ public class Person implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getCompanyId() {
+    public Integer getCompanyId() {
         return companyId;
     }
 
-    public Person companyId(String companyId) {
+    public Person companyId(Integer companyId) {
         this.companyId = companyId;
         return this;
     }
 
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
 
@@ -146,7 +146,7 @@ public class Person implements Serializable {
             "id=" + getId() +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", companyId='" + getCompanyId() + "'" +
+            ", companyId=" + getCompanyId() +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             "}";
     }
