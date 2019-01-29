@@ -31,54 +31,6 @@ import { RouterModule } from '@angular/router';
             {
                 path: 'nitro-rating',
                 loadChildren: './nitro-rating/nitro-rating.module#NitroCarriersNitroRatingModule'
-            },
-            {
-                path: 'address',
-                loadChildren: './address/address.module#NitroCarriersAddressModule'
-            },
-            {
-                path: 'person',
-                loadChildren: './person/person.module#NitroCarriersPersonModule'
-            },
-            {
-                path: 'rating',
-                loadChildren: './rating/rating.module#NitroCarriersRatingModule'
-            },
-            {
-                path: 'address',
-                loadChildren: './address/address.module#NitroCarriersAddressModule'
-            },
-            {
-                path: 'rating',
-                loadChildren: './rating/rating.module#NitroCarriersRatingModule'
-            },
-            {
-                path: 'rating',
-                loadChildren: './rating/rating.module#NitroCarriersRatingModule'
-            },
-            {
-                path: 'carrier',
-                loadChildren: './carrier/carrier.module#NitroCarriersCarrierModule'
-            },
-            {
-                path: 'rating',
-                loadChildren: './rating/rating.module#NitroCarriersRatingModule'
-            },
-            {
-                path: 'rating',
-                loadChildren: './rating/rating.module#NitroCarriersRatingModule'
-            },
-            {
-                path: 'rating',
-                loadChildren: './rating/rating.module#NitroCarriersRatingModule'
-            },
-            {
-                path: 'person',
-                loadChildren: './person/person.module#NitroCarriersPersonModule'
-            },
-            {
-                path: 'carrier',
-                loadChildren: './carrier/carrier.module#NitroCarriersCarrierModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])
