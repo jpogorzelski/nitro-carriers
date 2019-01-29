@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface EntityMapper <D, E> {
 
+    E fromId(Long id);
+
     E toEntity(D dto);
 
     D toDto(E entity);

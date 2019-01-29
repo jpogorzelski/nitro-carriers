@@ -1,5 +1,5 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -33,7 +33,8 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         protected ratingExtService: NitroRatingService,
         protected countryService: CountryService,
         protected cargoTypeService: CargoTypeService,
-        protected activatedRoute: ActivatedRoute
+        protected activatedRoute: ActivatedRoute,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -70,7 +71,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     ngDoCheck(): void {
         if (this.rating.contact && this.rating.price && this.rating.flexibility && this.rating.recommendation) {
-            let recommendation: number = 0;
+            let recommendation = 0;
             switch (this.rating.recommendation) {
                 case Grade.BLACK_LIST:
                     recommendation = 1;
@@ -97,9 +98,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         }
     }
 
-    previousState() {
-        window.history.back();
-    }
+    previousState() {}
 
     save() {
         this.isSaving = true;
@@ -116,7 +115,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     protected onSaveSuccess() {
         this.isSaving = false;
-        this.previousState();
+        this.router.navigate(['/rating']);
     }
 
     protected onSaveError() {

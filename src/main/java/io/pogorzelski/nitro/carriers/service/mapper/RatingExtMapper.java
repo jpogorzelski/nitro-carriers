@@ -172,11 +172,9 @@ public class RatingExtMapper {
             dischargeAddress.setPostalCode(dischargeAddressPostalCode);
         }
 
-        String cargoTypeName = ratingExtDTO.getCargoTypeName();
-        CargoType cargoType = cargoTypeRepository.findByName(cargoTypeName);
-        if (cargoType == null) {
-            throw new RuntimeException("Cargo type cannot be null!");
-        }
+        Long cargoTypeId = ratingExtDTO.getCargoTypeId();
+        CargoType cargoType = cargoTypeRepository.findById(cargoTypeId)
+            .orElseThrow(() -> new RuntimeException("Cargo type cannot be null!"));
 
         rating.setCarrier(carrier);
         rating.setPerson(person);

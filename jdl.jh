@@ -55,7 +55,7 @@ paginate Carrier, Rating with infinite-scroll
 paginate Person with pagination
 
 // Use Data Transfert Objects (DTO)
-dto * with mapstruct
+//dto all except rating with mapstruct
 
 // Set service options to all except few
 service all with serviceImpl
