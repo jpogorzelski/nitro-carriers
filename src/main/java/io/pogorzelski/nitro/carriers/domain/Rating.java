@@ -54,22 +54,22 @@ public class Rating implements Serializable {
     @Column(name = "average")
     private Double average;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Carrier carrier;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Person person;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Address chargeAddress;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Address dischargeAddress;

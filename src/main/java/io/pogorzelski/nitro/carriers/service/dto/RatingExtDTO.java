@@ -1,17 +1,15 @@
 package io.pogorzelski.nitro.carriers.service.dto;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.*;
 
 import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 
-public class RatingExtDTO {
+import java.io.Serializable;
+import java.util.Objects;
 
+public class RatingExtDTO implements Serializable {
 
     private Long id;
-
 
     private Integer carrierTransId;
 
@@ -35,20 +33,25 @@ public class RatingExtDTO {
 
     private String cargoTypeName;
 
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
     private Integer contact;
 
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
     private Integer price;
 
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
     private Integer flexibility;
 
+    @NotNull
     private Grade recommendation;
 
+    @NotNull
     @DecimalMin(value = "1")
     @DecimalMax(value = "6")
     private Double average;
@@ -187,5 +190,49 @@ public class RatingExtDTO {
 
     public void setAverage(final Double average) {
         this.average = average;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        RatingExtDTO ratingExtDTO = (RatingExtDTO) o;
+        if (ratingExtDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), ratingExtDTO.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "RatingExtDTO{" +
+            "contact=" + contact +
+            ", price=" + price +
+            ", flexibility=" + flexibility +
+            ", recommendation=" + recommendation +
+            ", average=" + average +
+            ", id=" + id +
+            ", carrierTransId=" + carrierTransId +
+            ", carrierName='" + carrierName + '\'' +
+            ", personTransId=" + personTransId +
+            ", personFirstName='" + personFirstName + '\'' +
+            ", personLastName='" + personLastName + '\'' +
+            ", chargeAddressCountry='" + chargeAddressCountry + '\'' +
+            ", chargeAddressPostalCode='" + chargeAddressPostalCode + '\'' +
+            ", dischargeAddressCountry='" + dischargeAddressCountry + '\'' +
+            ", dischargeAddressPostalCode='" + dischargeAddressPostalCode + '\'' +
+            ", cargoTypeId=" + cargoTypeId +
+            ", cargoTypeName='" + cargoTypeName + '\'' +
+            '}';
     }
 }
