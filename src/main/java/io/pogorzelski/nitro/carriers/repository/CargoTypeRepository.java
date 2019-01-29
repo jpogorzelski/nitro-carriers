@@ -12,4 +12,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CargoTypeRepository extends JpaRepository<CargoType, Long> {
 
+    CargoType findByName(String name);
 }
