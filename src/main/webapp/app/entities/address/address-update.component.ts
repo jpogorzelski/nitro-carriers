@@ -32,30 +32,12 @@ export class AddressUpdateComponent implements OnInit {
             this.address = address;
         });
         this.countryService
-            .query({ filter: 'address-is-null' })
+            .query()
             .pipe(
                 filter((mayBeOk: HttpResponse<ICountry[]>) => mayBeOk.ok),
                 map((response: HttpResponse<ICountry[]>) => response.body)
             )
-            .subscribe(
-                (res: ICountry[]) => {
-                    if (!this.address.countryId) {
-                        this.countries = res;
-                    } else {
-                        this.countryService
-                            .find(this.address.countryId)
-                            .pipe(
-                                filter((subResMayBeOk: HttpResponse<ICountry>) => subResMayBeOk.ok),
-                                map((subResponse: HttpResponse<ICountry>) => subResponse.body)
-                            )
-                            .subscribe(
-                                (subRes: ICountry) => (this.countries = [subRes].concat(res)),
-                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                            );
-                    }
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+            .subscribe((res: ICountry[]) => (this.countries = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

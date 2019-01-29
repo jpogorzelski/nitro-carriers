@@ -2,12 +2,12 @@
     "nitroCarriersApp": {
         "Grade": {
             "null": "",
-            "DEF_YES": "Definitely yes",
-            "YES": "Rather yes",
-            "FINE": "Fine",
-            "NO": "Rather not",
-            "DEF_NO": "Definitely not",
-            "BLACK_LIST": "Black list"
+            "DEF_YES": "DEF_YES",
+            "YES": "YES",
+            "FINE": "FINE",
+            "NO": "NO",
+            "DEF_NO": "DEF_NO",
+            "BLACK_LIST": "BLACK_LIST"
         }
     }
 }

@@ -27,9 +27,7 @@ export class RatingUpdateComponent implements OnInit {
 
     people: IPerson[];
 
-    chargeaddresses: IAddress[];
-
-    dischargeaddresses: IAddress[];
+    addresses: IAddress[];
 
     cargotypes: ICargoType[];
 
@@ -56,105 +54,26 @@ export class RatingUpdateComponent implements OnInit {
             )
             .subscribe((res: ICarrier[]) => (this.carriers = res), (res: HttpErrorResponse) => this.onError(res.message));
         this.personService
-            .query({ filter: 'rating-is-null' })
+            .query()
             .pipe(
                 filter((mayBeOk: HttpResponse<IPerson[]>) => mayBeOk.ok),
                 map((response: HttpResponse<IPerson[]>) => response.body)
             )
-            .subscribe(
-                (res: IPerson[]) => {
-                    if (!this.rating.personId) {
-                        this.people = res;
-                    } else {
-                        this.personService
-                            .find(this.rating.personId)
-                            .pipe(
-                                filter((subResMayBeOk: HttpResponse<IPerson>) => subResMayBeOk.ok),
-                                map((subResponse: HttpResponse<IPerson>) => subResponse.body)
-                            )
-                            .subscribe(
-                                (subRes: IPerson) => (this.people = [subRes].concat(res)),
-                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                            );
-                    }
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+            .subscribe((res: IPerson[]) => (this.people = res), (res: HttpErrorResponse) => this.onError(res.message));
         this.addressService
-            .query({ filter: 'rating-is-null' })
+            .query()
             .pipe(
                 filter((mayBeOk: HttpResponse<IAddress[]>) => mayBeOk.ok),
                 map((response: HttpResponse<IAddress[]>) => response.body)
             )
-            .subscribe(
-                (res: IAddress[]) => {
-                    if (!this.rating.chargeAddressId) {
-                        this.chargeaddresses = res;
-                    } else {
-                        this.addressService
-                            .find(this.rating.chargeAddressId)
-                            .pipe(
-                                filter((subResMayBeOk: HttpResponse<IAddress>) => subResMayBeOk.ok),
-                                map((subResponse: HttpResponse<IAddress>) => subResponse.body)
-                            )
-                            .subscribe(
-                                (subRes: IAddress) => (this.chargeaddresses = [subRes].concat(res)),
-                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                            );
-                    }
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        this.addressService
-            .query({ filter: 'rating-is-null' })
-            .pipe(
-                filter((mayBeOk: HttpResponse<IAddress[]>) => mayBeOk.ok),
-                map((response: HttpResponse<IAddress[]>) => response.body)
-            )
-            .subscribe(
-                (res: IAddress[]) => {
-                    if (!this.rating.dischargeAddressId) {
-                        this.dischargeaddresses = res;
-                    } else {
-                        this.addressService
-                            .find(this.rating.dischargeAddressId)
-                            .pipe(
-                                filter((subResMayBeOk: HttpResponse<IAddress>) => subResMayBeOk.ok),
-                                map((subResponse: HttpResponse<IAddress>) => subResponse.body)
-                            )
-                            .subscribe(
-                                (subRes: IAddress) => (this.dischargeaddresses = [subRes].concat(res)),
-                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                            );
-                    }
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+            .subscribe((res: IAddress[]) => (this.addresses = res), (res: HttpErrorResponse) => this.onError(res.message));
         this.cargoTypeService
-            .query({ filter: 'rating-is-null' })
+            .query()
             .pipe(
                 filter((mayBeOk: HttpResponse<ICargoType[]>) => mayBeOk.ok),
                 map((response: HttpResponse<ICargoType[]>) => response.body)
             )
-            .subscribe(
-                (res: ICargoType[]) => {
-                    if (!this.rating.cargoTypeId) {
-                        this.cargotypes = res;
-                    } else {
-                        this.cargoTypeService
-                            .find(this.rating.cargoTypeId)
-                            .pipe(
-                                filter((subResMayBeOk: HttpResponse<ICargoType>) => subResMayBeOk.ok),
-                                map((subResponse: HttpResponse<ICargoType>) => subResponse.body)
-                            )
-                            .subscribe(
-                                (subRes: ICargoType) => (this.cargotypes = [subRes].concat(res)),
-                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                            );
-                    }
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+            .subscribe((res: ICargoType[]) => (this.cargotypes = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

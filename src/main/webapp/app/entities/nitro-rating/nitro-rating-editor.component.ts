@@ -31,10 +31,8 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     constructor(
         protected jhiAlertService: JhiAlertService,
         protected ratingExtService: NitroRatingService,
-        protected personService: PersonService,
         protected countryService: CountryService,
         protected cargoTypeService: CargoTypeService,
-        protected carrierService: CarrierService,
         protected activatedRoute: ActivatedRoute
     ) {}
 
@@ -43,31 +41,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.activatedRoute.data.subscribe(({ rating }) => {
             this.rating = rating;
         });
-        this.personService
-            .query({ filter: 'rating-is-null' })
-            .pipe(
-                filter((mayBeOk: HttpResponse<IPerson[]>) => mayBeOk.ok),
-                map((response: HttpResponse<IPerson[]>) => response.body)
-            )
-            .subscribe(
-                (res: IPerson[]) => {
-                    if (!this.rating.personTransId) {
-                        this.people = res;
-                    } else {
-                        this.personService
-                            .find(this.rating.personTransId)
-                            .pipe(
-                                filter((subResMayBeOk: HttpResponse<IPerson>) => subResMayBeOk.ok),
-                                map((subResponse: HttpResponse<IPerson>) => subResponse.body)
-                            )
-                            .subscribe(
-                                (subRes: IPerson) => (this.people = [subRes].concat(res)),
-                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                            );
-                    }
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+
         this.countryService
             .query({ filter: 'rating-is-null' })
             .pipe(
@@ -88,30 +62,10 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
             )
             .subscribe(
                 (res: ICargoType[]) => {
-                    if (!this.rating.cargoTypeId) {
-                        this.cargotypes = res;
-                    } else {
-                        this.cargoTypeService
-                            .find(this.rating.cargoTypeId)
-                            .pipe(
-                                filter((subResMayBeOk: HttpResponse<ICargoType>) => subResMayBeOk.ok),
-                                map((subResponse: HttpResponse<ICargoType>) => subResponse.body)
-                            )
-                            .subscribe(
-                                (subRes: ICargoType) => (this.cargotypes = [subRes].concat(res)),
-                                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                            );
-                    }
+                    this.cargotypes = res;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
-        this.carrierService
-            .query()
-            .pipe(
-                filter((mayBeOk: HttpResponse<ICarrier[]>) => mayBeOk.ok),
-                map((response: HttpResponse<ICarrier[]>) => response.body)
-            )
-            .subscribe((res: ICarrier[]) => (this.carriers = res), (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     ngDoCheck(): void {
@@ -173,19 +127,11 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 
-    trackPersonById(index: number, item: IPerson) {
-        return item.id;
-    }
-
     trackCountryById(index: number, item: ICountry) {
         return item.id;
     }
 
     trackCargoTypeById(index: number, item: ICargoType) {
-        return item.id;
-    }
-
-    trackCarrierById(index: number, item: ICarrier) {
         return item.id;
     }
 }

@@ -116,7 +116,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.person" for="field_person">Person</label>
-                    <select class="form-control" id="field_person" name="person" [(ngModel)]="rating.personId" required>
+                    <select class="form-control" id="field_person" name="person" [(ngModel)]="rating.personId"  required>
                         <option *ngIf="!editForm.value.person" [ngValue]="null" selected></option>
                         <option [ngValue]="personOption.id" *ngFor="let personOption of people; trackBy: trackPersonById">{{personOption.firstName}}</option>
                     </select>
@@ -129,9 +129,9 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.chargeAddress" for="field_chargeAddress">Charge Address</label>
-                    <select class="form-control" id="field_chargeAddress" name="chargeAddress" [(ngModel)]="rating.chargeAddressId" required>
+                    <select class="form-control" id="field_chargeAddress" name="chargeAddress" [(ngModel)]="rating.chargeAddressId"  required>
                         <option *ngIf="!editForm.value.chargeAddress" [ngValue]="null" selected></option>
-                        <option [ngValue]="addressOption.id" *ngFor="let addressOption of chargeaddresses; trackBy: trackAddressById">{{addressOption.postalCode}}</option>
+                        <option [ngValue]="addressOption.id" *ngFor="let addressOption of addresses; trackBy: trackAddressById">{{addressOption.postalCode}}</option>
                     </select>
                 </div>
                 <div [hidden]="!(editForm.controls.chargeAddress?.dirty && editForm.controls.chargeAddress?.invalid)">
@@ -142,9 +142,9 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.dischargeAddress" for="field_dischargeAddress">Discharge Address</label>
-                    <select class="form-control" id="field_dischargeAddress" name="dischargeAddress" [(ngModel)]="rating.dischargeAddressId" required>
+                    <select class="form-control" id="field_dischargeAddress" name="dischargeAddress" [(ngModel)]="rating.dischargeAddressId"  required>
                         <option *ngIf="!editForm.value.dischargeAddress" [ngValue]="null" selected></option>
-                        <option [ngValue]="addressOption.id" *ngFor="let addressOption of dischargeaddresses; trackBy: trackAddressById">{{addressOption.postalCode}}</option>
+                        <option [ngValue]="addressOption.id" *ngFor="let addressOption of addresses; trackBy: trackAddressById">{{addressOption.postalCode}}</option>
                     </select>
                 </div>
                 <div [hidden]="!(editForm.controls.dischargeAddress?.dirty && editForm.controls.dischargeAddress?.invalid)">
@@ -155,7 +155,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.cargoType" for="field_cargoType">Cargo Type</label>
-                    <select class="form-control" id="field_cargoType" name="cargoType" [(ngModel)]="rating.cargoTypeId" required>
+                    <select class="form-control" id="field_cargoType" name="cargoType" [(ngModel)]="rating.cargoTypeId"  required>
                         <option *ngIf="!editForm.value.cargoType" [ngValue]="null" selected></option>
                         <option [ngValue]="cargoTypeOption.id" *ngFor="let cargoTypeOption of cargotypes; trackBy: trackCargoTypeById">{{cargoTypeOption.name}}</option>
                     </select>

@@ -23,7 +23,7 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.address.country" for="field_country">Country</label>
-                    <select class="form-control" id="field_country" name="country" [(ngModel)]="address.countryId">
+                    <select class="form-control" id="field_country" name="country" [(ngModel)]="address.countryId" >
                         <option [ngValue]="null"></option>
                         <option [ngValue]="countryOption.id" *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryName}}</option>
                     </select>

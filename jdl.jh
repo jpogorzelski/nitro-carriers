@@ -15,7 +15,7 @@ entity Carrier {
 entity Person {
 	firstName String required,
 	lastName String required,
-	companyId String required,
+	companyId Integer required,
 	phoneNumber String
 }
 
@@ -24,11 +24,11 @@ entity CargoType {
 }
 
 entity Rating {
-flexibility Integer min(1) max(6) required,
 contact Integer min(1) max(6) required,
 price Integer min(1) max(6) required,
+flexibility Integer min(1) max(6) required,
 recommendation Grade required,
-average Double min(1) max(6)
+average Double
 
 }
 
@@ -36,18 +36,16 @@ enum Grade {
 	DEF_YES, YES, FINE, NO, DEF_NO, BLACK_LIST
 }
 
-relationship OneToOne {
-	Address{country(countryName)} to Country
-    Rating{person(firstName)} to Person
-    Rating{chargeAddress(postalCode)} to Address
-    Rating{dischargeAddress(postalCode)} to Address
-    Rating{cargoType(name)} to CargoType
-}
-
-
 relationship ManyToOne {
+	Address{country(countryName)} to Country
+
 	Person{carrier(name)} to Carrier{people(firstName)}
-    Rating{carrier(name)} to Carrier{ratings(carrier)}
+
+    Rating{carrier(name) required} to Carrier{ratings(carrier)}
+    Rating{person(firstName) required} to Person
+    Rating{chargeAddress(postalCode) required} to Address
+    Rating{dischargeAddress(postalCode) required} to Address
+    Rating{cargoType(name) required} to CargoType
 }
 
 filter Person

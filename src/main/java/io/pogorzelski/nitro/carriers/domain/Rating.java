@@ -59,24 +59,24 @@ public class Rating implements Serializable {
     @JsonIgnoreProperties("ratings")
     private Carrier carrier;
 
-    @OneToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @NotNull
-    @JoinColumn
+    @JsonIgnoreProperties("ratings")
     private Person person;
 
-    @OneToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @NotNull
-    @JoinColumn
+    @JsonIgnoreProperties("ratings")
     private Address chargeAddress;
 
-    @OneToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @NotNull
-    @JoinColumn
+    @JsonIgnoreProperties("ratings")
     private Address dischargeAddress;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @NotNull
-    @JoinColumn
+    @JsonIgnoreProperties("ratings")
     private CargoType cargoType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

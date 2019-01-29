@@ -44,15 +44,23 @@
             <column name="carrier_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+
             <column name="person_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_rating_person_id" />
-            </column>            <column name="charge_address_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_rating_charge_address_id" />
-            </column>            <column name="discharge_address_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_rating_discharge_address_id" />
-            </column>            <column name="cargo_type_id" type="bigint">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_rating_cargo_type_id" />
+                <constraints nullable="false" />
             </column>
+
+            <column name="charge_address_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="discharge_address_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="cargo_type_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

@@ -12,6 +12,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CarrierRepository extends JpaRepository<Carrier, Long> {
 
-    Carrier findByTransId(Integer transId);
-
 }
