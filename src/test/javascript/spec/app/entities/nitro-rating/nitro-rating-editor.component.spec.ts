@@ -33,7 +33,7 @@ describe('Component Tests', () => {
                     'Stara Iwiczna, Nowa 17/1, 05-500 Piaseczno, PL\n' +
                     'Anna Gotlib, 915298-1\n' +
                     'tel. 577902102';
-                let result = comp.extractCarrierAndPerson(src);
+                let result = comp.extractCarrierAndPerson(new NitroRating(), src);
                 expect(result.carrierName).toEqual('DK Spółka Z Ograniczoną Odpowiedzialnością');
                 expect(result.carrierTransId).toEqual(915298);
                 expect(result.personFirstName).toEqual('Anna');

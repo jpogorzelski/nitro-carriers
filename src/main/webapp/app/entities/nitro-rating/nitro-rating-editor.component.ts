@@ -4,7 +4,7 @@ import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {JhiAlertService} from 'ng-jhipster';
-import {Grade, INitroRating, NitroRating} from 'app/shared/model/nitro-rating.model';
+import {Grade, INitroRating} from 'app/shared/model/nitro-rating.model';
 import {NitroRatingService} from './nitro-rating.service';
 import {IPerson} from 'app/shared/model/person.model';
 import {ICargoType} from 'app/shared/model/cargo-type.model';
@@ -18,6 +18,7 @@ import {CountryService} from 'app/entities/country';
     templateUrl: './nitro-rating-editor.component.html'
 })
 export class NitroRatingEditorComponent implements OnInit, DoCheck {
+    carrierAndPerson: string;
     rating: INitroRating;
     isSaving: boolean;
 
@@ -69,17 +70,17 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     ngDoCheck(): void {
         if (this.rating.contact && this.rating.price && this.rating.flexibility && this.rating.recommendation) {
-            let recommendation = this.getRecommendationAsInt();
+            const recommendation = this.getRecommendationAsInt();
             this.rating.average = (this.rating.contact + this.rating.price + this.rating.flexibility + recommendation) / 4;
         }
     }
 
-    extractCarrierAndPerson(str: string): INitroRating {
-        let result = new NitroRating();
-        let lines = str.split('\n');
-        let nameAndTransId = lines[2].split(',');
-        let fullName = nameAndTransId[0].split(' ');
-        let transId = nameAndTransId[1].split('-');
+    extractCarrierAndPerson(rating: INitroRating, str: string): INitroRating {
+        const result = rating;
+        const lines = str.split('\n');
+        const nameAndTransId = lines[2].split(',');
+        const fullName = nameAndTransId[0].split(' ');
+        const transId = nameAndTransId[1].split('-');
         result.carrierName = lines[0];
         result.carrierTransId = Number(transId[0]);
         result.personFirstName = fullName[0];
@@ -118,6 +119,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     previousState() {}
 
     save() {
+        this.rating = this.extractCarrierAndPerson(this.rating, this.carrierAndPerson);
         this.isSaving = true;
         if (this.rating.id !== undefined) {
             this.subscribeToSaveResponse(this.ratingExtService.update(this.rating));

@@ -12,74 +12,14 @@
                 </div>
 
                 <fieldset>
-                    <legend jhiTranslate="nitroCarriersApp.nitroRating.carrier">Carrier</legend>
+                    <legend jhiTranslate="nitroCarriersApp.nitroRating.carrierAndPerson">Carrier and person</legend>
                     <div class="form-group">
-                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.carrierTransId"
-                               for="field_carrierTransId">Carrier Trans ID</label>
-                        <input type="number" class="form-control" name="carrierTransId"
-                               id="field_carrierTransId" [(ngModel)]="rating.carrierTransId"
-                               required/>
+                        <textarea [(ngModel)]="carrierAndPerson" class="form-control" name="carrierAndPerson"
+                                  id="field_carrierAndPerson" required rows="5"></textarea>
                         <div
-                            [hidden]="!(editForm.controls.carrierTransId?.dirty && editForm.controls.carrierTransId?.invalid)">
+                            [hidden]="!(editForm.controls.carrierAndPerson?.dirty && editForm.controls.carrierAndPerson?.invalid)">
                             <small class="form-text text-danger"
-                                   [hidden]="!editForm.controls.carrierTransId?.errors?.required"
-                                   jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                        </div>
-                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.carrierName"
-                               for="field_carrierName">Carrier name</label>
-                        <input type="text" class="form-control" name="carrierName"
-                               id="field_carrierName" [(ngModel)]="rating.carrierName"
-                               required/>
-                        <div
-                            [hidden]="!(editForm.controls.carrierName?.dirty && editForm.controls.carrierName?.invalid)">
-                            <small class="form-text text-danger"
-                                   [hidden]="!editForm.controls.carrierName?.errors?.required"
-                                   jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend jhiTranslate="nitroCarriersApp.nitroRating.person">Person</legend>
-                    <div class="form-group">
-                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.personTransId"
-                               for="field_personTransId">Person Trans ID</label>
-                        <input type="number" class="form-control" name="personTransId"
-                               id="field_personTransId" [(ngModel)]="rating.personTransId"
-                               required/>
-                        <div
-                            [hidden]="!(editForm.controls.personTransId?.dirty && editForm.controls.personTransId?.invalid)">
-                            <small class="form-text text-danger"
-                                   [hidden]="!editForm.controls.personTransId?.errors?.required"
-                                   jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                        </div>
-                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.personFirstName"
-                               for="field_personFirstName">Person first name</label>
-                        <input type="text" class="form-control" name="personFirstName"
-                               id="field_personFirstName" [(ngModel)]="rating.personFirstName"
-                               required/>
-                        <div
-                            [hidden]="!(editForm.controls.personFirstName?.dirty && editForm.controls.personFirstName?.invalid)">
-                            <small class="form-text text-danger"
-                                   [hidden]="!editForm.controls.personFirstName?.errors?.required"
-                                   jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                        </div>
-                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.personLastName"
-                               for="field_personLastName">Person first name</label>
-                        <input type="text" class="form-control" name="personLastName"
-                               id="field_personLastName" [(ngModel)]="rating.personLastName"
-                               required/>
-                        <div
-                            [hidden]="!(editForm.controls.personLastName?.dirty && editForm.controls.personLastName?.invalid)">
-                            <small class="form-text text-danger"
-                                   [hidden]="!editForm.controls.personLastName?.errors?.required"
+                                   [hidden]="!editForm.controls.carrierAndPerson?.errors?.required"
                                    jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>

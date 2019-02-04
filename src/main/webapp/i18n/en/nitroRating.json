@@ -33,7 +33,8 @@
             "cargoType": "Cargo Type",
             "carrierTransId": "Carrier Trans ID",
             "carrierName": "Carrier Name",
-            "carrier": "Carrier"
+            "carrier": "Carrier",
+            "carrierAndPerson": "Carrier and contact person data"
         }
     }
 }

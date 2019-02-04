@@ -33,7 +33,8 @@
             "cargoType": "Typ ładunku",
             "carrierName": "Nazwa firmy",
             "carrierTransId": "Trans ID firmy",
-            "carrier": "Firma"
+            "carrier": "Firma",
+            "carrierAndPerson": "Dane firmy i osoby kontaktowej"
         }
     }
 }
