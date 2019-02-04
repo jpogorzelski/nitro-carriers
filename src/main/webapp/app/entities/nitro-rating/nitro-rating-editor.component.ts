@@ -1,19 +1,17 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiAlertService } from 'ng-jhipster';
-import { Grade, INitroRating } from 'app/shared/model/nitro-rating.model';
-import { NitroRatingService } from './nitro-rating.service';
-import { IPerson } from 'app/shared/model/person.model';
-import { PersonService } from 'app/entities/person';
-import { ICargoType } from 'app/shared/model/cargo-type.model';
-import { CargoTypeService } from 'app/entities/cargo-type';
-import { ICarrier } from 'app/shared/model/carrier.model';
-import { CarrierService } from 'app/entities/carrier';
-import { ICountry } from 'app/shared/model/country.model';
-import { CountryService } from 'app/entities/country';
+import {Component, DoCheck, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
+import {JhiAlertService} from 'ng-jhipster';
+import {Grade, INitroRating, NitroRating} from 'app/shared/model/nitro-rating.model';
+import {NitroRatingService} from './nitro-rating.service';
+import {IPerson} from 'app/shared/model/person.model';
+import {ICargoType} from 'app/shared/model/cargo-type.model';
+import {CargoTypeService} from 'app/entities/cargo-type';
+import {ICarrier} from 'app/shared/model/carrier.model';
+import {ICountry} from 'app/shared/model/country.model';
+import {CountryService} from 'app/entities/country';
 
 @Component({
     selector: 'jhi-ext-rating-update',
@@ -71,31 +69,50 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     ngDoCheck(): void {
         if (this.rating.contact && this.rating.price && this.rating.flexibility && this.rating.recommendation) {
-            let recommendation = 0;
-            switch (this.rating.recommendation) {
-                case Grade.BLACK_LIST:
-                    recommendation = 1;
-                    break;
-                case Grade.DEF_NO:
-                    recommendation = 2;
-                    break;
-                case Grade.NO:
-                    recommendation = 3;
-                    break;
-                case Grade.FINE:
-                    recommendation = 4;
-                    break;
-                case Grade.YES:
-                    recommendation = 5;
-                    break;
-                case Grade.DEF_YES:
-                    recommendation = 6;
-                    break;
-                default:
-                    break;
-            }
+            let recommendation = this.getRecommendationAsInt();
             this.rating.average = (this.rating.contact + this.rating.price + this.rating.flexibility + recommendation) / 4;
         }
+    }
+
+    extractCarrierAndPerson(str: string): INitroRating {
+        let result = new NitroRating();
+        let lines = str.split('\n');
+        let nameAndTransId = lines[2].split(',');
+        let fullName = nameAndTransId[0].split(' ');
+        let transId = nameAndTransId[1].split('-');
+        result.carrierName = lines[0];
+        result.carrierTransId = Number(transId[0]);
+        result.personFirstName = fullName[0];
+        result.personLastName = fullName[1];
+        result.personTransId = Number(transId[1]);
+        return result;
+    }
+
+    private getRecommendationAsInt() {
+        let recommendation = 0;
+        switch (this.rating.recommendation) {
+            case Grade.BLACK_LIST:
+                recommendation = 1;
+                break;
+            case Grade.DEF_NO:
+                recommendation = 2;
+                break;
+            case Grade.NO:
+                recommendation = 3;
+                break;
+            case Grade.FINE:
+                recommendation = 4;
+                break;
+            case Grade.YES:
+                recommendation = 5;
+                break;
+            case Grade.DEF_YES:
+                recommendation = 6;
+                break;
+            default:
+                break;
+        }
+        return recommendation;
     }
 
     previousState() {}
