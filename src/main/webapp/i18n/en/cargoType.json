@@ -1,0 +1,21 @@
+{
+    "nitroCarriersApp": {
+        "cargoType": {
+            "home": {
+                "title": "Cargo Types",
+                "createLabel": "Create a new Cargo Type",
+                "createOrEditLabel": "Create or edit a Cargo Type"
+            },
+            "created": "A new Cargo Type is created with identifier {{ param }}",
+            "updated": "A Cargo Type is updated with identifier {{ param }}",
+            "deleted": "A Cargo Type is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Cargo Type {{ id }}?"
+            },
+            "detail": {
+                "title": "Cargo Type"
+            },
+            "name": "Name"
+        }
+    }
+}

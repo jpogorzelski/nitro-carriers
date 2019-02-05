@@ -1,0 +1,39 @@
+{
+    "name": "Carrier",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "transId",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "people",
+            "otherEntityName": "person",
+            "otherEntityRelationshipName": "carrier"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "ratings",
+            "otherEntityName": "rating",
+            "otherEntityRelationshipName": "carrier"
+        }
+    ],
+    "changelogDate": "20190123145852",
+    "entityTableName": "carrier",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

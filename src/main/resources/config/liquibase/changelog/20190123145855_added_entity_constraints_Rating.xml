@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Rating.
+    -->
+    <changeSet id="20190123145855-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="carrier_id"
+                                 baseTableName="rating"
+                                 constraintName="fk_rating_carrier_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="carrier"/>
+
+        <addForeignKeyConstraint baseColumnNames="person_id"
+                                 baseTableName="rating"
+                                 constraintName="fk_rating_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="person"/>
+
+        <addForeignKeyConstraint baseColumnNames="charge_address_id"
+                                 baseTableName="rating"
+                                 constraintName="fk_rating_charge_address_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="discharge_address_id"
+                                 baseTableName="rating"
+                                 constraintName="fk_rating_discharge_address_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="cargo_type_id"
+                                 baseTableName="rating"
+                                 constraintName="fk_rating_cargo_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cargo_type"/>
+
+    </changeSet>
+</databaseChangeLog>

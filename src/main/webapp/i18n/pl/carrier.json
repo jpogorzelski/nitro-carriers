@@ -1,0 +1,24 @@
+{
+    "nitroCarriersApp": {
+        "carrier": {
+            "home": {
+                "title": "Carrier",
+                "createLabel": "Dodaj Carrier",
+                "createOrEditLabel": "Dodaj lub edytuj: Carrier"
+            },
+            "created": "Utworzono nowy obiekt typu Carrier z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono obiekt typu Carrier z identyfikatorem {{ param }}",
+            "deleted": "Usunięto obiekt typu Carrier z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Carrier {{ id }}?"
+            },
+            "detail": {
+                "title": "Carrier"
+            },
+            "name": "Name",
+            "transId": "Trans Id",
+            "people": "People",
+            "ratings": "Ratings"
+        }
+    }
+}

@@ -1,0 +1,73 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="rating">
+            <h2><span jhiTranslate="nitroCarriersApp.rating.detail.title">Rating</span> {{rating.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span></dt>
+                <dd>
+                    <span>{{rating.contact}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.price">Price</span></dt>
+                <dd>
+                    <span>{{rating.price}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span></dt>
+                <dd>
+                    <span>{{rating.flexibility}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'nitroCarriersApp.Grade.' + rating.recommendation}}">{{rating.recommendation}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.average">Average</span></dt>
+                <dd>
+                    <span>{{rating.average}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span></dt>
+                <dd>
+                    <div *ngIf="rating.carrierId">
+                        <a [routerLink]="['/carrier', rating.carrierId, 'view']">{{rating.carrierName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.person">Person</span></dt>
+                <dd>
+                    <div *ngIf="rating.personId">
+                        <a [routerLink]="['/person', rating.personId, 'view']">{{rating.personFirstName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.chargeAddress">Charge Address</span></dt>
+                <dd>
+                    <div *ngIf="rating.chargeAddressId">
+                        <a [routerLink]="['/address', rating.chargeAddressId, 'view']">{{rating.chargeAddressPostalCode}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeAddress">Discharge Address</span></dt>
+                <dd>
+                    <div *ngIf="rating.dischargeAddressId">
+                        <a [routerLink]="['/address', rating.dischargeAddressId, 'view']">{{rating.dischargeAddressPostalCode}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>
+                <dd>
+                    <div *ngIf="rating.cargoTypeId">
+                        <a [routerLink]="['/cargo-type', rating.cargoTypeId, 'view']">{{rating.cargoTypeName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/rating', rating.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
