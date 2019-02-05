@@ -1,5 +1,4 @@
 package io.pogorzelski.nitro.carriers.service.dto;
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,6 +14,7 @@ public class CarrierDTO implements Serializable {
     private String name;
 
     private Integer transId;
+
 
     public Long getId() {
         return id;

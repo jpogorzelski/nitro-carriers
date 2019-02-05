@@ -1,5 +1,4 @@
 package io.pogorzelski.nitro.carriers.service.dto;
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -21,6 +20,7 @@ public class PersonDTO implements Serializable {
     private Integer companyId;
 
     private String phoneNumber;
+
 
     private Long carrierId;
 

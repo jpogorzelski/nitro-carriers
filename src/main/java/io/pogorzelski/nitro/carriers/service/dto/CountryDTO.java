@@ -1,5 +1,4 @@
 package io.pogorzelski.nitro.carriers.service.dto;
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,6 +12,7 @@ public class CountryDTO implements Serializable {
 
     @NotNull
     private String countryName;
+
 
     public Long getId() {
         return id;

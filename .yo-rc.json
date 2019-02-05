@@ -4,7 +4,7 @@
       "packageName": "io.pogorzelski.nitro.carriers",
       "nativeLanguage": "en"
     },
-    "jhipsterVersion": "5.8.0",
+    "jhipsterVersion": "5.8.1",
     "applicationType": "monolith",
     "baseName": "NitroCarriers",
     "packageName": "io.pogorzelski.nitro.carriers",
