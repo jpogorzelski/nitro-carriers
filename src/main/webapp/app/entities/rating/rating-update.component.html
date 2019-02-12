@@ -10,6 +10,28 @@
                         [(ngModel)]="rating.id" readonly />
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.chargePostalCode" for="field_chargePostalCode">Charge Postal Code</label>
+                    <input type="text" class="form-control" name="chargePostalCode" id="field_chargePostalCode"
+                        [(ngModel)]="rating.chargePostalCode" required/>
+                    <div [hidden]="!(editForm.controls.chargePostalCode?.dirty && editForm.controls.chargePostalCode?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.chargePostalCode?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.dischargePostalCode" for="field_dischargePostalCode">Discharge Postal Code</label>
+                    <input type="text" class="form-control" name="dischargePostalCode" id="field_dischargePostalCode"
+                        [(ngModel)]="rating.dischargePostalCode" required/>
+                    <div [hidden]="!(editForm.controls.dischargePostalCode?.dirty && editForm.controls.dischargePostalCode?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.dischargePostalCode?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.contact" for="field_contact">Contact</label>
                     <input type="number" class="form-control" name="contact" id="field_contact"
                         [(ngModel)]="rating.contact" required min="1" jhiMin="1" max="6" jhiMax="6"/>
@@ -128,28 +150,28 @@
                     </small>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.chargeAddress" for="field_chargeAddress">Charge Address</label>
-                    <select class="form-control" id="field_chargeAddress" name="chargeAddress" [(ngModel)]="rating.chargeAddressId"  required>
-                        <option *ngIf="!editForm.value.chargeAddress" [ngValue]="null" selected></option>
-                        <option [ngValue]="addressOption.id" *ngFor="let addressOption of addresses; trackBy: trackAddressById">{{addressOption.postalCode}}</option>
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.chargeCountry" for="field_chargeCountry">Charge Country</label>
+                    <select class="form-control" id="field_chargeCountry" name="chargeCountry" [(ngModel)]="rating.chargeCountryId"  required>
+                        <option *ngIf="!editForm.value.chargeCountry" [ngValue]="null" selected></option>
+                        <option [ngValue]="countryOption.id" *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryName}}</option>
                     </select>
                 </div>
-                <div [hidden]="!(editForm.controls.chargeAddress?.dirty && editForm.controls.chargeAddress?.invalid)">
+                <div [hidden]="!(editForm.controls.chargeCountry?.dirty && editForm.controls.chargeCountry?.invalid)">
                     <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.chargeAddress?.errors?.required" jhiTranslate="entity.validation.required">
+                        [hidden]="!editForm.controls.chargeCountry?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.dischargeAddress" for="field_dischargeAddress">Discharge Address</label>
-                    <select class="form-control" id="field_dischargeAddress" name="dischargeAddress" [(ngModel)]="rating.dischargeAddressId"  required>
-                        <option *ngIf="!editForm.value.dischargeAddress" [ngValue]="null" selected></option>
-                        <option [ngValue]="addressOption.id" *ngFor="let addressOption of addresses; trackBy: trackAddressById">{{addressOption.postalCode}}</option>
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.dischargeCountry" for="field_dischargeCountry">Discharge Country</label>
+                    <select class="form-control" id="field_dischargeCountry" name="dischargeCountry" [(ngModel)]="rating.dischargeCountryId"  required>
+                        <option *ngIf="!editForm.value.dischargeCountry" [ngValue]="null" selected></option>
+                        <option [ngValue]="countryOption.id" *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryName}}</option>
                     </select>
                 </div>
-                <div [hidden]="!(editForm.controls.dischargeAddress?.dirty && editForm.controls.dischargeAddress?.invalid)">
+                <div [hidden]="!(editForm.controls.dischargeCountry?.dirty && editForm.controls.dischargeCountry?.invalid)">
                     <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.dischargeAddress?.errors?.required" jhiTranslate="entity.validation.required">
+                        [hidden]="!editForm.controls.dischargeCountry?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>
                 </div>

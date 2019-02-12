@@ -1,6 +1,6 @@
 package io.pogorzelski.nitro.carriers.service;
 
-import io.pogorzelski.nitro.carriers.service.dto.CargoTypeDTO;
+import io.pogorzelski.nitro.carriers.domain.CargoType;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,17 +13,17 @@ public interface CargoTypeService {
     /**
      * Save a cargoType.
      *
-     * @param cargoTypeDTO the entity to save
+     * @param cargoType the entity to save
      * @return the persisted entity
      */
-    CargoTypeDTO save(CargoTypeDTO cargoTypeDTO);
+    CargoType save(CargoType cargoType);
 
     /**
      * Get all the cargoTypes.
      *
      * @return the list of entities
      */
-    List<CargoTypeDTO> findAll();
+    List<CargoType> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface CargoTypeService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<CargoTypeDTO> findOne(Long id);
+    Optional<CargoType> findOne(Long id);
 
     /**
      * Delete the "id" cargoType.
@@ -40,4 +40,13 @@ public interface CargoTypeService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Search for the cargoType corresponding to the query.
+     *
+     * @param query the query of the search
+     * 
+     * @return the list of entities
+     */
+    List<CargoType> search(String query);
 }

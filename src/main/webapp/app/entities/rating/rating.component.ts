@@ -55,8 +55,8 @@ export class RatingComponent implements OnInit, OnDestroy {
                 .search({
                     query: this.currentSearch,
                     page: this.page,
-                    size: this.itemsPerPage /*,
-                    sort: this.sort()*/
+                    size: this.itemsPerPage,
+                    sort: this.sort()
                 })
                 .subscribe(
                     (res: HttpResponse<IRating[]>) => this.paginateRatings(res.body, res.headers),

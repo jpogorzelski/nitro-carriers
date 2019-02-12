@@ -4,7 +4,8 @@
             "home": {
                 "title": "People",
                 "createLabel": "Create a new Person",
-                "createOrEditLabel": "Create or edit a Person"
+                "createOrEditLabel": "Create or edit a Person",
+                "search": "Search for Person"
             },
             "created": "A new Person is created with identifier {{ param }}",
             "updated": "A Person is updated with identifier {{ param }}",

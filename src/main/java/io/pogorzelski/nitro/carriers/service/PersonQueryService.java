@@ -17,15 +17,14 @@ import io.github.jhipster.service.QueryService;
 import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.domain.*; // for static metamodels
 import io.pogorzelski.nitro.carriers.repository.PersonRepository;
+import io.pogorzelski.nitro.carriers.repository.search.PersonSearchRepository;
 import io.pogorzelski.nitro.carriers.service.dto.PersonCriteria;
-import io.pogorzelski.nitro.carriers.service.dto.PersonDTO;
-import io.pogorzelski.nitro.carriers.service.mapper.PersonMapper;
 
 /**
  * Service for executing complex queries for Person entities in the database.
  * The main input is a {@link PersonCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link PersonDTO} or a {@link Page} of {@link PersonDTO} which fulfills the criteria.
+ * It returns a {@link List} of {@link Person} or a {@link Page} of {@link Person} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -35,37 +34,36 @@ public class PersonQueryService extends QueryService<Person> {
 
     private final PersonRepository personRepository;
 
-    private final PersonMapper personMapper;
+    private final PersonSearchRepository personSearchRepository;
 
-    public PersonQueryService(PersonRepository personRepository, PersonMapper personMapper) {
+    public PersonQueryService(PersonRepository personRepository, PersonSearchRepository personSearchRepository) {
         this.personRepository = personRepository;
-        this.personMapper = personMapper;
+        this.personSearchRepository = personSearchRepository;
     }
 
     /**
-     * Return a {@link List} of {@link PersonDTO} which matches the criteria from the database
+     * Return a {@link List} of {@link Person} which matches the criteria from the database
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<PersonDTO> findByCriteria(PersonCriteria criteria) {
+    public List<Person> findByCriteria(PersonCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specification<Person> specification = createSpecification(criteria);
-        return personMapper.toDto(personRepository.findAll(specification));
+        return personRepository.findAll(specification);
     }
 
     /**
-     * Return a {@link Page} of {@link PersonDTO} which matches the criteria from the database
+     * Return a {@link Page} of {@link Person} which matches the criteria from the database
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<PersonDTO> findByCriteria(PersonCriteria criteria, Pageable page) {
+    public Page<Person> findByCriteria(PersonCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<Person> specification = createSpecification(criteria);
-        return personRepository.findAll(specification, page)
-            .map(personMapper::toDto);
+        return personRepository.findAll(specification, page);
     }
 
     /**

@@ -112,9 +112,6 @@ public class RatingResourceExtIntTest {
         Country country = CountryResourceIntTest.createEntity(em);
         em.persist(country);
         em.flush();
-        Address address = new Address()
-            .country(country)
-            .postalCode(DEFAULT_POSTAL_CODE);
 
         CargoType cargoType = CargoTypeResourceIntTest.createEntity(em);
         em.persist(cargoType);
@@ -128,8 +125,10 @@ public class RatingResourceExtIntTest {
             .average(DEFAULT_AVERAGE)
             .carrier(carrier)
             .person(person)
-            .chargeAddress(address)
-            .dischargeAddress(address)
+            .chargeCountry(country)
+            .chargePostalCode(DEFAULT_POSTAL_CODE)
+            .dischargeCountry(country)
+            .dischargePostalCode(DEFAULT_POSTAL_CODE)
             .cargoType(cargoType);
     }
 

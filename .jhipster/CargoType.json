@@ -12,7 +12,7 @@
     "relationships": [],
     "changelogDate": "20190123145854",
     "entityTableName": "cargo_type",
-    "dto": "mapstruct",
+    "dto": "no",
     "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

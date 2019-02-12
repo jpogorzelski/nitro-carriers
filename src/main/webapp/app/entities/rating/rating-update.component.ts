@@ -10,8 +10,8 @@ import { ICarrier } from 'app/shared/model/carrier.model';
 import { CarrierService } from 'app/entities/carrier';
 import { IPerson } from 'app/shared/model/person.model';
 import { PersonService } from 'app/entities/person';
-import { IAddress } from 'app/shared/model/address.model';
-import { AddressService } from 'app/entities/address';
+import { ICountry } from 'app/shared/model/country.model';
+import { CountryService } from 'app/entities/country';
 import { ICargoType } from 'app/shared/model/cargo-type.model';
 import { CargoTypeService } from 'app/entities/cargo-type';
 
@@ -27,7 +27,7 @@ export class RatingUpdateComponent implements OnInit {
 
     people: IPerson[];
 
-    addresses: IAddress[];
+    countries: ICountry[];
 
     cargotypes: ICargoType[];
 
@@ -36,7 +36,7 @@ export class RatingUpdateComponent implements OnInit {
         protected ratingService: RatingService,
         protected carrierService: CarrierService,
         protected personService: PersonService,
-        protected addressService: AddressService,
+        protected countryService: CountryService,
         protected cargoTypeService: CargoTypeService,
         protected activatedRoute: ActivatedRoute
     ) {}
@@ -60,13 +60,13 @@ export class RatingUpdateComponent implements OnInit {
                 map((response: HttpResponse<IPerson[]>) => response.body)
             )
             .subscribe((res: IPerson[]) => (this.people = res), (res: HttpErrorResponse) => this.onError(res.message));
-        this.addressService
+        this.countryService
             .query()
             .pipe(
-                filter((mayBeOk: HttpResponse<IAddress[]>) => mayBeOk.ok),
-                map((response: HttpResponse<IAddress[]>) => response.body)
+                filter((mayBeOk: HttpResponse<ICountry[]>) => mayBeOk.ok),
+                map((response: HttpResponse<ICountry[]>) => response.body)
             )
-            .subscribe((res: IAddress[]) => (this.addresses = res), (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: ICountry[]) => (this.countries = res), (res: HttpErrorResponse) => this.onError(res.message));
         this.cargoTypeService
             .query()
             .pipe(
@@ -114,7 +114,7 @@ export class RatingUpdateComponent implements OnInit {
         return item.id;
     }
 
-    trackAddressById(index: number, item: IAddress) {
+    trackCountryById(index: number, item: ICountry) {
         return item.id;
     }
 

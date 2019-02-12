@@ -5,6 +5,14 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="nitroCarriersApp.rating.chargePostalCode">Charge Postal Code</span></dt>
+                <dd>
+                    <span>{{rating.chargePostalCode}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.dischargePostalCode">Discharge Postal Code</span></dt>
+                <dd>
+                    <span>{{rating.dischargePostalCode}}</span>
+                </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span></dt>
                 <dd>
                     <span>{{rating.contact}}</span>
@@ -37,16 +45,16 @@
                         <a [routerLink]="['/person', rating.personId, 'view']">{{rating.personFirstName}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="nitroCarriersApp.rating.chargeAddress">Charge Address</span></dt>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span></dt>
                 <dd>
-                    <div *ngIf="rating.chargeAddressId">
-                        <a [routerLink]="['/address', rating.chargeAddressId, 'view']">{{rating.chargeAddressPostalCode}}</a>
+                    <div *ngIf="rating.chargeCountryId">
+                        <a [routerLink]="['/country', rating.chargeCountryId, 'view']">{{rating.chargeCountryCountryName}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeAddress">Discharge Address</span></dt>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeCountry">Discharge Country</span></dt>
                 <dd>
-                    <div *ngIf="rating.dischargeAddressId">
-                        <a [routerLink]="['/address', rating.dischargeAddressId, 'view']">{{rating.dischargeAddressPostalCode}}</a>
+                    <div *ngIf="rating.dischargeCountryId">
+                        <a [routerLink]="['/country', rating.dischargeCountryId, 'view']">{{rating.dischargeCountryCountryName}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>

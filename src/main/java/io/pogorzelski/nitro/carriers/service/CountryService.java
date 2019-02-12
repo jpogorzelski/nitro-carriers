@@ -1,6 +1,6 @@
 package io.pogorzelski.nitro.carriers.service;
 
-import io.pogorzelski.nitro.carriers.service.dto.CountryDTO;
+import io.pogorzelski.nitro.carriers.domain.Country;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,17 +13,17 @@ public interface CountryService {
     /**
      * Save a country.
      *
-     * @param countryDTO the entity to save
+     * @param country the entity to save
      * @return the persisted entity
      */
-    CountryDTO save(CountryDTO countryDTO);
+    Country save(Country country);
 
     /**
      * Get all the countries.
      *
      * @return the list of entities
      */
-    List<CountryDTO> findAll();
+    List<Country> findAll();
 
 
     /**
@@ -32,7 +32,7 @@ public interface CountryService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<CountryDTO> findOne(Long id);
+    Optional<Country> findOne(Long id);
 
     /**
      * Delete the "id" country.
@@ -40,4 +40,13 @@ public interface CountryService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Search for the country corresponding to the query.
+     *
+     * @param query the query of the search
+     * 
+     * @return the list of entities
+     */
+    List<Country> search(String query);
 }

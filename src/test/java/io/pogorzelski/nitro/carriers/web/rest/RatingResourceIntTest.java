@@ -5,7 +5,7 @@ import io.pogorzelski.nitro.carriers.NitroCarriersApp;
 import io.pogorzelski.nitro.carriers.domain.Rating;
 import io.pogorzelski.nitro.carriers.domain.Carrier;
 import io.pogorzelski.nitro.carriers.domain.Person;
-import io.pogorzelski.nitro.carriers.domain.Address;
+import io.pogorzelski.nitro.carriers.domain.Country;
 import io.pogorzelski.nitro.carriers.domain.CargoType;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
@@ -53,6 +53,12 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = NitroCarriersApp.class)
 public class RatingResourceIntTest {
+
+    private static final String DEFAULT_CHARGE_POSTAL_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_CHARGE_POSTAL_CODE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DISCHARGE_POSTAL_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_DISCHARGE_POSTAL_CODE = "BBBBBBBBBB";
 
     private static final Integer DEFAULT_CONTACT = 1;
     private static final Integer UPDATED_CONTACT = 2;
@@ -125,6 +131,8 @@ public class RatingResourceIntTest {
      */
     public static Rating createEntity(EntityManager em) {
         Rating rating = new Rating()
+            .chargePostalCode(DEFAULT_CHARGE_POSTAL_CODE)
+            .dischargePostalCode(DEFAULT_DISCHARGE_POSTAL_CODE)
             .contact(DEFAULT_CONTACT)
             .price(DEFAULT_PRICE)
             .flexibility(DEFAULT_FLEXIBILITY)
@@ -141,12 +149,12 @@ public class RatingResourceIntTest {
         em.flush();
         rating.setPerson(person);
         // Add required entity
-        Address address = AddressResourceIntTest.createEntity(em);
-        em.persist(address);
+        Country country = CountryResourceIntTest.createEntity(em);
+        em.persist(country);
         em.flush();
-        rating.setChargeAddress(address);
+        rating.setChargeCountry(country);
         // Add required entity
-        rating.setDischargeAddress(address);
+        rating.setDischargeCountry(country);
         // Add required entity
         CargoType cargoType = CargoTypeResourceIntTest.createEntity(em);
         em.persist(cargoType);
@@ -176,6 +184,8 @@ public class RatingResourceIntTest {
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeCreate + 1);
         Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getChargePostalCode()).isEqualTo(DEFAULT_CHARGE_POSTAL_CODE);
+        assertThat(testRating.getDischargePostalCode()).isEqualTo(DEFAULT_DISCHARGE_POSTAL_CODE);
         assertThat(testRating.getContact()).isEqualTo(DEFAULT_CONTACT);
         assertThat(testRating.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testRating.getFlexibility()).isEqualTo(DEFAULT_FLEXIBILITY);
@@ -207,6 +217,44 @@ public class RatingResourceIntTest {
 
         // Validate the Rating in Elasticsearch
         verify(mockRatingSearchRepository, times(0)).save(rating);
+    }
+
+    @Test
+    @Transactional
+    public void checkChargePostalCodeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ratingRepository.findAll().size();
+        // set the field null
+        rating.setChargePostalCode(null);
+
+        // Create the Rating, which fails.
+        RatingDTO ratingDTO = ratingMapper.toDto(rating);
+
+        restRatingMockMvc.perform(post("/api/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDischargePostalCodeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ratingRepository.findAll().size();
+        // set the field null
+        rating.setDischargePostalCode(null);
+
+        // Create the Rating, which fails.
+        RatingDTO ratingDTO = ratingMapper.toDto(rating);
+
+        restRatingMockMvc.perform(post("/api/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -296,6 +344,8 @@ public class RatingResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
+            .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE.toString())))
+            .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE.toString())))
             .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))
@@ -314,6 +364,8 @@ public class RatingResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(rating.getId().intValue()))
+            .andExpect(jsonPath("$.chargePostalCode").value(DEFAULT_CHARGE_POSTAL_CODE.toString()))
+            .andExpect(jsonPath("$.dischargePostalCode").value(DEFAULT_DISCHARGE_POSTAL_CODE.toString()))
             .andExpect(jsonPath("$.contact").value(DEFAULT_CONTACT))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE))
             .andExpect(jsonPath("$.flexibility").value(DEFAULT_FLEXIBILITY))
@@ -342,6 +394,8 @@ public class RatingResourceIntTest {
         // Disconnect from session so that the updates on updatedRating are not directly saved in db
         em.detach(updatedRating);
         updatedRating
+            .chargePostalCode(UPDATED_CHARGE_POSTAL_CODE)
+            .dischargePostalCode(UPDATED_DISCHARGE_POSTAL_CODE)
             .contact(UPDATED_CONTACT)
             .price(UPDATED_PRICE)
             .flexibility(UPDATED_FLEXIBILITY)
@@ -358,6 +412,8 @@ public class RatingResourceIntTest {
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
         Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getChargePostalCode()).isEqualTo(UPDATED_CHARGE_POSTAL_CODE);
+        assertThat(testRating.getDischargePostalCode()).isEqualTo(UPDATED_DISCHARGE_POSTAL_CODE);
         assertThat(testRating.getContact()).isEqualTo(UPDATED_CONTACT);
         assertThat(testRating.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testRating.getFlexibility()).isEqualTo(UPDATED_FLEXIBILITY);
@@ -423,6 +479,8 @@ public class RatingResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
+            .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE)))
+            .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE)))
             .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))

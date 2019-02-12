@@ -29,7 +29,7 @@
     ],
     "changelogDate": "20190123145852",
     "entityTableName": "carrier",
-    "dto": "mapstruct",
+    "dto": "no",
     "pagination": "infinite-scroll",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

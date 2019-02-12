@@ -12,6 +12,12 @@ public class RatingDTO implements Serializable {
     private Long id;
 
     @NotNull
+    private String chargePostalCode;
+
+    @NotNull
+    private String dischargePostalCode;
+
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
     private Integer contact;
@@ -40,13 +46,13 @@ public class RatingDTO implements Serializable {
 
     private String personFirstName;
 
-    private Long chargeAddressId;
+    private Long chargeCountryId;
 
-    private String chargeAddressPostalCode;
+    private String chargeCountryCountryName;
 
-    private Long dischargeAddressId;
+    private Long dischargeCountryId;
 
-    private String dischargeAddressPostalCode;
+    private String dischargeCountryCountryName;
 
     private Long cargoTypeId;
 
@@ -58,6 +64,22 @@ public class RatingDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getChargePostalCode() {
+        return chargePostalCode;
+    }
+
+    public void setChargePostalCode(String chargePostalCode) {
+        this.chargePostalCode = chargePostalCode;
+    }
+
+    public String getDischargePostalCode() {
+        return dischargePostalCode;
+    }
+
+    public void setDischargePostalCode(String dischargePostalCode) {
+        this.dischargePostalCode = dischargePostalCode;
     }
 
     public Integer getContact() {
@@ -132,36 +154,36 @@ public class RatingDTO implements Serializable {
         this.personFirstName = personFirstName;
     }
 
-    public Long getChargeAddressId() {
-        return chargeAddressId;
+    public Long getChargeCountryId() {
+        return chargeCountryId;
     }
 
-    public void setChargeAddressId(Long addressId) {
-        this.chargeAddressId = addressId;
+    public void setChargeCountryId(Long countryId) {
+        this.chargeCountryId = countryId;
     }
 
-    public String getChargeAddressPostalCode() {
-        return chargeAddressPostalCode;
+    public String getChargeCountryCountryName() {
+        return chargeCountryCountryName;
     }
 
-    public void setChargeAddressPostalCode(String addressPostalCode) {
-        this.chargeAddressPostalCode = addressPostalCode;
+    public void setChargeCountryCountryName(String countryCountryName) {
+        this.chargeCountryCountryName = countryCountryName;
     }
 
-    public Long getDischargeAddressId() {
-        return dischargeAddressId;
+    public Long getDischargeCountryId() {
+        return dischargeCountryId;
     }
 
-    public void setDischargeAddressId(Long addressId) {
-        this.dischargeAddressId = addressId;
+    public void setDischargeCountryId(Long countryId) {
+        this.dischargeCountryId = countryId;
     }
 
-    public String getDischargeAddressPostalCode() {
-        return dischargeAddressPostalCode;
+    public String getDischargeCountryCountryName() {
+        return dischargeCountryCountryName;
     }
 
-    public void setDischargeAddressPostalCode(String addressPostalCode) {
-        this.dischargeAddressPostalCode = addressPostalCode;
+    public void setDischargeCountryCountryName(String countryCountryName) {
+        this.dischargeCountryCountryName = countryCountryName;
     }
 
     public Long getCargoTypeId() {
@@ -205,6 +227,8 @@ public class RatingDTO implements Serializable {
     public String toString() {
         return "RatingDTO{" +
             "id=" + getId() +
+            ", chargePostalCode='" + getChargePostalCode() + "'" +
+            ", dischargePostalCode='" + getDischargePostalCode() + "'" +
             ", contact=" + getContact() +
             ", price=" + getPrice() +
             ", flexibility=" + getFlexibility() +
@@ -214,10 +238,10 @@ public class RatingDTO implements Serializable {
             ", carrier='" + getCarrierName() + "'" +
             ", person=" + getPersonId() +
             ", person='" + getPersonFirstName() + "'" +
-            ", chargeAddress=" + getChargeAddressId() +
-            ", chargeAddress='" + getChargeAddressPostalCode() + "'" +
-            ", dischargeAddress=" + getDischargeAddressId() +
-            ", dischargeAddress='" + getDischargeAddressPostalCode() + "'" +
+            ", chargeCountry=" + getChargeCountryId() +
+            ", chargeCountry='" + getChargeCountryCountryName() + "'" +
+            ", dischargeCountry=" + getDischargeCountryId() +
+            ", dischargeCountry='" + getDischargeCountryCountryName() + "'" +
             ", cargoType=" + getCargoTypeId() +
             ", cargoType='" + getCargoTypeName() + "'" +
             "}";

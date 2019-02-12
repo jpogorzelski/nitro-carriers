@@ -14,16 +14,16 @@ public class RatingMapper implements EntityMapper<RatingDTO, Rating> {
 
     private final CarrierMapper carrierMapper;
     private final PersonMapper personMapper;
-    private final AddressMapper addressMapper;
+    private final CountryMapper countryMapper;
     private final CargoTypeMapper cargoTypeMapper;
 
     private final RatingRepository ratingRepository;
 
     @Autowired
-    public RatingMapper(CarrierMapper carrierMapper, PersonMapper personMapper, AddressMapper addressMapper, CargoTypeMapper cargoTypeMapper, RatingRepository ratingRepository) {
+    public RatingMapper(CarrierMapper carrierMapper, PersonMapper personMapper, CountryMapper countryMapper, CargoTypeMapper cargoTypeMapper, RatingRepository ratingRepository) {
         this.carrierMapper = carrierMapper;
         this.personMapper = personMapper;
-        this.addressMapper = addressMapper;
+        this.countryMapper = countryMapper;
         this.cargoTypeMapper = cargoTypeMapper;
         this.ratingRepository = ratingRepository;
     }
@@ -74,12 +74,10 @@ public class RatingMapper implements EntityMapper<RatingDTO, Rating> {
         }
         String postalCode = ratingDischargeAddressPostalCode(rating);
         if (postalCode != null) {
-            ratingDTO.setDischargeAddressPostalCode(postalCode);
+            ratingDTO.setDischargePostalCode(postalCode);
         }
-        Long id = ratingDischargeAddressId(rating);
-        if (id != null) {
-            ratingDTO.setDischargeAddressId(id);
-        }
+        String dischargeCountry = rating.getDischargeCountry().getCountryName();
+        ratingDTO.setDischargeCountryCountryName(dischargeCountry);
         Long id1 = ratingPersonId(rating);
         if (id1 != null) {
             ratingDTO.setPersonId(id1);
@@ -92,13 +90,12 @@ public class RatingMapper implements EntityMapper<RatingDTO, Rating> {
         if (firstName != null) {
             ratingDTO.setPersonFirstName(firstName);
         }
-        Long id3 = ratingChargeAddressId(rating);
-        if (id3 != null) {
-            ratingDTO.setChargeAddressId(id3);
-        }
+        String chargeCountry = rating.getChargeCountry().getCountryName();
+        ratingDTO.setChargeCountryCountryName(chargeCountry);
+
         String postalCode1 = ratingChargeAddressPostalCode(rating);
         if (postalCode1 != null) {
-            ratingDTO.setChargeAddressPostalCode(postalCode1);
+            ratingDTO.setChargePostalCode(postalCode1);
         }
         Long id4 = ratingCargoTypeId(rating);
         if (id4 != null) {
@@ -132,9 +129,10 @@ public class RatingMapper implements EntityMapper<RatingDTO, Rating> {
 
         rating.setCargoType(cargoTypeMapper.fromId(ratingDTO.getCargoTypeId()));
         rating.setCarrier(carrierMapper.fromId(ratingDTO.getCarrierId()));
-        rating.setChargeAddress(addressMapper.fromId(ratingDTO.getChargeAddressId()));
+        rating.setChargeCountry(countryMapper.fromId(ratingDTO.getChargeCountryId()));
+        rating.setChargePostalCode(ratingDTO.getChargePostalCode());
         rating.setPerson(personMapper.fromId(ratingDTO.getPersonId()));
-        rating.setDischargeAddress(addressMapper.fromId(ratingDTO.getDischargeAddressId()));
+        rating.setChargeCountry(countryMapper.fromId(ratingDTO.getDischargeCountryId()));
         rating.setId(ratingDTO.getId());
         rating.setContact(ratingDTO.getContact());
         rating.setPrice(ratingDTO.getPrice());
@@ -171,22 +169,7 @@ public class RatingMapper implements EntityMapper<RatingDTO, Rating> {
         if (rating == null) {
             return null;
         }
-        Address dischargeAddress = rating.getDischargeAddress();
-        if (dischargeAddress == null) {
-            return null;
-        }
-        return dischargeAddress.getPostalCode();
-    }
-
-    private Long ratingDischargeAddressId(Rating rating) {
-        if (rating == null) {
-            return null;
-        }
-        Address dischargeAddress = rating.getDischargeAddress();
-        if (dischargeAddress == null) {
-            return null;
-        }
-        return dischargeAddress.getId();
+        return rating.getDischargePostalCode();
     }
 
     private Long ratingPersonId(Rating rating) {
@@ -222,26 +205,11 @@ public class RatingMapper implements EntityMapper<RatingDTO, Rating> {
         return person.getFirstName();
     }
 
-    private Long ratingChargeAddressId(Rating rating) {
-        if (rating == null) {
-            return null;
-        }
-        Address chargeAddress = rating.getChargeAddress();
-        if (chargeAddress == null) {
-            return null;
-        }
-        return chargeAddress.getId();
-    }
-
     private String ratingChargeAddressPostalCode(Rating rating) {
         if (rating == null) {
             return null;
         }
-        Address chargeAddress = rating.getChargeAddress();
-        if (chargeAddress == null) {
-            return null;
-        }
-        return chargeAddress.getPostalCode();
+        return rating.getChargePostalCode();
     }
 
     private Long ratingCargoTypeId(Rating rating) {

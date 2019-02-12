@@ -1,6 +1,6 @@
 package io.pogorzelski.nitro.carriers.service;
 
-import io.pogorzelski.nitro.carriers.service.dto.CarrierDTO;
+import io.pogorzelski.nitro.carriers.domain.Carrier;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +15,10 @@ public interface CarrierService {
     /**
      * Save a carrier.
      *
-     * @param carrierDTO the entity to save
+     * @param carrier the entity to save
      * @return the persisted entity
      */
-    CarrierDTO save(CarrierDTO carrierDTO);
+    Carrier save(Carrier carrier);
 
     /**
      * Get all the carriers.
@@ -26,7 +26,7 @@ public interface CarrierService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<CarrierDTO> findAll(Pageable pageable);
+    Page<Carrier> findAll(Pageable pageable);
 
 
     /**
@@ -35,7 +35,7 @@ public interface CarrierService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<CarrierDTO> findOne(Long id);
+    Optional<Carrier> findOne(Long id);
 
     /**
      * Delete the "id" carrier.
@@ -43,4 +43,14 @@ public interface CarrierService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Search for the carrier corresponding to the query.
+     *
+     * @param query the query of the search
+     * 
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<Carrier> search(String query, Pageable pageable);
 }

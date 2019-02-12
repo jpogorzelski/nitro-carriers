@@ -1,6 +1,6 @@
 package io.pogorzelski.nitro.carriers.service;
 
-import io.pogorzelski.nitro.carriers.service.dto.PersonDTO;
+import io.pogorzelski.nitro.carriers.domain.Person;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +15,10 @@ public interface PersonService {
     /**
      * Save a person.
      *
-     * @param personDTO the entity to save
+     * @param person the entity to save
      * @return the persisted entity
      */
-    PersonDTO save(PersonDTO personDTO);
+    Person save(Person person);
 
     /**
      * Get all the people.
@@ -26,7 +26,7 @@ public interface PersonService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<PersonDTO> findAll(Pageable pageable);
+    Page<Person> findAll(Pageable pageable);
 
 
     /**
@@ -35,7 +35,7 @@ public interface PersonService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<PersonDTO> findOne(Long id);
+    Optional<Person> findOne(Long id);
 
     /**
      * Delete the "id" person.
@@ -43,4 +43,14 @@ public interface PersonService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Search for the person corresponding to the query.
+     *
+     * @param query the query of the search
+     * 
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<Person> search(String query, Pageable pageable);
 }

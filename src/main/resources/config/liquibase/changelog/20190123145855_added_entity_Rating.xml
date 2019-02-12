@@ -21,6 +21,14 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="charge_postal_code" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="discharge_postal_code" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
             <column name="contact" type="integer">
                 <constraints nullable="false" />
             </column>
@@ -49,11 +57,11 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="charge_address_id" type="bigint">
+            <column name="charge_country_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
-            <column name="discharge_address_id" type="bigint">
+            <column name="discharge_country_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 

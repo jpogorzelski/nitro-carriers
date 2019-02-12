@@ -1,9 +1,9 @@
 package io.pogorzelski.nitro.carriers.web.rest;
+import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.service.PersonService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
 import io.pogorzelski.nitro.carriers.web.rest.util.PaginationUtil;
-import io.pogorzelski.nitro.carriers.service.dto.PersonDTO;
 import io.pogorzelski.nitro.carriers.service.dto.PersonCriteria;
 import io.pogorzelski.nitro.carriers.service.PersonQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -22,6 +22,9 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Person.
@@ -46,17 +49,17 @@ public class PersonResource {
     /**
      * POST  /people : Create a new person.
      *
-     * @param personDTO the personDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new personDTO, or with status 400 (Bad Request) if the person has already an ID
+     * @param person the person to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new person, or with status 400 (Bad Request) if the person has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/people")
-    public ResponseEntity<PersonDTO> createPerson(@Valid @RequestBody PersonDTO personDTO) throws URISyntaxException {
-        log.debug("REST request to save Person : {}", personDTO);
-        if (personDTO.getId() != null) {
+    public ResponseEntity<Person> createPerson(@Valid @RequestBody Person person) throws URISyntaxException {
+        log.debug("REST request to save Person : {}", person);
+        if (person.getId() != null) {
             throw new BadRequestAlertException("A new person cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        PersonDTO result = personService.save(personDTO);
+        Person result = personService.save(person);
         return ResponseEntity.created(new URI("/api/people/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -65,21 +68,21 @@ public class PersonResource {
     /**
      * PUT  /people : Updates an existing person.
      *
-     * @param personDTO the personDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated personDTO,
-     * or with status 400 (Bad Request) if the personDTO is not valid,
-     * or with status 500 (Internal Server Error) if the personDTO couldn't be updated
+     * @param person the person to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated person,
+     * or with status 400 (Bad Request) if the person is not valid,
+     * or with status 500 (Internal Server Error) if the person couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/people")
-    public ResponseEntity<PersonDTO> updatePerson(@Valid @RequestBody PersonDTO personDTO) throws URISyntaxException {
-        log.debug("REST request to update Person : {}", personDTO);
-        if (personDTO.getId() == null) {
+    public ResponseEntity<Person> updatePerson(@Valid @RequestBody Person person) throws URISyntaxException {
+        log.debug("REST request to update Person : {}", person);
+        if (person.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        PersonDTO result = personService.save(personDTO);
+        Person result = personService.save(person);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, personDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, person.getId().toString()))
             .body(result);
     }
 
@@ -91,9 +94,9 @@ public class PersonResource {
      * @return the ResponseEntity with status 200 (OK) and the list of people in body
      */
     @GetMapping("/people")
-    public ResponseEntity<List<PersonDTO>> getAllPeople(PersonCriteria criteria, Pageable pageable) {
+    public ResponseEntity<List<Person>> getAllPeople(PersonCriteria criteria, Pageable pageable) {
         log.debug("REST request to get People by criteria: {}", criteria);
-        Page<PersonDTO> page = personQueryService.findByCriteria(criteria, pageable);
+        Page<Person> page = personQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/people");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -113,20 +116,20 @@ public class PersonResource {
     /**
      * GET  /people/:id : get the "id" person.
      *
-     * @param id the id of the personDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the personDTO, or with status 404 (Not Found)
+     * @param id the id of the person to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the person, or with status 404 (Not Found)
      */
     @GetMapping("/people/{id}")
-    public ResponseEntity<PersonDTO> getPerson(@PathVariable Long id) {
+    public ResponseEntity<Person> getPerson(@PathVariable Long id) {
         log.debug("REST request to get Person : {}", id);
-        Optional<PersonDTO> personDTO = personService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(personDTO);
+        Optional<Person> person = personService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(person);
     }
 
     /**
      * DELETE  /people/:id : delete the "id" person.
      *
-     * @param id the id of the personDTO to delete
+     * @param id the id of the person to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/people/{id}")
@@ -135,4 +138,21 @@ public class PersonResource {
         personService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * SEARCH  /_search/people?query=:query : search for the person corresponding
+     * to the query.
+     *
+     * @param query the query of the person search
+     * @param pageable the pagination information
+     * @return the result of the search
+     */
+    @GetMapping("/_search/people")
+    public ResponseEntity<List<Person>> searchPeople(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of People for query {}", query);
+        Page<Person> page = personService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/people");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
 }

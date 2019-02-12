@@ -20,17 +20,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="person"/>
 
-        <addForeignKeyConstraint baseColumnNames="charge_address_id"
+        <addForeignKeyConstraint baseColumnNames="charge_country_id"
                                  baseTableName="rating"
-                                 constraintName="fk_rating_charge_address_id"
+                                 constraintName="fk_rating_charge_country_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="address"/>
+                                 referencedTableName="country"/>
 
-        <addForeignKeyConstraint baseColumnNames="discharge_address_id"
+        <addForeignKeyConstraint baseColumnNames="discharge_country_id"
                                  baseTableName="rating"
-                                 constraintName="fk_rating_discharge_address_id"
+                                 constraintName="fk_rating_discharge_country_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="address"/>
+                                 referencedTableName="country"/>
 
         <addForeignKeyConstraint baseColumnNames="cargo_type_id"
                                  baseTableName="rating"

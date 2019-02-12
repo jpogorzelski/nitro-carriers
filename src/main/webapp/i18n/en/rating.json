@@ -16,6 +16,8 @@
             "detail": {
                 "title": "Rating"
             },
+            "chargePostalCode": "Charge Postal Code",
+            "dischargePostalCode": "Discharge Postal Code",
             "contact": "Contact",
             "price": "Price",
             "flexibility": "Flexibility",
@@ -23,8 +25,8 @@
             "average": "Average",
             "carrier": "Carrier",
             "person": "Person",
-            "chargeAddress": "Charge Address",
-            "dischargeAddress": "Discharge Address",
+            "chargeCountry": "Charge Country",
+            "dischargeCountry": "Discharge Country",
             "cargoType": "Cargo Type"
         }
     }

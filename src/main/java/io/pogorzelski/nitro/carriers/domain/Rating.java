@@ -31,6 +31,14 @@ public class Rating implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "charge_postal_code", nullable = false)
+    private String chargePostalCode;
+
+    @NotNull
+    @Column(name = "discharge_postal_code", nullable = false)
+    private String dischargePostalCode;
+
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
     @Column(name = "contact", nullable = false)
@@ -58,7 +66,7 @@ public class Rating implements Serializable {
 
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @NotNull
-    @JsonIgnoreProperties("ratings")
+    @JsonIgnoreProperties("ratings(carrier)S")
     private Carrier carrier;
 
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
@@ -69,12 +77,12 @@ public class Rating implements Serializable {
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @NotNull
     @JsonIgnoreProperties("ratings")
-    private Address chargeAddress;
+    private Country chargeCountry;
 
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @NotNull
     @JsonIgnoreProperties("ratings")
-    private Address dischargeAddress;
+    private Country dischargeCountry;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -88,6 +96,32 @@ public class Rating implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getChargePostalCode() {
+        return chargePostalCode;
+    }
+
+    public Rating chargePostalCode(String chargePostalCode) {
+        this.chargePostalCode = chargePostalCode;
+        return this;
+    }
+
+    public void setChargePostalCode(String chargePostalCode) {
+        this.chargePostalCode = chargePostalCode;
+    }
+
+    public String getDischargePostalCode() {
+        return dischargePostalCode;
+    }
+
+    public Rating dischargePostalCode(String dischargePostalCode) {
+        this.dischargePostalCode = dischargePostalCode;
+        return this;
+    }
+
+    public void setDischargePostalCode(String dischargePostalCode) {
+        this.dischargePostalCode = dischargePostalCode;
     }
 
     public Integer getContact() {
@@ -181,30 +215,30 @@ public class Rating implements Serializable {
         this.person = person;
     }
 
-    public Address getChargeAddress() {
-        return chargeAddress;
+    public Country getChargeCountry() {
+        return chargeCountry;
     }
 
-    public Rating chargeAddress(Address address) {
-        this.chargeAddress = address;
+    public Rating chargeCountry(Country country) {
+        this.chargeCountry = country;
         return this;
     }
 
-    public void setChargeAddress(Address address) {
-        this.chargeAddress = address;
+    public void setChargeCountry(Country country) {
+        this.chargeCountry = country;
     }
 
-    public Address getDischargeAddress() {
-        return dischargeAddress;
+    public Country getDischargeCountry() {
+        return dischargeCountry;
     }
 
-    public Rating dischargeAddress(Address address) {
-        this.dischargeAddress = address;
+    public Rating dischargeCountry(Country country) {
+        this.dischargeCountry = country;
         return this;
     }
 
-    public void setDischargeAddress(Address address) {
-        this.dischargeAddress = address;
+    public void setDischargeCountry(Country country) {
+        this.dischargeCountry = country;
     }
 
     public CargoType getCargoType() {
@@ -245,6 +279,8 @@ public class Rating implements Serializable {
     public String toString() {
         return "Rating{" +
             "id=" + getId() +
+            ", chargePostalCode='" + getChargePostalCode() + "'" +
+            ", dischargePostalCode='" + getDischargePostalCode() + "'" +
             ", contact=" + getContact() +
             ", price=" + getPrice() +
             ", flexibility=" + getFlexibility() +
