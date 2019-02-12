@@ -23,10 +23,12 @@ public class RatingExtDTO implements Serializable {
 
     private String chargeAddressCountry;
 
+    @NotNull
     private String chargeAddressPostalCode;
 
     private String dischargeAddressCountry;
 
+    @NotNull
     private String dischargeAddressPostalCode;
 
     private Long cargoTypeId;

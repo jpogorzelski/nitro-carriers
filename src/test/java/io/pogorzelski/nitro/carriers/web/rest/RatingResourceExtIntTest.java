@@ -4,7 +4,9 @@ import io.pogorzelski.nitro.carriers.NitroCarriersApp;
 import io.pogorzelski.nitro.carriers.domain.*;
 import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
+import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
+import io.pogorzelski.nitro.carriers.service.dto.RatingDTO;
 import io.pogorzelski.nitro.carriers.service.dto.RatingExtDTO;
 import io.pogorzelski.nitro.carriers.service.mapper.RatingExtMapper;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
@@ -14,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -24,11 +28,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 
 import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -40,6 +47,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = NitroCarriersApp.class)
 public class RatingResourceExtIntTest {
+
+    private static final String DEFAULT_CHARGE_POSTAL_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_CHARGE_POSTAL_CODE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DISCHARGE_POSTAL_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_DISCHARGE_POSTAL_CODE = "BBBBBBBBBB";
 
     private static final Integer DEFAULT_CONTACT = 1;
     private static final Integer UPDATED_CONTACT = 2;
@@ -66,6 +79,15 @@ public class RatingResourceExtIntTest {
 
     @Autowired
     private RatingExtService ratingExtService;
+
+    /**
+     * This repository is mocked in the io.pogorzelski.nitro.carriers.repository.search test package.
+     *
+     * @see io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepositoryMockConfiguration
+     */
+    @Autowired
+    private RatingSearchRepository mockRatingSearchRepository;
+
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -153,11 +175,16 @@ public class RatingResourceExtIntTest {
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeCreate + 1);
         Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getChargePostalCode()).isEqualTo(DEFAULT_CHARGE_POSTAL_CODE);
+        assertThat(testRating.getDischargePostalCode()).isEqualTo(DEFAULT_DISCHARGE_POSTAL_CODE);
         assertThat(testRating.getContact()).isEqualTo(DEFAULT_CONTACT);
         assertThat(testRating.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testRating.getFlexibility()).isEqualTo(DEFAULT_FLEXIBILITY);
         assertThat(testRating.getRecommendation()).isEqualTo(DEFAULT_RECOMMENDATION);
         assertThat(testRating.getAverage()).isEqualTo(DEFAULT_AVERAGE);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
     }
 
     @Test
@@ -178,6 +205,48 @@ public class RatingResourceExtIntTest {
         // Validate the Rating in the database
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeCreate);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(0)).save(rating);
+    }
+
+
+    @Test
+    @Transactional
+    public void checkChargePostalCodeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ratingRepository.findAll().size();
+        // set the field null
+        rating.setChargePostalCode(null);
+
+        // Create the Rating, which fails.
+        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
+
+        restRatingMockMvc.perform(post("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDischargePostalCodeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ratingRepository.findAll().size();
+        // set the field null
+        rating.setDischargePostalCode(null);
+
+        // Create the Rating, which fails.
+        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
+
+        restRatingMockMvc.perform(post("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -254,6 +323,161 @@ public class RatingResourceExtIntTest {
 
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void getAllRatings() throws Exception {
+        // Initialize the database
+        ratingRepository.saveAndFlush(rating);
+
+        // Get all the ratingList
+        restRatingMockMvc.perform(get("/api/ratings?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
+            .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE.toString())))
+            .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE.toString())))
+            .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
+            .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))
+            .andExpect(jsonPath("$.[*].recommendation").value(hasItem(DEFAULT_RECOMMENDATION.toString())))
+            .andExpect(jsonPath("$.[*].average").value(hasItem(DEFAULT_AVERAGE.doubleValue())));
+    }
+
+    @Test
+    @Transactional
+    public void getRating() throws Exception {
+        // Initialize the database
+        ratingRepository.saveAndFlush(rating);
+
+        // Get the rating
+        restRatingMockMvc.perform(get("/api/ratings/{id}", rating.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.id").value(rating.getId().intValue()))
+            .andExpect(jsonPath("$.chargePostalCode").value(DEFAULT_CHARGE_POSTAL_CODE.toString()))
+            .andExpect(jsonPath("$.dischargePostalCode").value(DEFAULT_DISCHARGE_POSTAL_CODE.toString()))
+            .andExpect(jsonPath("$.contact").value(DEFAULT_CONTACT))
+            .andExpect(jsonPath("$.price").value(DEFAULT_PRICE))
+            .andExpect(jsonPath("$.flexibility").value(DEFAULT_FLEXIBILITY))
+            .andExpect(jsonPath("$.recommendation").value(DEFAULT_RECOMMENDATION.toString()))
+            .andExpect(jsonPath("$.average").value(DEFAULT_AVERAGE.doubleValue()));
+    }
+
+    @Test
+    @Transactional
+    public void getNonExistingRating() throws Exception {
+        // Get the rating
+        restRatingMockMvc.perform(get("/api/ratings/{id}", Long.MAX_VALUE))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    public void updateRating() throws Exception {
+        // Initialize the database
+        ratingRepository.saveAndFlush(rating);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        // Disconnect from session so that the updates on updatedRating are not directly saved in db
+        em.detach(updatedRating);
+        updatedRating
+            .chargePostalCode(UPDATED_CHARGE_POSTAL_CODE)
+            .dischargePostalCode(UPDATED_DISCHARGE_POSTAL_CODE)
+            .contact(UPDATED_CONTACT)
+            .price(UPDATED_PRICE)
+            .flexibility(UPDATED_FLEXIBILITY)
+            .recommendation(UPDATED_RECOMMENDATION)
+            .average(UPDATED_AVERAGE);
+        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(updatedRating);
+
+        restRatingMockMvc.perform(put("/api/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getChargePostalCode()).isEqualTo(UPDATED_CHARGE_POSTAL_CODE);
+        assertThat(testRating.getDischargePostalCode()).isEqualTo(UPDATED_DISCHARGE_POSTAL_CODE);
+        assertThat(testRating.getContact()).isEqualTo(UPDATED_CONTACT);
+        assertThat(testRating.getPrice()).isEqualTo(UPDATED_PRICE);
+        assertThat(testRating.getFlexibility()).isEqualTo(UPDATED_FLEXIBILITY);
+        assertThat(testRating.getRecommendation()).isEqualTo(UPDATED_RECOMMENDATION);
+        assertThat(testRating.getAverage()).isEqualTo(UPDATED_AVERAGE);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    public void updateNonExistingRating() throws Exception {
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Create the Rating
+        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restRatingMockMvc.perform(put("/api/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(0)).save(rating);
+    }
+
+    @Test
+    @Transactional
+    public void deleteRating() throws Exception {
+        // Initialize the database
+        ratingRepository.saveAndFlush(rating);
+
+        int databaseSizeBeforeDelete = ratingRepository.findAll().size();
+
+        // Delete the rating
+        restRatingMockMvc.perform(delete("/api/ratings/{id}", rating.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+
+        // Validate the database is empty
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeDelete - 1);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).deleteById(rating.getId());
+    }
+
+    @Test
+    @Transactional
+    public void searchRating() throws Exception {
+        // Initialize the database
+        ratingRepository.saveAndFlush(rating);
+        when(mockRatingSearchRepository.search(queryStringQuery("id:" + rating.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(rating), PageRequest.of(0, 1), 1));
+        // Search the rating
+        restRatingMockMvc.perform(get("/api/_search/ratings?query=id:" + rating.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
+            .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE)))
+            .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE)))
+            .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
+            .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))
+            .andExpect(jsonPath("$.[*].recommendation").value(hasItem(DEFAULT_RECOMMENDATION.toString())))
+            .andExpect(jsonPath("$.[*].average").value(hasItem(DEFAULT_AVERAGE.doubleValue())));
     }
 
     @Test
