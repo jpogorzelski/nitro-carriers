@@ -8,6 +8,7 @@ import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.domain.Address;
 import io.pogorzelski.nitro.carriers.domain.CargoType;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
+import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingService;
 import io.pogorzelski.nitro.carriers.service.dto.RatingDTO;
 import io.pogorzelski.nitro.carriers.service.mapper.RatingMapper;
@@ -19,6 +20,8 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -29,12 +32,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 
 
 import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -71,6 +77,14 @@ public class RatingResourceIntTest {
 
     @Autowired
     private RatingService ratingService;
+
+    /**
+     * This repository is mocked in the io.pogorzelski.nitro.carriers.repository.search test package.
+     *
+     * @see io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepositoryMockConfiguration
+     */
+    @Autowired
+    private RatingSearchRepository mockRatingSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -167,6 +181,9 @@ public class RatingResourceIntTest {
         assertThat(testRating.getFlexibility()).isEqualTo(DEFAULT_FLEXIBILITY);
         assertThat(testRating.getRecommendation()).isEqualTo(DEFAULT_RECOMMENDATION);
         assertThat(testRating.getAverage()).isEqualTo(DEFAULT_AVERAGE);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
     }
 
     @Test
@@ -187,6 +204,9 @@ public class RatingResourceIntTest {
         // Validate the Rating in the database
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeCreate);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(0)).save(rating);
     }
 
     @Test
@@ -343,6 +363,9 @@ public class RatingResourceIntTest {
         assertThat(testRating.getFlexibility()).isEqualTo(UPDATED_FLEXIBILITY);
         assertThat(testRating.getRecommendation()).isEqualTo(UPDATED_RECOMMENDATION);
         assertThat(testRating.getAverage()).isEqualTo(UPDATED_AVERAGE);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
     }
 
     @Test
@@ -362,6 +385,9 @@ public class RatingResourceIntTest {
         // Validate the Rating in the database
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(0)).save(rating);
     }
 
     @Test
@@ -380,6 +406,28 @@ public class RatingResourceIntTest {
         // Validate the database is empty
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeDelete - 1);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).deleteById(rating.getId());
+    }
+
+    @Test
+    @Transactional
+    public void searchRating() throws Exception {
+        // Initialize the database
+        ratingRepository.saveAndFlush(rating);
+        when(mockRatingSearchRepository.search(queryStringQuery("id:" + rating.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(rating), PageRequest.of(0, 1), 1));
+        // Search the rating
+        restRatingMockMvc.perform(get("/api/_search/ratings?query=id:" + rating.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
+            .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
+            .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))
+            .andExpect(jsonPath("$.[*].recommendation").value(hasItem(DEFAULT_RECOMMENDATION.toString())))
+            .andExpect(jsonPath("$.[*].average").value(hasItem(DEFAULT_AVERAGE.doubleValue())));
     }
 
     @Test

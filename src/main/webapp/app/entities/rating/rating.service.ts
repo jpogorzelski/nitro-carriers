@@ -12,6 +12,7 @@ type EntityArrayResponseType = HttpResponse<IRating[]>;
 @Injectable({ providedIn: 'root' })
 export class RatingService {
     public resourceUrl = SERVER_API_URL + 'api/ratings';
+    public resourceSearchUrl = SERVER_API_URL + 'api/_search/ratings';
 
     constructor(protected http: HttpClient) {}
 
@@ -34,5 +35,10 @@ export class RatingService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    }
+
+    search(req?: any): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http.get<IRating[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
     }
 }

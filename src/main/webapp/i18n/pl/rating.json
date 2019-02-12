@@ -4,7 +4,8 @@
             "home": {
                 "title": "Rating",
                 "createLabel": "Dodaj Rating",
-                "createOrEditLabel": "Dodaj lub edytuj: Rating"
+                "createOrEditLabel": "Dodaj lub edytuj: Rating",
+                "search": "Szukaj Rating"
             },
             "created": "Utworzono nowy obiekt typu Rating z identyfikatorem {{ param }}",
             "updated": "Uaktualniono obiekt typu Rating z identyfikatorem {{ param }}",

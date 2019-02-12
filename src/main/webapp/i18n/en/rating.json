@@ -4,7 +4,8 @@
             "home": {
                 "title": "Ratings",
                 "createLabel": "Create a new Rating",
-                "createOrEditLabel": "Create or edit a Rating"
+                "createOrEditLabel": "Create or edit a Rating",
+                "search": "Search for Rating"
             },
             "created": "A new Rating is created with identifier {{ param }}",
             "updated": "A Rating is updated with identifier {{ param }}",

@@ -8,6 +8,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,10 +20,11 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 @Entity
 @Table(name = "rating")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Document(indexName = "rating")
 public class Rating implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
