@@ -1,9 +1,8 @@
 package io.pogorzelski.nitro.carriers.service.impl;
 
 import io.pogorzelski.nitro.carriers.domain.Rating;
-import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
-import io.pogorzelski.nitro.carriers.repository.PersonRepository;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
+import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import io.pogorzelski.nitro.carriers.service.dto.RatingExtDTO;
 import io.pogorzelski.nitro.carriers.service.mapper.RatingExtMapper;
@@ -22,16 +21,15 @@ public class RatingExtServiceImpl implements RatingExtService {
     private final Logger log = LoggerFactory.getLogger(RatingExtServiceImpl.class);
 
     private final RatingRepository ratingRepository;
+
     private final RatingExtMapper ratingExtMapper;
 
-    private final CarrierRepository carrierRepository;
-    private final PersonRepository personRepository;
+    private final RatingSearchRepository ratingSearchRepository;
 
-    public RatingExtServiceImpl(RatingRepository ratingRepository, RatingExtMapper ratingExtMapper, CarrierRepository carrierRepository, PersonRepository personRepository) {
+    public RatingExtServiceImpl(RatingRepository ratingRepository, RatingExtMapper ratingExtMapper, RatingSearchRepository ratingSearchRepository) {
         this.ratingRepository = ratingRepository;
         this.ratingExtMapper = ratingExtMapper;
-        this.carrierRepository = carrierRepository;
-        this.personRepository = personRepository;
+        this.ratingSearchRepository = ratingSearchRepository;
     }
 
     /**
@@ -43,10 +41,11 @@ public class RatingExtServiceImpl implements RatingExtService {
     @Override
     public RatingExtDTO save(RatingExtDTO ratingExtDTO) {
         log.debug("Request to save Rating : {}", ratingExtDTO);
-
         Rating rating = ratingExtMapper.toEntity(ratingExtDTO);
         rating = ratingRepository.save(rating);
-        return ratingExtMapper.toDto(rating);
+        RatingExtDTO result = ratingExtMapper.toDto(rating);
+        ratingSearchRepository.save(rating);
+        return result;
     }
 
 }

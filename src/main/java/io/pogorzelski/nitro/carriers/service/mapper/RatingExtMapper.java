@@ -1,10 +1,7 @@
 package io.pogorzelski.nitro.carriers.service.mapper;
 
 import io.pogorzelski.nitro.carriers.domain.*;
-import io.pogorzelski.nitro.carriers.repository.CargoTypeRepository;
-import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
-import io.pogorzelski.nitro.carriers.repository.CountryRepository;
-import io.pogorzelski.nitro.carriers.repository.PersonRepository;
+import io.pogorzelski.nitro.carriers.repository.*;
 import io.pogorzelski.nitro.carriers.service.dto.RatingExtDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,19 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class RatingExtMapper {
+public class RatingExtMapper implements EntityMapper<RatingExtDTO, Rating>{
 
     private final CountryRepository countryRepository;
     private final CarrierRepository carrierRepository;
     private final PersonRepository personRepository;
     private final CargoTypeRepository cargoTypeRepository;
+    private final RatingRepository ratingRepository;
 
     @Autowired
-    public RatingExtMapper(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, CargoTypeRepository cargoTypeRepository) {
+    public RatingExtMapper(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, CargoTypeRepository cargoTypeRepository, RatingRepository ratingRepository) {
         this.countryRepository = countryRepository;
         this.carrierRepository = carrierRepository;
         this.personRepository = personRepository;
         this.cargoTypeRepository = cargoTypeRepository;
+        this.ratingRepository = ratingRepository;
     }
 
     public List<Rating> toEntity(List<RatingExtDTO> dtoList) {
@@ -290,6 +289,14 @@ public class RatingExtMapper {
             return null;
         }
         return cargoType.getId();
+    }
+
+    @Override
+    public Rating fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        return ratingRepository.findById(id).orElse(new Rating(){{setId(id);}});
     }
 }
 

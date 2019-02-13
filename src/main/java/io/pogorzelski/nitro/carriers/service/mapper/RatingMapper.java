@@ -72,18 +72,20 @@ public class RatingMapper implements EntityMapper<RatingDTO, Rating> {
         if (name1 != null) {
             ratingDTO.setCarrierName(name1);
         }
-        String chargeCountry = ratingChargeAddressCountry(rating);
+        Country chargeCountry = ratingChargeAddressCountry(rating);
         if (chargeCountry != null) {
-            ratingDTO.setChargeCountryCountryName(chargeCountry);
+            ratingDTO.setChargeCountryId(chargeCountry.getId());
+            ratingDTO.setChargeCountryCountryName(chargeCountry.getCountryName());
         }
 
         String chargeAddressPostalCode = ratingChargeAddressPostalCode(rating);
         if (chargeAddressPostalCode != null) {
             ratingDTO.setChargePostalCode(chargeAddressPostalCode);
         }
-        String dischargeCountry = ratingDischargeAddressCountry(rating);
+        Country dischargeCountry = ratingDischargeAddressCountry(rating);
         if (dischargeCountry != null) {
-            ratingDTO.setDischargeCountryCountryName(dischargeCountry);
+            ratingDTO.setDischargeCountryId(dischargeCountry.getId());
+            ratingDTO.setDischargeCountryCountryName(dischargeCountry.getCountryName());
         }
 
         String dischargeAddressPostalCode = ratingDischargeAddressPostalCode(rating);
@@ -134,12 +136,13 @@ public class RatingMapper implements EntityMapper<RatingDTO, Rating> {
 
         Rating rating = new Rating();
 
-        rating.setCargoType(cargoTypeMapper.fromId(ratingDTO.getCargoTypeId()));
         rating.setCarrier(carrierMapper.fromId(ratingDTO.getCarrierId()));
-        rating.setChargeCountry(countryMapper.fromId(ratingDTO.getChargeCountryId()));
-        rating.setChargePostalCode(ratingDTO.getChargePostalCode());
         rating.setPerson(personMapper.fromId(ratingDTO.getPersonId()));
-        rating.setChargeCountry(countryMapper.fromId(ratingDTO.getDischargeCountryId()));
+        rating.setChargeCountry(countryMapper.fromId(ratingDTO.getChargeCountryId()));
+        rating.setDischargeCountry(countryMapper.fromId(ratingDTO.getDischargeCountryId()));
+        rating.setCargoType(cargoTypeMapper.fromId(ratingDTO.getCargoTypeId()));
+        rating.setChargePostalCode(ratingDTO.getChargePostalCode());
+        rating.setDischargePostalCode(ratingDTO.getDischargePostalCode());
         rating.setId(ratingDTO.getId());
         rating.setContact(ratingDTO.getContact());
         rating.setPrice(ratingDTO.getPrice());
@@ -172,28 +175,20 @@ public class RatingMapper implements EntityMapper<RatingDTO, Rating> {
         return carrier.getName();
     }
 
-    private String ratingChargeAddressCountry(Rating rating) {
+    private Country ratingChargeAddressCountry(Rating rating) {
         if (rating == null) {
             return null;
         }
 
-        Country country = rating.getChargeCountry();
-        if (country == null) {
-            return null;
-        }
-        return country.getCountryName();
+        return rating.getChargeCountry();
     }
 
-    private String ratingDischargeAddressCountry(Rating rating) {
+    private Country ratingDischargeAddressCountry(Rating rating) {
         if (rating == null) {
             return null;
         }
 
-        Country country = rating.getDischargeCountry();
-        if (country == null) {
-            return null;
-        }
-        return country.getCountryName();
+        return rating.getDischargeCountry();
     }
 
     private String ratingDischargeAddressPostalCode(Rating rating) {
