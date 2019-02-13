@@ -4,23 +4,23 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes } from '@a
 import { UserRouteAccessService } from 'app/core';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { INitroRating, NitroRating } from 'app/shared/model/nitro-rating.model';
+import { IRating, Rating } from 'app/shared/model/rating.model';
 import { NitroRatingService } from './nitro-rating.service';
 import { NitroRatingEditorComponent } from './nitro-rating-editor.component';
 
 @Injectable({ providedIn: 'root' })
-export class NitroRatingResolve implements Resolve<INitroRating> {
+export class NitroRatingResolve implements Resolve<IRating> {
     constructor(private service: NitroRatingService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<INitroRating> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRating> {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(
-                filter((response: HttpResponse<NitroRating>) => response.ok),
-                map((rating: HttpResponse<NitroRating>) => rating.body)
+                filter((response: HttpResponse<Rating>) => response.ok),
+                map((rating: HttpResponse<Rating>) => rating.body)
             );
         }
-        return of(new NitroRating());
+        return of(new Rating());
     }
 }
 
@@ -33,7 +33,7 @@ export const nitroRatingRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'nitroCarriersApp.nitroRating.home.title'
+            pageTitle: 'nitroCarriersApp.rating.home.title'
         },
         canActivate: [UserRouteAccessService]
     }

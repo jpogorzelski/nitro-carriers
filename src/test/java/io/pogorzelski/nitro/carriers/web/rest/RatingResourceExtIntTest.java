@@ -6,8 +6,6 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
-import io.pogorzelski.nitro.carriers.service.dto.RatingExtDTO;
-import io.pogorzelski.nitro.carriers.service.mapper.RatingExtMapper;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +40,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = NitroCarriersApp.class)
 public class RatingResourceExtIntTest {
 
+    private static final String DEFAULT_POSTAL_CODE = "15-111";
+
+    private static final Double DEFAULT_DISTANCE = 1D;
+    private static final Double UPDATED_DISTANCE = 2D;
+
     private static final Integer DEFAULT_CONTACT = 1;
     private static final Integer UPDATED_CONTACT = 2;
 
@@ -57,13 +60,8 @@ public class RatingResourceExtIntTest {
     private static final Double DEFAULT_AVERAGE = 1D;
     private static final Double UPDATED_AVERAGE = 2D;
 
-    private static final String DEFAULT_POSTAL_CODE = "15-111";
-
     @Autowired
     private RatingRepository ratingRepository;
-
-    @Autowired
-    private RatingExtMapper ratingExtMapper;
 
     @Autowired
     private RatingExtService ratingExtService;
@@ -110,15 +108,15 @@ public class RatingResourceExtIntTest {
 
     /**
      * Create an entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Rating createEntity(EntityManager em) {
 
         Carrier carrier = CarrierResourceIntTest.createEntity(em);
-        Person person = PersonResourceIntTest.createEntity(em)
-            .carrier(carrier);
+        Person person = PersonResourceIntTest.createEntity(em);
+           // .carrier(carrier);
         Country country = CountryResourceIntTest.createEntity(em);
         em.persist(country);
         em.flush();
@@ -128,6 +126,7 @@ public class RatingResourceExtIntTest {
         em.flush();
 
         return new Rating()
+            .distance(DEFAULT_DISTANCE)
             .contact(DEFAULT_CONTACT)
             .price(DEFAULT_PRICE)
             .flexibility(DEFAULT_FLEXIBILITY)
@@ -153,10 +152,9 @@ public class RatingResourceExtIntTest {
         int databaseSizeBeforeCreate = ratingRepository.findAll().size();
 
         // Create the Rating
-        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
         restRatingMockMvc.perform(post("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isCreated());
 
         // Validate the Rating in the database
@@ -165,6 +163,7 @@ public class RatingResourceExtIntTest {
         Rating testRating = ratingList.get(ratingList.size() - 1);
         assertThat(testRating.getChargePostalCode()).isEqualTo(DEFAULT_POSTAL_CODE);
         assertThat(testRating.getDischargePostalCode()).isEqualTo(DEFAULT_POSTAL_CODE);
+        assertThat(testRating.getDistance()).isEqualTo(DEFAULT_DISTANCE);
         assertThat(testRating.getContact()).isEqualTo(DEFAULT_CONTACT);
         assertThat(testRating.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testRating.getFlexibility()).isEqualTo(DEFAULT_FLEXIBILITY);
@@ -182,12 +181,11 @@ public class RatingResourceExtIntTest {
 
         // Create the Rating with an existing ID
         rating.setId(1L);
-        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restRatingMockMvc.perform(post("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         // Validate the Rating in the database
@@ -198,7 +196,6 @@ public class RatingResourceExtIntTest {
         verify(mockRatingSearchRepository, times(0)).save(rating);
     }
 
-
     @Test
     @Transactional
     public void checkChargePostalCodeIsRequired() throws Exception {
@@ -207,11 +204,10 @@ public class RatingResourceExtIntTest {
         rating.setChargePostalCode(null);
 
         // Create the Rating, which fails.
-        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -226,11 +222,28 @@ public class RatingResourceExtIntTest {
         rating.setDischargePostalCode(null);
 
         // Create the Rating, which fails.
-        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
+            .andExpect(status().isBadRequest());
+
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDistanceIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ratingRepository.findAll().size();
+        // set the field null
+        rating.setDistance(null);
+
+        // Create the Rating, which fails.
+
+        restRatingMockMvc.perform(post("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -245,11 +258,10 @@ public class RatingResourceExtIntTest {
         rating.setContact(null);
 
         // Create the Rating, which fails.
-        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -264,11 +276,10 @@ public class RatingResourceExtIntTest {
         rating.setPrice(null);
 
         // Create the Rating, which fails.
-        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -283,11 +294,10 @@ public class RatingResourceExtIntTest {
         rating.setFlexibility(null);
 
         // Create the Rating, which fails.
-        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -302,11 +312,10 @@ public class RatingResourceExtIntTest {
         rating.setRecommendation(null);
 
         // Create the Rating, which fails.
-        RatingExtDTO ratingExtDTO = ratingExtMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingExtDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -326,28 +335,5 @@ public class RatingResourceExtIntTest {
         assertThat(rating1).isNotEqualTo(rating2);
         rating1.setId(null);
         assertThat(rating1).isNotEqualTo(rating2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(RatingExtDTO.class);
-        RatingExtDTO ratingExtDTO1 = new RatingExtDTO();
-        ratingExtDTO1.setId(1L);
-        RatingExtDTO ratingExtDTO2 = new RatingExtDTO();
-        assertThat(ratingExtDTO1).isNotEqualTo(ratingExtDTO2);
-        ratingExtDTO2.setId(ratingExtDTO1.getId());
-        assertThat(ratingExtDTO1).isEqualTo(ratingExtDTO2);
-        ratingExtDTO2.setId(2L);
-        assertThat(ratingExtDTO1).isNotEqualTo(ratingExtDTO2);
-        ratingExtDTO1.setId(null);
-        assertThat(ratingExtDTO1).isNotEqualTo(ratingExtDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(ratingExtMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(ratingExtMapper.fromId(null)).isNull();
     }
 }
