@@ -41,7 +41,7 @@
     "dto": "no",
     "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": true,
+    "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
     "applications": "*"

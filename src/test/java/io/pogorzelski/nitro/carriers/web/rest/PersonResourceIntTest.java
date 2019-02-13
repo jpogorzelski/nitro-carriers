@@ -3,13 +3,10 @@ package io.pogorzelski.nitro.carriers.web.rest;
 import io.pogorzelski.nitro.carriers.NitroCarriersApp;
 
 import io.pogorzelski.nitro.carriers.domain.Person;
-import io.pogorzelski.nitro.carriers.domain.Carrier;
 import io.pogorzelski.nitro.carriers.repository.PersonRepository;
 import io.pogorzelski.nitro.carriers.repository.search.PersonSearchRepository;
 import io.pogorzelski.nitro.carriers.service.PersonService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
-import io.pogorzelski.nitro.carriers.service.dto.PersonCriteria;
-import io.pogorzelski.nitro.carriers.service.PersonQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -77,9 +74,6 @@ public class PersonResourceIntTest {
     private PersonSearchRepository mockPersonSearchRepository;
 
     @Autowired
-    private PersonQueryService personQueryService;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -101,7 +95,7 @@ public class PersonResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PersonResource personResource = new PersonResource(personService, personQueryService);
+        final PersonResource personResource = new PersonResource(personService);
         this.restPersonMockMvc = MockMvcBuilders.standaloneSetup(personResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -263,245 +257,6 @@ public class PersonResourceIntTest {
             .andExpect(jsonPath("$.companyId").value(DEFAULT_COMPANY_ID))
             .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER.toString()));
     }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByFirstNameIsEqualToSomething() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where firstName equals to DEFAULT_FIRST_NAME
-        defaultPersonShouldBeFound("firstName.equals=" + DEFAULT_FIRST_NAME);
-
-        // Get all the personList where firstName equals to UPDATED_FIRST_NAME
-        defaultPersonShouldNotBeFound("firstName.equals=" + UPDATED_FIRST_NAME);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByFirstNameIsInShouldWork() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where firstName in DEFAULT_FIRST_NAME or UPDATED_FIRST_NAME
-        defaultPersonShouldBeFound("firstName.in=" + DEFAULT_FIRST_NAME + "," + UPDATED_FIRST_NAME);
-
-        // Get all the personList where firstName equals to UPDATED_FIRST_NAME
-        defaultPersonShouldNotBeFound("firstName.in=" + UPDATED_FIRST_NAME);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByFirstNameIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where firstName is not null
-        defaultPersonShouldBeFound("firstName.specified=true");
-
-        // Get all the personList where firstName is null
-        defaultPersonShouldNotBeFound("firstName.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByLastNameIsEqualToSomething() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where lastName equals to DEFAULT_LAST_NAME
-        defaultPersonShouldBeFound("lastName.equals=" + DEFAULT_LAST_NAME);
-
-        // Get all the personList where lastName equals to UPDATED_LAST_NAME
-        defaultPersonShouldNotBeFound("lastName.equals=" + UPDATED_LAST_NAME);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByLastNameIsInShouldWork() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where lastName in DEFAULT_LAST_NAME or UPDATED_LAST_NAME
-        defaultPersonShouldBeFound("lastName.in=" + DEFAULT_LAST_NAME + "," + UPDATED_LAST_NAME);
-
-        // Get all the personList where lastName equals to UPDATED_LAST_NAME
-        defaultPersonShouldNotBeFound("lastName.in=" + UPDATED_LAST_NAME);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByLastNameIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where lastName is not null
-        defaultPersonShouldBeFound("lastName.specified=true");
-
-        // Get all the personList where lastName is null
-        defaultPersonShouldNotBeFound("lastName.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByCompanyIdIsEqualToSomething() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where companyId equals to DEFAULT_COMPANY_ID
-        defaultPersonShouldBeFound("companyId.equals=" + DEFAULT_COMPANY_ID);
-
-        // Get all the personList where companyId equals to UPDATED_COMPANY_ID
-        defaultPersonShouldNotBeFound("companyId.equals=" + UPDATED_COMPANY_ID);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByCompanyIdIsInShouldWork() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where companyId in DEFAULT_COMPANY_ID or UPDATED_COMPANY_ID
-        defaultPersonShouldBeFound("companyId.in=" + DEFAULT_COMPANY_ID + "," + UPDATED_COMPANY_ID);
-
-        // Get all the personList where companyId equals to UPDATED_COMPANY_ID
-        defaultPersonShouldNotBeFound("companyId.in=" + UPDATED_COMPANY_ID);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByCompanyIdIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where companyId is not null
-        defaultPersonShouldBeFound("companyId.specified=true");
-
-        // Get all the personList where companyId is null
-        defaultPersonShouldNotBeFound("companyId.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByCompanyIdIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where companyId greater than or equals to DEFAULT_COMPANY_ID
-        defaultPersonShouldBeFound("companyId.greaterOrEqualThan=" + DEFAULT_COMPANY_ID);
-
-        // Get all the personList where companyId greater than or equals to UPDATED_COMPANY_ID
-        defaultPersonShouldNotBeFound("companyId.greaterOrEqualThan=" + UPDATED_COMPANY_ID);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByCompanyIdIsLessThanSomething() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where companyId less than or equals to DEFAULT_COMPANY_ID
-        defaultPersonShouldNotBeFound("companyId.lessThan=" + DEFAULT_COMPANY_ID);
-
-        // Get all the personList where companyId less than or equals to UPDATED_COMPANY_ID
-        defaultPersonShouldBeFound("companyId.lessThan=" + UPDATED_COMPANY_ID);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllPeopleByPhoneNumberIsEqualToSomething() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where phoneNumber equals to DEFAULT_PHONE_NUMBER
-        defaultPersonShouldBeFound("phoneNumber.equals=" + DEFAULT_PHONE_NUMBER);
-
-        // Get all the personList where phoneNumber equals to UPDATED_PHONE_NUMBER
-        defaultPersonShouldNotBeFound("phoneNumber.equals=" + UPDATED_PHONE_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByPhoneNumberIsInShouldWork() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where phoneNumber in DEFAULT_PHONE_NUMBER or UPDATED_PHONE_NUMBER
-        defaultPersonShouldBeFound("phoneNumber.in=" + DEFAULT_PHONE_NUMBER + "," + UPDATED_PHONE_NUMBER);
-
-        // Get all the personList where phoneNumber equals to UPDATED_PHONE_NUMBER
-        defaultPersonShouldNotBeFound("phoneNumber.in=" + UPDATED_PHONE_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByPhoneNumberIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        personRepository.saveAndFlush(person);
-
-        // Get all the personList where phoneNumber is not null
-        defaultPersonShouldBeFound("phoneNumber.specified=true");
-
-        // Get all the personList where phoneNumber is null
-        defaultPersonShouldNotBeFound("phoneNumber.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllPeopleByCarrierIsEqualToSomething() throws Exception {
-        // Initialize the database
-        Carrier carrier = CarrierResourceIntTest.createEntity(em);
-        em.persist(carrier);
-        em.flush();
-        person.setCarrier(carrier);
-        personRepository.saveAndFlush(person);
-        Long carrierId = carrier.getId();
-
-        // Get all the personList where carrier equals to carrierId
-        defaultPersonShouldBeFound("carrierId.equals=" + carrierId);
-
-        // Get all the personList where carrier equals to carrierId + 1
-        defaultPersonShouldNotBeFound("carrierId.equals=" + (carrierId + 1));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is returned
-     */
-    private void defaultPersonShouldBeFound(String filter) throws Exception {
-        restPersonMockMvc.perform(get("/api/people?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(person.getId().intValue())))
-            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
-            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID)))
-            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)));
-
-        // Check, that the count call also returns 1
-        restPersonMockMvc.perform(get("/api/people/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(content().string("1"));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is not returned
-     */
-    private void defaultPersonShouldNotBeFound(String filter) throws Exception {
-        restPersonMockMvc.perform(get("/api/people?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$").isEmpty());
-
-        // Check, that the count call also returns 0
-        restPersonMockMvc.perform(get("/api/people/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(content().string("0"));
-    }
-
 
     @Test
     @Transactional

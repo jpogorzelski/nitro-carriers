@@ -1,9 +1,9 @@
 /* tslint:disable max-line-length */
-import {getTestBed, TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {take} from 'rxjs/operators';
-import {NitroRatingService} from 'app/entities/nitro-rating/nitro-rating.service';
-import {Grade, INitroRating, NitroRating} from 'app/shared/model/nitro-rating.model';
+import { getTestBed, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { take } from 'rxjs/operators';
+import { NitroRatingService } from 'app/entities/nitro-rating/nitro-rating.service';
+import { Grade, INitroRating, NitroRating } from 'app/shared/model/nitro-rating.model';
 
 describe('Service Tests', () => {
     describe('NitroRating Service', () => {
@@ -19,12 +19,26 @@ describe('Service Tests', () => {
             service = injector.get(NitroRatingService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new NitroRating(0, 0, "default",
-                0, "first", "last",
-                "country", "11-111",
-                "country", "11-111",
-                "plandeka", 0,
-                1, 1, 1, Grade.DEF_YES, 1);
+            elemDefault = new NitroRating(
+                0,
+                0,
+                'default',
+                0,
+                'first',
+                'last',
+                'country',
+                '11-111',
+                'country',
+                '11-111',
+                'plandeka',
+                0,
+                333.75,
+                1,
+                1,
+                1,
+                Grade.DEF_YES,
+                1
+            );
         });
 
         describe('Service methods', async () => {
@@ -33,9 +47,9 @@ describe('Service Tests', () => {
                 service
                     .find(123)
                     .pipe(take(1))
-                    .subscribe(resp => expect(resp).toMatchObject({body: elemDefault}));
+                    .subscribe(resp => expect(resp).toMatchObject({ body: elemDefault }));
 
-                const req = httpMock.expectOne({method: 'GET'});
+                const req = httpMock.expectOne({ method: 'GET' });
                 req.flush(JSON.stringify(returnedFromService));
             });
 
@@ -50,8 +64,8 @@ describe('Service Tests', () => {
                 service
                     .create(new NitroRating(null))
                     .pipe(take(1))
-                    .subscribe(resp => expect(resp).toMatchObject({body: expected}));
-                const req = httpMock.expectOne({method: 'POST'});
+                    .subscribe(resp => expect(resp).toMatchObject({ body: expected }));
+                const req = httpMock.expectOne({ method: 'POST' });
                 req.flush(JSON.stringify(returnedFromService));
             });
 
@@ -71,12 +85,10 @@ describe('Service Tests', () => {
                 service
                     .update(expected)
                     .pipe(take(1))
-                    .subscribe(resp => expect(resp).toMatchObject({body: expected}));
-                const req = httpMock.expectOne({method: 'PUT'});
+                    .subscribe(resp => expect(resp).toMatchObject({ body: expected }));
+                const req = httpMock.expectOne({ method: 'PUT' });
                 req.flush(JSON.stringify(returnedFromService));
             });
-
-
         });
 
         afterEach(() => {

@@ -1,6 +1,6 @@
 package io.pogorzelski.nitro.carriers.service;
 
-import io.pogorzelski.nitro.carriers.service.dto.RatingDTO;
+import io.pogorzelski.nitro.carriers.domain.Rating;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +15,10 @@ public interface RatingService {
     /**
      * Save a rating.
      *
-     * @param ratingDTO the entity to save
+     * @param rating the entity to save
      * @return the persisted entity
      */
-    RatingDTO save(RatingDTO ratingDTO);
+    Rating save(Rating rating);
 
     /**
      * Get all the ratings.
@@ -26,7 +26,7 @@ public interface RatingService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<RatingDTO> findAll(Pageable pageable);
+    Page<Rating> findAll(Pageable pageable);
 
 
     /**
@@ -35,7 +35,7 @@ public interface RatingService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<RatingDTO> findOne(Long id);
+    Optional<Rating> findOne(Long id);
 
     /**
      * Delete the "id" rating.
@@ -52,5 +52,5 @@ public interface RatingService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<RatingDTO> search(String query, Pageable pageable);
+    Page<Rating> search(String query, Pageable pageable);
 }

@@ -4,8 +4,6 @@ import io.pogorzelski.nitro.carriers.service.RatingService;
 import io.pogorzelski.nitro.carriers.domain.Rating;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
-import io.pogorzelski.nitro.carriers.service.dto.RatingDTO;
-import io.pogorzelski.nitro.carriers.service.mapper.RatingMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,29 +27,24 @@ public class RatingServiceImpl implements RatingService {
 
     private final RatingRepository ratingRepository;
 
-    private final RatingMapper ratingMapper;
-
     private final RatingSearchRepository ratingSearchRepository;
 
-    public RatingServiceImpl(RatingRepository ratingRepository, RatingMapper ratingMapper, RatingSearchRepository ratingSearchRepository) {
+    public RatingServiceImpl(RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository) {
         this.ratingRepository = ratingRepository;
-        this.ratingMapper = ratingMapper;
         this.ratingSearchRepository = ratingSearchRepository;
     }
 
     /**
      * Save a rating.
      *
-     * @param ratingDTO the entity to save
+     * @param rating the entity to save
      * @return the persisted entity
      */
     @Override
-    public RatingDTO save(RatingDTO ratingDTO) {
-        log.debug("Request to save Rating : {}", ratingDTO);
-        Rating rating = ratingMapper.toEntity(ratingDTO);
-        rating = ratingRepository.save(rating);
-        RatingDTO result = ratingMapper.toDto(rating);
-        ratingSearchRepository.save(rating);
+    public Rating save(Rating rating) {
+        log.debug("Request to save Rating : {}", rating);
+        Rating result = ratingRepository.save(rating);
+        ratingSearchRepository.save(result);
         return result;
     }
 
@@ -63,10 +56,9 @@ public class RatingServiceImpl implements RatingService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<RatingDTO> findAll(Pageable pageable) {
+    public Page<Rating> findAll(Pageable pageable) {
         log.debug("Request to get all Ratings");
-        return ratingRepository.findAll(pageable)
-            .map(ratingMapper::toDto);
+        return ratingRepository.findAll(pageable);
     }
 
 
@@ -78,10 +70,9 @@ public class RatingServiceImpl implements RatingService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<RatingDTO> findOne(Long id) {
+    public Optional<Rating> findOne(Long id) {
         log.debug("Request to get Rating : {}", id);
-        return ratingRepository.findById(id)
-            .map(ratingMapper::toDto);
+        return ratingRepository.findById(id);
     }
 
     /**
@@ -104,9 +95,7 @@ public class RatingServiceImpl implements RatingService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<RatingDTO> search(String query, Pageable pageable) {
+    public Page<Rating> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Ratings for query {}", query);
-        return ratingSearchRepository.search(queryStringQuery(query), pageable)
-            .map(ratingMapper::toDto);
-    }
+        return ratingSearchRepository.search(queryStringQuery(query), pageable);    }
 }

@@ -4,8 +4,6 @@ import io.pogorzelski.nitro.carriers.service.PersonService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
 import io.pogorzelski.nitro.carriers.web.rest.util.PaginationUtil;
-import io.pogorzelski.nitro.carriers.service.dto.PersonCriteria;
-import io.pogorzelski.nitro.carriers.service.PersonQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +37,8 @@ public class PersonResource {
 
     private final PersonService personService;
 
-    private final PersonQueryService personQueryService;
-
-    public PersonResource(PersonService personService, PersonQueryService personQueryService) {
+    public PersonResource(PersonService personService) {
         this.personService = personService;
-        this.personQueryService = personQueryService;
     }
 
     /**
@@ -90,27 +85,14 @@ public class PersonResource {
      * GET  /people : get all the people.
      *
      * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of people in body
      */
     @GetMapping("/people")
-    public ResponseEntity<List<Person>> getAllPeople(PersonCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get People by criteria: {}", criteria);
-        Page<Person> page = personQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<Person>> getAllPeople(Pageable pageable) {
+        log.debug("REST request to get a page of People");
+        Page<Person> page = personService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/people");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-    * GET  /people/count : count all the people.
-    *
-    * @param criteria the criterias which the requested entities should match
-    * @return the ResponseEntity with status 200 (OK) and the count in body
-    */
-    @GetMapping("/people/count")
-    public ResponseEntity<Long> countPeople(PersonCriteria criteria) {
-        log.debug("REST request to count People by criteria: {}", criteria);
-        return ResponseEntity.ok().body(personQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="nitroCarriersApp.rating.home.title">Ratings</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-rating" [routerLink]="['/rating/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-rating" [routerLink]="['/nitro-rating']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="nitroCarriersApp.rating.home.createLabel">
             Create new Rating
@@ -32,16 +32,17 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="chargePostalCode"><span jhiTranslate="nitroCarriersApp.rating.chargePostalCode">Charge Postal Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="dischargePostalCode"><span jhiTranslate="nitroCarriersApp.rating.dischargePostalCode">Discharge Postal Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="distance"><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="contact"><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="price"><span jhiTranslate="nitroCarriersApp.rating.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="flexibility"><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="recommendation"><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="average"><span jhiTranslate="nitroCarriersApp.rating.average">Average</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="carrierName"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="personFirstName"><span jhiTranslate="nitroCarriersApp.rating.person">Person</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="chargeCountryCountryName"><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="dischargeCountryCountryName"><span jhiTranslate="nitroCarriersApp.rating.dischargeCountry">Discharge Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="cargoTypeName"><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="carrier.name"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="person.firstName"><span jhiTranslate="nitroCarriersApp.rating.person">Person</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="chargeCountry.countryName"><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dischargeCountry.countryName"><span jhiTranslate="nitroCarriersApp.rating.dischargeCountry">Discharge Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="cargoType.name"><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -50,34 +51,35 @@
                 <td><a [routerLink]="['/rating', rating.id, 'view' ]">{{rating.id}}</a></td>
                 <td>{{rating.chargePostalCode}}</td>
                 <td>{{rating.dischargePostalCode}}</td>
+                <td>{{rating.distance}}</td>
                 <td>{{rating.contact}}</td>
                 <td>{{rating.price}}</td>
                 <td>{{rating.flexibility}}</td>
                 <td jhiTranslate="{{'nitroCarriersApp.Grade.' + rating.recommendation}}">{{rating.recommendation}}</td>
                 <td>{{rating.average}}</td>
                 <td>
-                    <div *ngIf="rating.carrierId">
-                        <a [routerLink]="['../carrier', rating.carrierId , 'view' ]" >{{rating.carrierName}}</a>
+                    <div *ngIf="rating.carrier">
+                        <a [routerLink]="['../carrier', rating.carrier?.id, 'view' ]" >{{rating.carrier?.name}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="rating.personId">
-                        <a [routerLink]="['../person', rating.personId , 'view' ]" >{{rating.personFirstName}}</a>
+                    <div *ngIf="rating.person">
+                        <a [routerLink]="['../person', rating.person?.id, 'view' ]" >{{rating.person?.firstName}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="rating.chargeCountryId">
-                        <a [routerLink]="['../country', rating.chargeCountryId , 'view' ]" >{{rating.chargeCountryCountryName}}</a>
+                    <div *ngIf="rating.chargeCountry">
+                        <a [routerLink]="['../country', rating.chargeCountry?.id, 'view' ]" >{{rating.chargeCountry?.countryName}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="rating.dischargeCountryId">
-                        <a [routerLink]="['../country', rating.dischargeCountryId , 'view' ]" >{{rating.dischargeCountryCountryName}}</a>
+                    <div *ngIf="rating.dischargeCountry">
+                        <a [routerLink]="['../country', rating.dischargeCountry?.id, 'view' ]" >{{rating.dischargeCountry?.countryName}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="rating.cargoTypeId">
-                        <a [routerLink]="['../cargo-type', rating.cargoTypeId , 'view' ]" >{{rating.cargoTypeName}}</a>
+                    <div *ngIf="rating.cargoType">
+                        <a [routerLink]="['../cargo-type', rating.cargoType?.id, 'view' ]" >{{rating.cargoType?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

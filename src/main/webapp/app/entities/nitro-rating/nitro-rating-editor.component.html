@@ -72,7 +72,7 @@
                                for="field_dischargeAddressCountry">Discharge Address</label>
                         <select class="form-control" id="field_dischargeAddressCountry" name="dischargeAddressCountry"
                                 [(ngModel)]="rating.dischargeAddressCountry" required>
-                            <option [ngValue]="null"></option>
+                            <option *ngIf="!editForm.value.dischargeAddressCountry" [ngValue]="null" selected></option>
                             <option [ngValue]="countryOption.countryName"
                                     *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryName}}</option>
                         </select>
@@ -109,16 +109,32 @@
                         <option [ngValue]="cargoTypeOption.id"
                                 *ngFor="let cargoTypeOption of cargotypes; trackBy: trackCargoTypeById">{{cargoTypeOption.name}}</option>
                     </select>
+                    <div [hidden]="!(editForm.controls.cargoType?.dirty && editForm.controls.cargoType?.invalid)">
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.cargoType?.errors?.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
                 </div>
-                <div [hidden]="!(editForm.controls.cargoType?.dirty && editForm.controls.cargoType?.invalid)">
-                    <small class="form-text text-danger"
-                           [hidden]="!editForm.controls.cargoType?.errors?.required"
-                           jhiTranslate="entity.validation.required">
-                        This field is required.
-                    </small>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.distance"
+                           for="field_distance">Distance</label>
+                    <input type="number" class="form-control" name="distance" id="field_distance"
+                           [(ngModel)]="rating.distance" required/>
+                    <div [hidden]="!(editForm.controls.distance?.dirty && editForm.controls.distance?.invalid)">
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.distance?.errors?.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.distance?.errors?.number"
+                               jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
                 </div>
-
-
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.contact"
                            for="field_contact">Contact</label>

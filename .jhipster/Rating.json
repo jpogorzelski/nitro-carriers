@@ -16,6 +16,13 @@
             ]
         },
         {
+            "fieldName": "distance",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "contact",
             "fieldType": "Integer",
             "fieldValidateRules": [
@@ -105,7 +112,7 @@
     ],
     "changelogDate": "20190123145855",
     "entityTableName": "rating",
-    "dto": "mapstruct",
+    "dto": "no",
     "pagination": "infinite-scroll",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,

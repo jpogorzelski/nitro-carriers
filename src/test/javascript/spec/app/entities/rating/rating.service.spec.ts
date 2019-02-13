@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(RatingService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Rating(0, 'AAAAAAA', 'AAAAAAA', 0, 0, 0, Grade.DEF_YES, 0);
+            elemDefault = new Rating(0, 'AAAAAAA', 'AAAAAAA', 0, 0, 0, 0, Grade.DEF_YES, 0);
         });
 
         describe('Service methods', async () => {
@@ -57,6 +57,7 @@ describe('Service Tests', () => {
                     {
                         chargePostalCode: 'BBBBBB',
                         dischargePostalCode: 'BBBBBB',
+                        distance: 1,
                         contact: 1,
                         price: 1,
                         flexibility: 1,
@@ -80,6 +81,7 @@ describe('Service Tests', () => {
                     {
                         chargePostalCode: 'BBBBBB',
                         dischargePostalCode: 'BBBBBB',
+                        distance: 1,
                         contact: 1,
                         price: 1,
                         flexibility: 1,

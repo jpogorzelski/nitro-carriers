@@ -13,6 +13,10 @@
                 <dd>
                     <span>{{rating.dischargePostalCode}}</span>
                 </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span></dt>
+                <dd>
+                    <span>{{rating.distance}}</span>
+                </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span></dt>
                 <dd>
                     <span>{{rating.contact}}</span>
@@ -35,32 +39,32 @@
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span></dt>
                 <dd>
-                    <div *ngIf="rating.carrierId">
-                        <a [routerLink]="['/carrier', rating.carrierId, 'view']">{{rating.carrierName}}</a>
+                    <div *ngIf="rating.carrier">
+                        <a [routerLink]="['/carrier', rating.carrier?.id, 'view']">{{rating.carrier?.name}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.person">Person</span></dt>
                 <dd>
-                    <div *ngIf="rating.personId">
-                        <a [routerLink]="['/person', rating.personId, 'view']">{{rating.personFirstName}}</a>
+                    <div *ngIf="rating.person">
+                        <a [routerLink]="['/person', rating.person?.id, 'view']">{{rating.person?.firstName}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span></dt>
                 <dd>
-                    <div *ngIf="rating.chargeCountryId">
-                        <a [routerLink]="['/country', rating.chargeCountryId, 'view']">{{rating.chargeCountryCountryName}}</a>
+                    <div *ngIf="rating.chargeCountry">
+                        <a [routerLink]="['/country', rating.chargeCountry?.id, 'view']">{{rating.chargeCountry?.countryName}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeCountry">Discharge Country</span></dt>
                 <dd>
-                    <div *ngIf="rating.dischargeCountryId">
-                        <a [routerLink]="['/country', rating.dischargeCountryId, 'view']">{{rating.dischargeCountryCountryName}}</a>
+                    <div *ngIf="rating.dischargeCountry">
+                        <a [routerLink]="['/country', rating.dischargeCountry?.id, 'view']">{{rating.dischargeCountry?.countryName}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>
                 <dd>
-                    <div *ngIf="rating.cargoTypeId">
-                        <a [routerLink]="['/cargo-type', rating.cargoTypeId, 'view']">{{rating.cargoTypeName}}</a>
+                    <div *ngIf="rating.cargoType">
+                        <a [routerLink]="['/cargo-type', rating.cargoType?.id, 'view']">{{rating.cargoType?.name}}</a>
                     </div>
                 </dd>
             </dl>

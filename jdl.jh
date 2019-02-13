@@ -21,6 +21,7 @@ entity CargoType {
 entity Rating {
 chargePostalCode String required,
 dischargePostalCode String required,
+distance Double required,
 contact Integer min(1) max(6) required,
 price Integer min(1) max(6) required,
 flexibility Integer min(1) max(6) required,
@@ -43,7 +44,7 @@ relationship ManyToOne {
     Rating{cargoType(name) required} to CargoType
 }
 
-filter Person
+//filter Person
 
 search Rating with elasticsearch
 // Set pagination options
@@ -51,7 +52,7 @@ paginate Carrier, Rating with infinite-scroll
 paginate Person with pagination
 
 // Use Data Transfert Objects (DTO)
-//dto Rating with mapstruct
+//dto all with mapstruct
 
 // Set service options to all except few
 service all with serviceImpl

@@ -106,6 +106,7 @@ public class RatingExtMapper implements EntityMapper<RatingExtDTO, Rating>{
         }
         ratingExtDTO.setId(rating.getId());
         ratingExtDTO.setFlexibility(rating.getFlexibility());
+        ratingExtDTO.setDistance(rating.getDistance());
         ratingExtDTO.setContact(rating.getContact());
         ratingExtDTO.setPrice(rating.getPrice());
         ratingExtDTO.setRecommendation(rating.getRecommendation());
@@ -168,6 +169,7 @@ public class RatingExtMapper implements EntityMapper<RatingExtDTO, Rating>{
         rating.setCargoType(cargoType);
 
         rating.setId(ratingExtDTO.getId());
+        rating.setDistance(ratingExtDTO.getDistance());
         rating.setFlexibility(ratingExtDTO.getFlexibility());
         rating.setContact(ratingExtDTO.getContact());
         rating.setPrice(ratingExtDTO.getPrice());

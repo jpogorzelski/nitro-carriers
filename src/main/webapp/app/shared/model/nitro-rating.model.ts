@@ -20,6 +20,7 @@ export interface INitroRating {
     dischargeAddressPostalCode?: string;
     cargoTypeName?: string;
     cargoTypeId?: number;
+    distance?: number;
     contact?: number;
     price?: number;
     flexibility?: number;
@@ -41,6 +42,7 @@ export class NitroRating implements INitroRating {
         public dischargeAddressPostalCode?: string,
         public cargoTypeName?: string,
         public cargoTypeId?: number,
+        public distance?: number,
         public contact?: number,
         public price?: number,
         public flexibility?: number,

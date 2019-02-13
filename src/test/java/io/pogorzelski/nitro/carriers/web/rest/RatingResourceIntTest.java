@@ -10,8 +10,6 @@ import io.pogorzelski.nitro.carriers.domain.CargoType;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingService;
-import io.pogorzelski.nitro.carriers.service.dto.RatingDTO;
-import io.pogorzelski.nitro.carriers.service.mapper.RatingMapper;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -60,6 +58,9 @@ public class RatingResourceIntTest {
     private static final String DEFAULT_DISCHARGE_POSTAL_CODE = "AAAAAAAAAA";
     private static final String UPDATED_DISCHARGE_POSTAL_CODE = "BBBBBBBBBB";
 
+    private static final Double DEFAULT_DISTANCE = 1D;
+    private static final Double UPDATED_DISTANCE = 2D;
+
     private static final Integer DEFAULT_CONTACT = 1;
     private static final Integer UPDATED_CONTACT = 2;
 
@@ -77,9 +78,6 @@ public class RatingResourceIntTest {
 
     @Autowired
     private RatingRepository ratingRepository;
-
-    @Autowired
-    private RatingMapper ratingMapper;
 
     @Autowired
     private RatingService ratingService;
@@ -133,6 +131,7 @@ public class RatingResourceIntTest {
         Rating rating = new Rating()
             .chargePostalCode(DEFAULT_CHARGE_POSTAL_CODE)
             .dischargePostalCode(DEFAULT_DISCHARGE_POSTAL_CODE)
+            .distance(DEFAULT_DISTANCE)
             .contact(DEFAULT_CONTACT)
             .price(DEFAULT_PRICE)
             .flexibility(DEFAULT_FLEXIBILITY)
@@ -174,10 +173,9 @@ public class RatingResourceIntTest {
         int databaseSizeBeforeCreate = ratingRepository.findAll().size();
 
         // Create the Rating
-        RatingDTO ratingDTO = ratingMapper.toDto(rating);
         restRatingMockMvc.perform(post("/api/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isCreated());
 
         // Validate the Rating in the database
@@ -186,6 +184,7 @@ public class RatingResourceIntTest {
         Rating testRating = ratingList.get(ratingList.size() - 1);
         assertThat(testRating.getChargePostalCode()).isEqualTo(DEFAULT_CHARGE_POSTAL_CODE);
         assertThat(testRating.getDischargePostalCode()).isEqualTo(DEFAULT_DISCHARGE_POSTAL_CODE);
+        assertThat(testRating.getDistance()).isEqualTo(DEFAULT_DISTANCE);
         assertThat(testRating.getContact()).isEqualTo(DEFAULT_CONTACT);
         assertThat(testRating.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testRating.getFlexibility()).isEqualTo(DEFAULT_FLEXIBILITY);
@@ -203,12 +202,11 @@ public class RatingResourceIntTest {
 
         // Create the Rating with an existing ID
         rating.setId(1L);
-        RatingDTO ratingDTO = ratingMapper.toDto(rating);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restRatingMockMvc.perform(post("/api/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         // Validate the Rating in the database
@@ -227,11 +225,10 @@ public class RatingResourceIntTest {
         rating.setChargePostalCode(null);
 
         // Create the Rating, which fails.
-        RatingDTO ratingDTO = ratingMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -246,11 +243,28 @@ public class RatingResourceIntTest {
         rating.setDischargePostalCode(null);
 
         // Create the Rating, which fails.
-        RatingDTO ratingDTO = ratingMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
+            .andExpect(status().isBadRequest());
+
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDistanceIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ratingRepository.findAll().size();
+        // set the field null
+        rating.setDistance(null);
+
+        // Create the Rating, which fails.
+
+        restRatingMockMvc.perform(post("/api/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -265,11 +279,10 @@ public class RatingResourceIntTest {
         rating.setContact(null);
 
         // Create the Rating, which fails.
-        RatingDTO ratingDTO = ratingMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -284,11 +297,10 @@ public class RatingResourceIntTest {
         rating.setPrice(null);
 
         // Create the Rating, which fails.
-        RatingDTO ratingDTO = ratingMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -303,11 +315,10 @@ public class RatingResourceIntTest {
         rating.setFlexibility(null);
 
         // Create the Rating, which fails.
-        RatingDTO ratingDTO = ratingMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -322,11 +333,10 @@ public class RatingResourceIntTest {
         rating.setRecommendation(null);
 
         // Create the Rating, which fails.
-        RatingDTO ratingDTO = ratingMapper.toDto(rating);
 
         restRatingMockMvc.perform(post("/api/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -346,6 +356,7 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
             .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE.toString())))
             .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE.toString())))
+            .andExpect(jsonPath("$.[*].distance").value(hasItem(DEFAULT_DISTANCE.doubleValue())))
             .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))
@@ -366,6 +377,7 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.id").value(rating.getId().intValue()))
             .andExpect(jsonPath("$.chargePostalCode").value(DEFAULT_CHARGE_POSTAL_CODE.toString()))
             .andExpect(jsonPath("$.dischargePostalCode").value(DEFAULT_DISCHARGE_POSTAL_CODE.toString()))
+            .andExpect(jsonPath("$.distance").value(DEFAULT_DISTANCE.doubleValue()))
             .andExpect(jsonPath("$.contact").value(DEFAULT_CONTACT))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE))
             .andExpect(jsonPath("$.flexibility").value(DEFAULT_FLEXIBILITY))
@@ -385,7 +397,9 @@ public class RatingResourceIntTest {
     @Transactional
     public void updateRating() throws Exception {
         // Initialize the database
-        ratingRepository.saveAndFlush(rating);
+        ratingService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
 
         int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
 
@@ -396,16 +410,16 @@ public class RatingResourceIntTest {
         updatedRating
             .chargePostalCode(UPDATED_CHARGE_POSTAL_CODE)
             .dischargePostalCode(UPDATED_DISCHARGE_POSTAL_CODE)
+            .distance(UPDATED_DISTANCE)
             .contact(UPDATED_CONTACT)
             .price(UPDATED_PRICE)
             .flexibility(UPDATED_FLEXIBILITY)
             .recommendation(UPDATED_RECOMMENDATION)
             .average(UPDATED_AVERAGE);
-        RatingDTO ratingDTO = ratingMapper.toDto(updatedRating);
 
         restRatingMockMvc.perform(put("/api/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
             .andExpect(status().isOk());
 
         // Validate the Rating in the database
@@ -414,6 +428,7 @@ public class RatingResourceIntTest {
         Rating testRating = ratingList.get(ratingList.size() - 1);
         assertThat(testRating.getChargePostalCode()).isEqualTo(UPDATED_CHARGE_POSTAL_CODE);
         assertThat(testRating.getDischargePostalCode()).isEqualTo(UPDATED_DISCHARGE_POSTAL_CODE);
+        assertThat(testRating.getDistance()).isEqualTo(UPDATED_DISTANCE);
         assertThat(testRating.getContact()).isEqualTo(UPDATED_CONTACT);
         assertThat(testRating.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testRating.getFlexibility()).isEqualTo(UPDATED_FLEXIBILITY);
@@ -430,12 +445,11 @@ public class RatingResourceIntTest {
         int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
 
         // Create the Rating
-        RatingDTO ratingDTO = ratingMapper.toDto(rating);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restRatingMockMvc.perform(put("/api/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(ratingDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().isBadRequest());
 
         // Validate the Rating in the database
@@ -450,7 +464,7 @@ public class RatingResourceIntTest {
     @Transactional
     public void deleteRating() throws Exception {
         // Initialize the database
-        ratingRepository.saveAndFlush(rating);
+        ratingService.save(rating);
 
         int databaseSizeBeforeDelete = ratingRepository.findAll().size();
 
@@ -471,7 +485,7 @@ public class RatingResourceIntTest {
     @Transactional
     public void searchRating() throws Exception {
         // Initialize the database
-        ratingRepository.saveAndFlush(rating);
+        ratingService.save(rating);
         when(mockRatingSearchRepository.search(queryStringQuery("id:" + rating.getId()), PageRequest.of(0, 20)))
             .thenReturn(new PageImpl<>(Collections.singletonList(rating), PageRequest.of(0, 1), 1));
         // Search the rating
@@ -481,6 +495,7 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
             .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE)))
             .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE)))
+            .andExpect(jsonPath("$.[*].distance").value(hasItem(DEFAULT_DISTANCE.doubleValue())))
             .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))
@@ -501,28 +516,5 @@ public class RatingResourceIntTest {
         assertThat(rating1).isNotEqualTo(rating2);
         rating1.setId(null);
         assertThat(rating1).isNotEqualTo(rating2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(RatingDTO.class);
-        RatingDTO ratingDTO1 = new RatingDTO();
-        ratingDTO1.setId(1L);
-        RatingDTO ratingDTO2 = new RatingDTO();
-        assertThat(ratingDTO1).isNotEqualTo(ratingDTO2);
-        ratingDTO2.setId(ratingDTO1.getId());
-        assertThat(ratingDTO1).isEqualTo(ratingDTO2);
-        ratingDTO2.setId(2L);
-        assertThat(ratingDTO1).isNotEqualTo(ratingDTO2);
-        ratingDTO1.setId(null);
-        assertThat(ratingDTO1).isNotEqualTo(ratingDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(ratingMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(ratingMapper.fromId(null)).isNull();
     }
 }

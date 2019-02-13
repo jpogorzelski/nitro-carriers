@@ -18,6 +18,7 @@
             },
             "chargePostalCode": "Charge Postal Code",
             "dischargePostalCode": "Discharge Postal Code",
+            "distance": "Distance",
             "contact": "Contact",
             "price": "Price",
             "flexibility": "Flexibility",

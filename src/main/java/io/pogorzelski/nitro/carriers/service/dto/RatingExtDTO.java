@@ -1,9 +1,8 @@
 package io.pogorzelski.nitro.carriers.service.dto;
 
-import javax.validation.constraints.*;
-
 import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -34,6 +33,9 @@ public class RatingExtDTO implements Serializable {
     private Long cargoTypeId;
 
     private String cargoTypeName;
+
+    @NotNull
+    private Double distance;
 
     @NotNull
     @Min(value = 1)
@@ -194,6 +196,14 @@ public class RatingExtDTO implements Serializable {
         this.average = average;
     }
 
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -218,12 +228,7 @@ public class RatingExtDTO implements Serializable {
     @Override
     public String toString() {
         return "RatingExtDTO{" +
-            "contact=" + contact +
-            ", price=" + price +
-            ", flexibility=" + flexibility +
-            ", recommendation=" + recommendation +
-            ", average=" + average +
-            ", id=" + id +
+            "id=" + id +
             ", carrierTransId=" + carrierTransId +
             ", carrierName='" + carrierName + '\'' +
             ", personTransId=" + personTransId +
@@ -235,6 +240,12 @@ public class RatingExtDTO implements Serializable {
             ", dischargeAddressPostalCode='" + dischargeAddressPostalCode + '\'' +
             ", cargoTypeId=" + cargoTypeId +
             ", cargoTypeName='" + cargoTypeName + '\'' +
+            ", distance=" + distance +
+            ", contact=" + contact +
+            ", price=" + price +
+            ", flexibility=" + flexibility +
+            ", recommendation=" + recommendation +
+            ", average=" + average +
             '}';
     }
 }

@@ -39,6 +39,10 @@ public class Rating implements Serializable {
     private String dischargePostalCode;
 
     @NotNull
+    @Column(name = "distance", nullable = false)
+    private Double distance;
+
+    @NotNull
     @Min(value = 1)
     @Max(value = 6)
     @Column(name = "contact", nullable = false)
@@ -122,6 +126,19 @@ public class Rating implements Serializable {
 
     public void setDischargePostalCode(String dischargePostalCode) {
         this.dischargePostalCode = dischargePostalCode;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public Rating distance(Double distance) {
+        this.distance = distance;
+        return this;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     public Integer getContact() {
@@ -281,6 +298,7 @@ public class Rating implements Serializable {
             "id=" + getId() +
             ", chargePostalCode='" + getChargePostalCode() + "'" +
             ", dischargePostalCode='" + getDischargePostalCode() + "'" +
+            ", distance=" + getDistance() +
             ", contact=" + getContact() +
             ", price=" + getPrice() +
             ", flexibility=" + getFlexibility() +

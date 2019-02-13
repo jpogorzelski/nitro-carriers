@@ -29,6 +29,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="distance" type="double">
+                <constraints nullable="false" />
+            </column>
+
             <column name="contact" type="integer">
                 <constraints nullable="false" />
             </column>
