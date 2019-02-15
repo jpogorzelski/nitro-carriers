@@ -36,9 +36,9 @@ spring:
             indent-output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://localhost:5432/NitroCarriers
-        username: NitroCarriers
-        password:
+        url: jdbc:postgresql://localhost:5432/nitro
+        username: nitro
+        password: nitro
         hikari:
             poolName: Hikari
             auto-commit: false
