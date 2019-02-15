@@ -1,0 +1,85 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="rating">
+            <h2><span jhiTranslate="nitroCarriersApp.rating.detail.title">Rating</span> {{rating.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span></dt>
+                <dd>
+                    <div *ngIf="rating.carrier">
+                        <a [routerLink]="['/carrier', rating.carrier?.id, 'view']">{{rating.carrier?.name}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.person">Person</span></dt>
+                <dd>
+                    <div *ngIf="rating.person">
+                        <a [routerLink]="['/person', rating.person?.id, 'view']">{{rating.person?.firstName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.chargePostalCode">Charge Postal Code</span></dt>
+                <dd>
+                    <span>{{rating.chargePostalCode}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span></dt>
+                <dd>
+                    <div *ngIf="rating.chargeCountry">
+                        <a [routerLink]="['/country', rating.chargeCountry?.id, 'view']">{{rating.chargeCountry?.countryName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.dischargePostalCode">Discharge Postal Code</span></dt>
+                <dd>
+                    <span>{{rating.dischargePostalCode}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeCountry">Discharge Country</span></dt>
+                <dd>
+                    <div *ngIf="rating.dischargeCountry">
+                        <a [routerLink]="['/country', rating.dischargeCountry?.id, 'view']">{{rating.dischargeCountry?.countryName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>
+                <dd>
+                    <div *ngIf="rating.cargoType">
+                        <a [routerLink]="['/cargo-type', rating.cargoType?.id, 'view']">{{rating.cargoType?.name}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span></dt>
+                <dd>
+                    <span>{{rating.distance}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span></dt>
+                <dd>
+                    <span>{{rating.contact}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.price">Price</span></dt>
+                <dd>
+                    <span>{{rating.price}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span></dt>
+                <dd>
+                    <span>{{rating.flexibility}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'nitroCarriersApp.Grade.' + rating.recommendation}}">{{rating.recommendation}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.average">Average</span></dt>
+                <dd>
+                    <span>{{rating.average}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/rating', rating.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

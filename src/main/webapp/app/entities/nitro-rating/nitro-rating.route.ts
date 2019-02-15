@@ -26,7 +26,19 @@ export class NitroRatingResolve implements Resolve<IRating> {
 
 export const nitroRatingRoute: Routes = [
     {
-        path: '',
+        path: 'new',
+        component: NitroRatingEditorComponent,
+        resolve: {
+            rating: NitroRatingResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'nitroCarriersApp.rating.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: ':id/edit',
         component: NitroRatingEditorComponent,
         resolve: {
             rating: NitroRatingResolve

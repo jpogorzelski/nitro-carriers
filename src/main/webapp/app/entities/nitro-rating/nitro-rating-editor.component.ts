@@ -4,7 +4,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-import { Grade, IRating } from 'app/shared/model/rating.model';
+import { Grade, IRating, Rating } from 'app/shared/model/rating.model';
 import { NitroRatingService } from './nitro-rating.service';
 import { IPerson, Person } from 'app/shared/model/person.model';
 import { ICargoType } from 'app/shared/model/cargo-type.model';
@@ -40,6 +40,18 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ rating }) => {
             this.rating = rating;
+            if (this.rating.id) {
+                this.carrierAndPerson =
+                    this.rating.carrier.name +
+                    '\n' +
+                    this.rating.person.firstName +
+                    ' ' +
+                    this.rating.person.lastName +
+                    ', ' +
+                    this.rating.carrier.transId +
+                    '-' +
+                    this.rating.person.companyId;
+            }
         });
 
         this.countryService
@@ -137,7 +149,9 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         return recommendation;
     }
 
-    previousState() {}
+    previousState() {
+        window.history.back();
+    }
 
     save() {
         this.rating = this.extractCarrierAndPerson(this.rating, this.carrierAndPerson);

@@ -7,10 +7,7 @@ import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -49,6 +46,27 @@ public class RatingResourceExt {
         Rating result = ratingExtService.save(rating);
         return ResponseEntity.created(new URI("/api/ext/ratings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * PUT  /ratings : Updates an existing rating.
+     *
+     * @param rating the rating to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated rating,
+     * or with status 400 (Bad Request) if the rating is not valid,
+     * or with status 500 (Internal Server Error) if the rating couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/ratings")
+    public ResponseEntity<Rating> updateRating(@Valid @RequestBody Rating rating) throws URISyntaxException {
+        log.debug("REST request to update Rating : {}", rating);
+        if (rating.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        Rating result = ratingExtService.save(rating);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, rating.getId().toString()))
             .body(result);
     }
 

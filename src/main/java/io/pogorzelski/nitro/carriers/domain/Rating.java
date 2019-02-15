@@ -2,17 +2,17 @@ package io.pogorzelski.nitro.carriers.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
-
-import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 
 /**
  * A Rating.
@@ -68,22 +68,22 @@ public class Rating implements Serializable {
     @Column(name = "average")
     private Double average;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Carrier carrier;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Person person;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Country chargeCountry;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Country dischargeCountry;

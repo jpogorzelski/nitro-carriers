@@ -6,7 +6,6 @@ import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,12 +56,9 @@ public class RatingExtServiceImpl implements RatingExtService {
         }
 
         Integer companyId = rating.getPerson().getCompanyId();
-        Person person = personRepository.findByCompanyId(companyId);
+        Person person = personRepository.findByCarrier_TransIdAndCompanyId(carrierTransId, companyId);
         if (person != null) {
             rating.setPerson(person);
-        }
-        if (rating.getPerson() != null){
-            rating.getPerson().setCarrier(rating.getCarrier()); //todo
         }
 
         String chargeAddressCountry = rating.getChargeCountry().getCountryName();
@@ -87,6 +83,8 @@ public class RatingExtServiceImpl implements RatingExtService {
 
         Rating result = ratingRepository.save(rating);
         ratingSearchRepository.save(rating);
+
+         result.getPerson().setCarrier(result.getCarrier());
         return result;
     }
 

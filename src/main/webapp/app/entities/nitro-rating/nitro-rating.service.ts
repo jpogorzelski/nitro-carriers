@@ -10,16 +10,17 @@ type EntityArrayResponseType = HttpResponse<IRating[]>;
 
 @Injectable({ providedIn: 'root' })
 export class NitroRatingService {
-    public resourceUrl = SERVER_API_URL + 'api/ext/ratings';
+    public resourceUrl = SERVER_API_URL + 'api/ratings';
+    public resourceExtUrl = SERVER_API_URL + 'api/ext/ratings';
 
     constructor(protected http: HttpClient) {}
 
     create(rating: IRating): Observable<EntityResponseType> {
-        return this.http.post<IRating>(this.resourceUrl, rating, { observe: 'response' });
+        return this.http.post<IRating>(this.resourceExtUrl, rating, { observe: 'response' });
     }
 
     update(rating: IRating): Observable<EntityResponseType> {
-        return this.http.put<IRating>(this.resourceUrl, rating, { observe: 'response' });
+        return this.http.put<IRating>(this.resourceExtUrl, rating, { observe: 'response' });
     }
 
     find(id: number): Observable<EntityResponseType> {
