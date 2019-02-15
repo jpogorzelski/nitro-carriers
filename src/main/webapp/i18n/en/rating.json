@@ -16,19 +16,27 @@
             "detail": {
                 "title": "Rating"
             },
-            "chargePostalCode": "Charge Postal Code",
-            "dischargePostalCode": "Discharge Postal Code",
-            "distance": "Distance",
+            "flexibility": "Flexibility",
             "contact": "Contact",
             "price": "Price",
-            "flexibility": "Flexibility",
             "recommendation": "Recommendation",
             "average": "Average",
-            "carrier": "Carrier",
             "person": "Person",
-            "chargeCountry": "Charge Country",
-            "dischargeCountry": "Discharge Country",
-            "cargoType": "Cargo Type"
+            "personFirstName": "Contact person first name",
+            "personLastName": "Contact person last name",
+            "personTransId": "Contact person Trans ID",
+            "chargeAddress": "Charge address",
+            "chargeCountry": "Country",
+            "chargePostalCode": "Postal code",
+            "dischargeAddress": "Discharge address",
+            "dischargeCountry": "Country",
+            "dischargePostalCode": "Postal code",
+            "cargoType": "Cargo Type",
+            "carrierTransId": "Carrier Trans ID",
+            "carrierName": "Carrier Name",
+            "carrier": "Carrier",
+            "carrierAndPerson": "Carrier and contact person data",
+            "distance": "Distance"
         }
     }
 }
