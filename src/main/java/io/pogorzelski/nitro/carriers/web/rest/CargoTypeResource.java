@@ -1,8 +1,8 @@
 package io.pogorzelski.nitro.carriers.web.rest;
+import io.pogorzelski.nitro.carriers.domain.CargoType;
 import io.pogorzelski.nitro.carriers.service.CargoTypeService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
-import io.pogorzelski.nitro.carriers.service.dto.CargoTypeDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +15,9 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing CargoType.
@@ -36,17 +39,17 @@ public class CargoTypeResource {
     /**
      * POST  /cargo-types : Create a new cargoType.
      *
-     * @param cargoTypeDTO the cargoTypeDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new cargoTypeDTO, or with status 400 (Bad Request) if the cargoType has already an ID
+     * @param cargoType the cargoType to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new cargoType, or with status 400 (Bad Request) if the cargoType has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/cargo-types")
-    public ResponseEntity<CargoTypeDTO> createCargoType(@Valid @RequestBody CargoTypeDTO cargoTypeDTO) throws URISyntaxException {
-        log.debug("REST request to save CargoType : {}", cargoTypeDTO);
-        if (cargoTypeDTO.getId() != null) {
+    public ResponseEntity<CargoType> createCargoType(@Valid @RequestBody CargoType cargoType) throws URISyntaxException {
+        log.debug("REST request to save CargoType : {}", cargoType);
+        if (cargoType.getId() != null) {
             throw new BadRequestAlertException("A new cargoType cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        CargoTypeDTO result = cargoTypeService.save(cargoTypeDTO);
+        CargoType result = cargoTypeService.save(cargoType);
         return ResponseEntity.created(new URI("/api/cargo-types/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -55,21 +58,21 @@ public class CargoTypeResource {
     /**
      * PUT  /cargo-types : Updates an existing cargoType.
      *
-     * @param cargoTypeDTO the cargoTypeDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated cargoTypeDTO,
-     * or with status 400 (Bad Request) if the cargoTypeDTO is not valid,
-     * or with status 500 (Internal Server Error) if the cargoTypeDTO couldn't be updated
+     * @param cargoType the cargoType to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated cargoType,
+     * or with status 400 (Bad Request) if the cargoType is not valid,
+     * or with status 500 (Internal Server Error) if the cargoType couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/cargo-types")
-    public ResponseEntity<CargoTypeDTO> updateCargoType(@Valid @RequestBody CargoTypeDTO cargoTypeDTO) throws URISyntaxException {
-        log.debug("REST request to update CargoType : {}", cargoTypeDTO);
-        if (cargoTypeDTO.getId() == null) {
+    public ResponseEntity<CargoType> updateCargoType(@Valid @RequestBody CargoType cargoType) throws URISyntaxException {
+        log.debug("REST request to update CargoType : {}", cargoType);
+        if (cargoType.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        CargoTypeDTO result = cargoTypeService.save(cargoTypeDTO);
+        CargoType result = cargoTypeService.save(cargoType);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, cargoTypeDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, cargoType.getId().toString()))
             .body(result);
     }
 
@@ -79,7 +82,7 @@ public class CargoTypeResource {
      * @return the ResponseEntity with status 200 (OK) and the list of cargoTypes in body
      */
     @GetMapping("/cargo-types")
-    public List<CargoTypeDTO> getAllCargoTypes() {
+    public List<CargoType> getAllCargoTypes() {
         log.debug("REST request to get all CargoTypes");
         return cargoTypeService.findAll();
     }
@@ -87,20 +90,20 @@ public class CargoTypeResource {
     /**
      * GET  /cargo-types/:id : get the "id" cargoType.
      *
-     * @param id the id of the cargoTypeDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the cargoTypeDTO, or with status 404 (Not Found)
+     * @param id the id of the cargoType to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the cargoType, or with status 404 (Not Found)
      */
     @GetMapping("/cargo-types/{id}")
-    public ResponseEntity<CargoTypeDTO> getCargoType(@PathVariable Long id) {
+    public ResponseEntity<CargoType> getCargoType(@PathVariable Long id) {
         log.debug("REST request to get CargoType : {}", id);
-        Optional<CargoTypeDTO> cargoTypeDTO = cargoTypeService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(cargoTypeDTO);
+        Optional<CargoType> cargoType = cargoTypeService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(cargoType);
     }
 
     /**
      * DELETE  /cargo-types/:id : delete the "id" cargoType.
      *
-     * @param id the id of the cargoTypeDTO to delete
+     * @param id the id of the cargoType to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/cargo-types/{id}")
@@ -109,4 +112,18 @@ public class CargoTypeResource {
         cargoTypeService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * SEARCH  /_search/cargo-types?query=:query : search for the cargoType corresponding
+     * to the query.
+     *
+     * @param query the query of the cargoType search
+     * @return the result of the search
+     */
+    @GetMapping("/_search/cargo-types")
+    public List<CargoType> searchCargoTypes(@RequestParam String query) {
+        log.debug("REST request to search CargoTypes for query {}", query);
+        return cargoTypeService.search(query);
+    }
+
 }

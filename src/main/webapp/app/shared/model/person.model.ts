@@ -1,11 +1,12 @@
+import { ICarrier } from 'app/shared/model/carrier.model';
+
 export interface IPerson {
     id?: number;
     firstName?: string;
     lastName?: string;
     companyId?: number;
     phoneNumber?: string;
-    carrierName?: string;
-    carrierId?: number;
+    carrier?: ICarrier;
 }
 
 export class Person implements IPerson {
@@ -15,7 +16,6 @@ export class Person implements IPerson {
         public lastName?: string,
         public companyId?: number,
         public phoneNumber?: string,
-        public carrierName?: string,
-        public carrierId?: number
+        public carrier?: ICarrier
     ) {}
 }

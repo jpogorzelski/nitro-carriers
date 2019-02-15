@@ -39,14 +39,12 @@ public class CacheConfiguration {
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.User.class.getName() + ".authorities", jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Country.class.getName(), jcacheConfiguration);
-            cm.createCache(io.pogorzelski.nitro.carriers.domain.Address.class.getName(), jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Carrier.class.getName(), jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Carrier.class.getName() + ".people", jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Carrier.class.getName() + ".ratings", jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Person.class.getName(), jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.CargoType.class.getName(), jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Rating.class.getName(), jcacheConfiguration);
-            cm.createCache(io.pogorzelski.nitro.carriers.domain.Address.class.getName() + ".countries", jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Rating.class.getName() + ".people", jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Rating.class.getName() + ".chargeAddresses", jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Rating.class.getName() + ".dischargeAddresses", jcacheConfiguration);

@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { ICarrier } from 'app/shared/model/carrier.model';
 import { AccountService } from 'app/core';
-
-import { ITEMS_PER_PAGE } from 'app/shared';
 import { CarrierService } from './carrier.service';
 
 @Component({
@@ -18,51 +17,59 @@ export class CarrierComponent implements OnInit, OnDestroy {
     carriers: ICarrier[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    itemsPerPage: number;
-    links: any;
-    page: any;
-    predicate: any;
-    reverse: any;
-    totalItems: number;
+    currentSearch: string;
 
     constructor(
         protected carrierService: CarrierService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
-        protected parseLinks: JhiParseLinks,
+        protected activatedRoute: ActivatedRoute,
         protected accountService: AccountService
     ) {
-        this.carriers = [];
-        this.itemsPerPage = ITEMS_PER_PAGE;
-        this.page = 0;
-        this.links = {
-            last: 0
-        };
-        this.predicate = 'id';
-        this.reverse = true;
+        this.currentSearch =
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
+                ? this.activatedRoute.snapshot.params['search']
+                : '';
     }
 
     loadAll() {
+        if (this.currentSearch) {
+            this.carrierService
+                .search({
+                    query: this.currentSearch
+                })
+                .pipe(
+                    filter((res: HttpResponse<ICarrier[]>) => res.ok),
+                    map((res: HttpResponse<ICarrier[]>) => res.body)
+                )
+                .subscribe((res: ICarrier[]) => (this.carriers = res), (res: HttpErrorResponse) => this.onError(res.message));
+            return;
+        }
         this.carrierService
-            .query({
-                page: this.page,
-                size: this.itemsPerPage,
-                sort: this.sort()
-            })
+            .query()
+            .pipe(
+                filter((res: HttpResponse<ICarrier[]>) => res.ok),
+                map((res: HttpResponse<ICarrier[]>) => res.body)
+            )
             .subscribe(
-                (res: HttpResponse<ICarrier[]>) => this.paginateCarriers(res.body, res.headers),
+                (res: ICarrier[]) => {
+                    this.carriers = res;
+                    this.currentSearch = '';
+                },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
 
-    reset() {
-        this.page = 0;
-        this.carriers = [];
+    search(query) {
+        if (!query) {
+            return this.clear();
+        }
+        this.currentSearch = query;
         this.loadAll();
     }
 
-    loadPage(page) {
-        this.page = page;
+    clear() {
+        this.currentSearch = '';
         this.loadAll();
     }
 
@@ -83,23 +90,7 @@ export class CarrierComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInCarriers() {
-        this.eventSubscriber = this.eventManager.subscribe('carrierListModification', response => this.reset());
-    }
-
-    sort() {
-        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-        if (this.predicate !== 'id') {
-            result.push('id');
-        }
-        return result;
-    }
-
-    protected paginateCarriers(data: ICarrier[], headers: HttpHeaders) {
-        this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-        for (let i = 0; i < data.length; i++) {
-            this.carriers.push(data[i]);
-        }
+        this.eventSubscriber = this.eventManager.subscribe('carrierListModification', response => this.loadAll());
     }
 
     protected onError(errorMessage: string) {

@@ -12,6 +12,7 @@ type EntityArrayResponseType = HttpResponse<ICargoType[]>;
 @Injectable({ providedIn: 'root' })
 export class CargoTypeService {
     public resourceUrl = SERVER_API_URL + 'api/cargo-types';
+    public resourceSearchUrl = SERVER_API_URL + 'api/_search/cargo-types';
 
     constructor(protected http: HttpClient) {}
 
@@ -34,5 +35,10 @@ export class CargoTypeService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    }
+
+    search(req?: any): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http.get<ICargoType[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
     }
 }

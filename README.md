@@ -2,6 +2,13 @@
 
 This application was generated using JHipster 5.8.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v5.8.1](https://www.jhipster.tech/documentation-archive/v5.8.1).
 
+## TODO:
+
+-   add user to rating and check permission when edit (user can edit only those ratings which he created)
+-   add remarks to all grades (flexibility, contact, etc)
+-   auto complete list of countries
+-   grades list, not input (1-6)
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:

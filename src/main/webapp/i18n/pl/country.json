@@ -4,7 +4,8 @@
             "home": {
                 "title": "Country",
                 "createLabel": "Dodaj Country",
-                "createOrEditLabel": "Dodaj lub edytuj: Country"
+                "createOrEditLabel": "Dodaj lub edytuj: Country",
+                "search": "Szukaj Country"
             },
             "created": "Utworzono nowy obiekt typu Country z identyfikatorem {{ param }}",
             "updated": "Uaktualniono obiekt typu Country z identyfikatorem {{ param }}",

@@ -2,16 +2,17 @@ package io.pogorzelski.nitro.carriers.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
-
-import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 
 /**
  * A Rating.
@@ -19,14 +20,27 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 @Entity
 @Table(name = "rating")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Document(indexName = "rating")
 public class Rating implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
+
+    @NotNull
+    @Column(name = "charge_postal_code", nullable = false)
+    private String chargePostalCode;
+
+    @NotNull
+    @Column(name = "discharge_postal_code", nullable = false)
+    private String dischargePostalCode;
+
+    @NotNull
+    @Column(name = "distance", nullable = false)
+    private Double distance;
 
     @NotNull
     @Min(value = 1)
@@ -54,25 +68,25 @@ public class Rating implements Serializable {
     @Column(name = "average")
     private Double average;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Carrier carrier;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @NotNull
     @JsonIgnoreProperties("ratings")
     private Person person;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("ratings")
-    private Address chargeAddress;
+    private Country chargeCountry;
 
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("ratings")
-    private Address dischargeAddress;
+    private Country dischargeCountry;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -86,6 +100,45 @@ public class Rating implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getChargePostalCode() {
+        return chargePostalCode;
+    }
+
+    public Rating chargePostalCode(String chargePostalCode) {
+        this.chargePostalCode = chargePostalCode;
+        return this;
+    }
+
+    public void setChargePostalCode(String chargePostalCode) {
+        this.chargePostalCode = chargePostalCode;
+    }
+
+    public String getDischargePostalCode() {
+        return dischargePostalCode;
+    }
+
+    public Rating dischargePostalCode(String dischargePostalCode) {
+        this.dischargePostalCode = dischargePostalCode;
+        return this;
+    }
+
+    public void setDischargePostalCode(String dischargePostalCode) {
+        this.dischargePostalCode = dischargePostalCode;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public Rating distance(Double distance) {
+        this.distance = distance;
+        return this;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     public Integer getContact() {
@@ -179,30 +232,30 @@ public class Rating implements Serializable {
         this.person = person;
     }
 
-    public Address getChargeAddress() {
-        return chargeAddress;
+    public Country getChargeCountry() {
+        return chargeCountry;
     }
 
-    public Rating chargeAddress(Address address) {
-        this.chargeAddress = address;
+    public Rating chargeCountry(Country country) {
+        this.chargeCountry = country;
         return this;
     }
 
-    public void setChargeAddress(Address address) {
-        this.chargeAddress = address;
+    public void setChargeCountry(Country country) {
+        this.chargeCountry = country;
     }
 
-    public Address getDischargeAddress() {
-        return dischargeAddress;
+    public Country getDischargeCountry() {
+        return dischargeCountry;
     }
 
-    public Rating dischargeAddress(Address address) {
-        this.dischargeAddress = address;
+    public Rating dischargeCountry(Country country) {
+        this.dischargeCountry = country;
         return this;
     }
 
-    public void setDischargeAddress(Address address) {
-        this.dischargeAddress = address;
+    public void setDischargeCountry(Country country) {
+        this.dischargeCountry = country;
     }
 
     public CargoType getCargoType() {
@@ -243,6 +296,9 @@ public class Rating implements Serializable {
     public String toString() {
         return "Rating{" +
             "id=" + getId() +
+            ", chargePostalCode='" + getChargePostalCode() + "'" +
+            ", dischargePostalCode='" + getDischargePostalCode() + "'" +
+            ", distance=" + getDistance() +
             ", contact=" + getContact() +
             ", price=" + getPrice() +
             ", flexibility=" + getFlexibility() +

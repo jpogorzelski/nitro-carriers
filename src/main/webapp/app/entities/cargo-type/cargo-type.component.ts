@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
@@ -16,15 +17,34 @@ export class CargoTypeComponent implements OnInit, OnDestroy {
     cargoTypes: ICargoType[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    currentSearch: string;
 
     constructor(
         protected cargoTypeService: CargoTypeService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
+        protected activatedRoute: ActivatedRoute,
         protected accountService: AccountService
-    ) {}
+    ) {
+        this.currentSearch =
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
+                ? this.activatedRoute.snapshot.params['search']
+                : '';
+    }
 
     loadAll() {
+        if (this.currentSearch) {
+            this.cargoTypeService
+                .search({
+                    query: this.currentSearch
+                })
+                .pipe(
+                    filter((res: HttpResponse<ICargoType[]>) => res.ok),
+                    map((res: HttpResponse<ICargoType[]>) => res.body)
+                )
+                .subscribe((res: ICargoType[]) => (this.cargoTypes = res), (res: HttpErrorResponse) => this.onError(res.message));
+            return;
+        }
         this.cargoTypeService
             .query()
             .pipe(
@@ -34,9 +54,23 @@ export class CargoTypeComponent implements OnInit, OnDestroy {
             .subscribe(
                 (res: ICargoType[]) => {
                     this.cargoTypes = res;
+                    this.currentSearch = '';
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+    }
+
+    search(query) {
+        if (!query) {
+            return this.clear();
+        }
+        this.currentSearch = query;
+        this.loadAll();
+    }
+
+    clear() {
+        this.currentSearch = '';
+        this.loadAll();
     }
 
     ngOnInit() {

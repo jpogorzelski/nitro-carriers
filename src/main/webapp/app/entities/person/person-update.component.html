@@ -54,9 +54,9 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.person.carrier" for="field_carrier">Carrier</label>
-                    <select class="form-control" id="field_carrier" name="carrier" [(ngModel)]="person.carrierId" >
+                    <select class="form-control" id="field_carrier" name="carrier" [(ngModel)]="person.carrier" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="carrierOption.id" *ngFor="let carrierOption of carriers; trackBy: trackCarrierById">{{carrierOption.name}}</option>
+                        <option [ngValue]="carrierOption.id === person.carrier?.id ? person.carrier : carrierOption" *ngFor="let carrierOption of carriers; trackBy: trackCarrierById">{{carrierOption.name}}</option>
                     </select>
                 </div>
             </div>

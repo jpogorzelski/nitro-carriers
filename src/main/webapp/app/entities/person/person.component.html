@@ -3,23 +3,38 @@
         <span jhiTranslate="nitroCarriersApp.person.home.title">People</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-person" [routerLink]="['/person/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="nitroCarriersApp.person.home.createLabel">
+            <span class="hidden-sm-down"  jhiTranslate="nitroCarriersApp.person.home.createLabel">
             Create new Person
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'nitroCarriersApp.person.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     <br/>
     <div class="table-responsive" *ngIf="people">
         <table class="table table-striped">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="firstName"><span jhiTranslate="nitroCarriersApp.person.firstName">First Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="lastName"><span jhiTranslate="nitroCarriersApp.person.lastName">Last Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="companyId"><span jhiTranslate="nitroCarriersApp.person.companyId">Company Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="phoneNumber"><span jhiTranslate="nitroCarriersApp.person.phoneNumber">Phone Number</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="carrierName"><span jhiTranslate="nitroCarriersApp.person.carrier">Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="nitroCarriersApp.person.firstName">First Name</span></th>
+            <th><span jhiTranslate="nitroCarriersApp.person.lastName">Last Name</span></th>
+            <th><span jhiTranslate="nitroCarriersApp.person.companyId">Company Id</span></th>
+            <th><span jhiTranslate="nitroCarriersApp.person.phoneNumber">Phone Number</span></th>
+            <th><span jhiTranslate="nitroCarriersApp.person.carrier">Carrier</span></th>
             <th></th>
             </tr>
             </thead>
@@ -31,8 +46,8 @@
                 <td>{{person.companyId}}</td>
                 <td>{{person.phoneNumber}}</td>
                 <td>
-                    <div *ngIf="person.carrierId">
-                        <a [routerLink]="['../carrier', person.carrierId , 'view' ]" >{{person.carrierName}}</a>
+                    <div *ngIf="person.carrier">
+                        <a [routerLink]="['../carrier', person.carrier?.id, 'view' ]" >{{person.carrier?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">
@@ -62,13 +77,5 @@
             </tr>
             </tbody>
         </table>
-    </div>
-    <div *ngIf="people && people.length">
-        <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-        </div>
-        <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
-        </div>
     </div>
 </div>

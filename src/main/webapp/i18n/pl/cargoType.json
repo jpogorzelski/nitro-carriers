@@ -4,7 +4,8 @@
             "home": {
                 "title": "Cargo Type",
                 "createLabel": "Dodaj Cargo Type",
-                "createOrEditLabel": "Dodaj lub edytuj: Cargo Type"
+                "createOrEditLabel": "Dodaj lub edytuj: Cargo Type",
+                "search": "Szukaj Cargo Type"
             },
             "created": "Utworzono nowy obiekt typu Cargo Type z identyfikatorem {{ param }}",
             "updated": "Uaktualniono obiekt typu Cargo Type z identyfikatorem {{ param }}",

@@ -4,7 +4,8 @@
             "home": {
                 "title": "Cargo Types",
                 "createLabel": "Create a new Cargo Type",
-                "createOrEditLabel": "Create or edit a Cargo Type"
+                "createOrEditLabel": "Create or edit a Cargo Type",
+                "search": "Search for Cargo Type"
             },
             "created": "A new Cargo Type is created with identifier {{ param }}",
             "updated": "A Cargo Type is updated with identifier {{ param }}",

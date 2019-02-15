@@ -103,7 +103,7 @@ test {
     // uncomment if the tests reports are not generated
     // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
     // ignoreFailures true
-    reports.html.enabled = false
+    reports.html.enabled = true
 }
 
 task cucumberTest(type: Test) {
@@ -215,12 +215,22 @@ dependencies {
     liquibaseRuntime "org.liquibase:liquibase-core"
     liquibaseRuntime "org.liquibase.ext:liquibase-hibernate5:${liquibase_hibernate5_version}"
     liquibaseRuntime sourceSets.main.compileClasspath
+    compile "org.springframework.boot:spring-boot-devtools"
     compile "org.springframework.boot:spring-boot-loader-tools"
     compile "org.springframework.boot:spring-boot-starter-mail"
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-starter-aop"
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "org.springframework.boot:spring-boot-starter-data-elasticsearch"
+    // Spring Data Jest dependencies for Elasticsearch
+    compile ("com.github.vanroy:spring-boot-starter-data-jest") {
+        exclude module: 'commons-logging'
+    }
+    // log4j needed to create embedded elasticsearch instance
+    runtime "org.apache.logging.log4j:log4j-api:2.7"
+    runtime "org.apache.logging.log4j:log4j-core:2.7"
+    // end of Spring Data Jest dependencies
     compile "org.springframework.boot:spring-boot-starter-security"
     compile ("org.springframework.boot:spring-boot-starter-web") {
         exclude module: 'spring-boot-starter-tomcat'
@@ -261,6 +271,8 @@ dependencies {
     testCompile "com.mattbertolini:liquibase-slf4j"
     testCompile "org.hamcrest:hamcrest-library"
     testCompile "com.h2database:h2"
+    compile "org.springframework.cloud:spring-cloud-localconfig-connector"
+    compile "org.springframework.cloud:spring-cloud-heroku-connector"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 

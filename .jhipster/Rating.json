@@ -2,6 +2,27 @@
     "name": "Rating",
     "fields": [
         {
+            "fieldName": "chargePostalCode",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dischargePostalCode",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "distance",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "contact",
             "fieldType": "Integer",
             "fieldValidateRules": [
@@ -65,16 +86,16 @@
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
-            "relationshipName": "chargeAddress",
-            "otherEntityName": "address",
-            "otherEntityField": "postalCode"
+            "relationshipName": "chargeCountry",
+            "otherEntityName": "country",
+            "otherEntityField": "countryName"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
-            "relationshipName": "dischargeAddress",
-            "otherEntityName": "address",
-            "otherEntityField": "postalCode"
+            "relationshipName": "dischargeCountry",
+            "otherEntityName": "country",
+            "otherEntityField": "countryName"
         },
         {
             "relationshipType": "many-to-one",
@@ -86,11 +107,12 @@
     ],
     "changelogDate": "20190123145855",
     "entityTableName": "rating",
-    "dto": "mapstruct",
+    "dto": "no",
     "pagination": "infinite-scroll",
-    "service": "serviceImpl",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "searchEngine": "elasticsearch"
 }

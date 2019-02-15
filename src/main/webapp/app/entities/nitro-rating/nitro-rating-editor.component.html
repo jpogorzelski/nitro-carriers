@@ -30,34 +30,35 @@
                     <h4 jhiTranslate="nitroCarriersApp.nitroRating.chargeAddress">Charge address</h4>
                     <div class="form-group">
                         <label class="form-control-label"
-                               jhiTranslate="nitroCarriersApp.nitroRating.chargeAddressCountry"
-                               for="field_chargeAddressCountry">
+                               jhiTranslate="nitroCarriersApp.nitroRating.chargeCountry"
+                               for="field_chargeCountry">
                             Charge Address Country
                         </label>
-                        <select class="form-control" id="field_chargeAddressCountry" name="chargeAddressCountry"
-                                [(ngModel)]="rating.chargeAddressCountry" required>
-                            <option *ngIf="!editForm.value.chargeAddressCountry" [ngValue]="null" selected></option>
-                            <option [ngValue]="countryOption.countryName"
-                                    *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryName}}</option>
+                        <select class="form-control" id="field_chargeCountry" name="chargeCountry"
+                                [(ngModel)]="rating.chargeCountry" required>
+                            <option *ngIf="!editForm.value.chargeCountry" [ngValue]="null" selected></option>
+                            <option
+                                [ngValue]="countryOption.id === rating.chargeCountry?.id ? rating.chargeCountry : countryOption"
+                                *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryName}}</option>
                         </select>
                         <div
-                            [hidden]="!(editForm.controls.chargeAddressCountry?.dirty && editForm.controls.chargeAddressCountry?.invalid)">
+                            [hidden]="!(editForm.controls.chargeCountry?.dirty && editForm.controls.chargeCountry?.invalid)">
                             <small class="form-text text-danger"
-                                   [hidden]="!editForm.controls.chargeAddressCountry?.errors?.required"
+                                   [hidden]="!editForm.controls.chargeCountry?.errors?.required"
                                    jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
                         </div>
                         <label class="form-control-label"
-                               jhiTranslate="nitroCarriersApp.nitroRating.chargeAddressPostalCode"
-                               for="field_chargeAddressPostalCode">Charge Address Postal Code</label>
-                        <input type="text" class="form-control" name="chargeAddressPostalCode"
-                               id="field_chargeAddressPostalCode" [(ngModel)]="rating.chargeAddressPostalCode"
+                               jhiTranslate="nitroCarriersApp.nitroRating.chargePostalCode"
+                               for="field_chargePostalCode">Charge Address Postal Code</label>
+                        <input type="text" class="form-control" name="chargePostalCode"
+                               id="field_chargePostalCode" [(ngModel)]="rating.chargePostalCode"
                                required/>
                         <div
-                            [hidden]="!(editForm.controls.chargeAddressPostalCode?.dirty && editForm.controls.chargeAddressPostalCode?.invalid)">
+                            [hidden]="!(editForm.controls.chargePostalCode?.dirty && editForm.controls.chargePostalCode?.invalid)">
                             <small class="form-text text-danger"
-                                   [hidden]="!editForm.controls.chargeAddressPostalCode?.errors?.required"
+                                   [hidden]="!editForm.controls.chargePostalCode?.errors?.required"
                                    jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
@@ -68,32 +69,32 @@
                     <h4 jhiTranslate="nitroCarriersApp.nitroRating.dischargeAddress">Discharge address</h4>
                     <div class="form-group">
                         <label class="form-control-label"
-                               jhiTranslate="nitroCarriersApp.nitroRating.dischargeAddressCountry"
-                               for="field_dischargeAddressCountry">Discharge Address</label>
-                        <select class="form-control" id="field_dischargeAddressCountry" name="dischargeAddressCountry"
-                                [(ngModel)]="rating.dischargeAddressCountry" required>
-                            <option [ngValue]="null"></option>
-                            <option [ngValue]="countryOption.countryName"
+                               jhiTranslate="nitroCarriersApp.nitroRating.dischargeCountry"
+                               for="field_dischargeCountry">Discharge Address</label>
+                        <select class="form-control" id="field_dischargeCountry" name="dischargeCountry"
+                                [(ngModel)]="rating.dischargeCountry" required>
+                            <option *ngIf="!editForm.value.dischargeCountry" [ngValue]="null" selected></option>
+                            <option [ngValue]="countryOption.id === rating.dischargeCountry?.id ? rating.dischargeCountry : countryOption"
                                     *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryName}}</option>
                         </select>
                         <div
-                            [hidden]="!(editForm.controls.dischargeAddressCountry?.dirty && editForm.controls.dischargeAddressCountry?.invalid)">
+                            [hidden]="!(editForm.controls.dischargeCountry?.dirty && editForm.controls.dischargeCountry?.invalid)">
                             <small class="form-text text-danger"
-                                   [hidden]="!editForm.controls.dischargeAddressCountry?.errors?.required"
+                                   [hidden]="!editForm.controls.dischargeCountry?.errors?.required"
                                    jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
                         </div>
                         <label class="form-control-label"
-                               jhiTranslate="nitroCarriersApp.nitroRating.dischargeAddressPostalCode"
-                               for="field_dischargeAddressPostalCode">Discharge Address Postal Code</label>
-                        <input type="text" class="form-control" name="dischargeAddressPostalCode"
-                               id="field_dischargeAddressPostalCode" [(ngModel)]="rating.dischargeAddressPostalCode"
+                               jhiTranslate="nitroCarriersApp.nitroRating.dischargePostalCode"
+                               for="field_dischargePostalCode">Discharge Address Postal Code</label>
+                        <input type="text" class="form-control" name="dischargePostalCode"
+                               id="field_dischargePostalCode" [(ngModel)]="rating.dischargePostalCode"
                                required/>
                         <div
-                            [hidden]="!(editForm.controls.dischargeAddressPostalCode?.dirty && editForm.controls.dischargeAddressPostalCode?.invalid)">
+                            [hidden]="!(editForm.controls.dischargePostalCode?.dirty && editForm.controls.dischargePostalCode?.invalid)">
                             <small class="form-text text-danger"
-                                   [hidden]="!editForm.controls.dischargeAddressPostalCode?.errors?.required"
+                                   [hidden]="!editForm.controls.dischargePostalCode?.errors?.required"
                                    jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
@@ -103,103 +104,83 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.cargoType"
                            for="field_cargoType">Cargo Type</label>
-                    <select class="form-control" id="field_cargoType" name="cargoType" [(ngModel)]="rating.cargoTypeId"
+                    <select class="form-control" id="field_cargoType" name="cargoType" [(ngModel)]="rating.cargoType"
                             required>
                         <option *ngIf="!editForm.value.cargoType" [ngValue]="null" selected></option>
-                        <option [ngValue]="cargoTypeOption.id"
+                        <option [ngValue]="cargoTypeOption.id === rating.cargoType?.id ? rating.cargoType : cargoTypeOption"
                                 *ngFor="let cargoTypeOption of cargotypes; trackBy: trackCargoTypeById">{{cargoTypeOption.name}}</option>
                     </select>
-                </div>
-                <div [hidden]="!(editForm.controls.cargoType?.dirty && editForm.controls.cargoType?.invalid)">
-                    <small class="form-text text-danger"
-                           [hidden]="!editForm.controls.cargoType?.errors?.required"
-                           jhiTranslate="entity.validation.required">
-                        This field is required.
-                    </small>
-                </div>
-
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.contact"
-                           for="field_contact">Contact</label>
-                    <input type="number" class="form-control" name="contact" id="field_contact"
-                           [(ngModel)]="rating.contact" required min="1" jhiMin="1" max="6" jhiMax="6"/>
-                    <div [hidden]="!(editForm.controls.contact?.dirty && editForm.controls.contact?.invalid)">
+                    <div [hidden]="!(editForm.controls.cargoType?.dirty && editForm.controls.cargoType?.invalid)">
                         <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.contact?.errors?.required"
+                               [hidden]="!editForm.controls.cargoType?.errors?.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.distance"
+                           for="field_distance">Distance</label>
+                    <input type="number" class="form-control" name="distance" id="field_distance"
+                           [(ngModel)]="rating.distance" required/>
+                    <div [hidden]="!(editForm.controls.distance?.dirty && editForm.controls.distance?.invalid)">
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.distance?.errors?.required"
                                jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.contact?.errors?.min" jhiTranslate="entity.validation.min"
-                               [translateValues]="{ min: 1 }">
-                            This field should be at least 1.
-                        </small>
-                        <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.contact?.errors?.max" jhiTranslate="entity.validation.max"
-                               [translateValues]="{ max: 6 }">
-                            This field cannot be more than 6.
-                        </small>
-                        <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.contact?.errors?.number"
+                               [hidden]="!editForm.controls.distance?.errors?.number"
                                jhiTranslate="entity.validation.number">
                             This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.contact"
+                           for="field_contact">Contact</label>
+                    <select class="form-control" name="contact" [(ngModel)]="rating.contact"
+                            id="field_contact" required>
+                        <option [ngValue]="id" *ngFor="let id of [1,2,3,4,5,6]">{{id}}</option>
+                    </select>
+                    <div
+                        [hidden]="!(editForm.controls.contact?.dirty && editForm.controls.contact?.invalid)">
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.contact?.errors?.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.price"
                            for="field_price">Price</label>
-                    <input type="number" class="form-control" name="price" id="field_price"
-                           [(ngModel)]="rating.price" required min="1" jhiMin="1" max="6" jhiMax="6"/>
-                    <div [hidden]="!(editForm.controls.price?.dirty && editForm.controls.price?.invalid)">
+                    <select class="form-control" name="price" [(ngModel)]="rating.price"
+                            id="field_price" required>
+                        <option [ngValue]="id" *ngFor="let id of [1,2,3,4,5,6]">{{id}}</option>
+                    </select>
+                    <div
+                        [hidden]="!(editForm.controls.price?.dirty && editForm.controls.price?.invalid)">
                         <small class="form-text text-danger"
                                [hidden]="!editForm.controls.price?.errors?.required"
                                jhiTranslate="entity.validation.required">
                             This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.price?.errors?.min" jhiTranslate="entity.validation.min"
-                               [translateValues]="{ min: 1 }">
-                            This field should be at least 1.
-                        </small>
-                        <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.price?.errors?.max" jhiTranslate="entity.validation.max"
-                               [translateValues]="{ max: 6 }">
-                            This field cannot be more than 6.
-                        </small>
-                        <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.price?.errors?.number"
-                               jhiTranslate="entity.validation.number">
-                            This field should be a number.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.flexibility"
                            for="field_flexibility">Flexibility</label>
-                    <input type="number" class="form-control" name="flexibility" id="field_flexibility"
-                           [(ngModel)]="rating.flexibility" required min="1" jhiMin="1" max="6" jhiMax="6"/>
-                    <div [hidden]="!(editForm.controls.flexibility?.dirty && editForm.controls.flexibility?.invalid)">
+                    <select class="form-control" name="flexibility" [(ngModel)]="rating.flexibility"
+                            id="field_flexibility" required>
+                        <option [ngValue]="id" *ngFor="let id of [1,2,3,4,5,6]">{{id}}</option>
+                    </select>
+                    <div
+                        [hidden]="!(editForm.controls.flexibility?.dirty && editForm.controls.flexibility?.invalid)">
                         <small class="form-text text-danger"
                                [hidden]="!editForm.controls.flexibility?.errors?.required"
                                jhiTranslate="entity.validation.required">
                             This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.flexibility?.errors?.min"
-                               jhiTranslate="entity.validation.min" [translateValues]="{ min: 1 }">
-                            This field should be at least 1.
-                        </small>
-                        <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.flexibility?.errors?.max"
-                               jhiTranslate="entity.validation.max" [translateValues]="{ max: 6 }">
-                            This field cannot be more than 6.
-                        </small>
-                        <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.flexibility?.errors?.number"
-                               jhiTranslate="entity.validation.number">
-                            This field should be a number.
                         </small>
                     </div>
                 </div>

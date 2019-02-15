@@ -1,66 +1,82 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="nitroCarriersApp.rating.home.title">Ratings</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-rating" [routerLink]="['/nitro-rating']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-rating" [routerLink]="['/nitro-rating/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="nitroCarriersApp.rating.home.createLabel">
+            <span class="hidden-sm-down"  jhiTranslate="nitroCarriersApp.rating.home.createLabel">
             Create new Rating
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'nitroCarriersApp.rating.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     <br/>
     <div class="table-responsive" *ngIf="ratings">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="carrier.name"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th jhiSortBy="person.firstName"><span jhiTranslate="nitroCarriersApp.rating.person">Person</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th jhiSortBy="chargePostalCode"><span jhiTranslate="nitroCarriersApp.rating.chargeAddress">Charge Address</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th jhiSortBy="dischargePostalCode"><span jhiTranslate="nitroCarriersApp.rating.dischargeAddress">Discharge Address</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th jhiSortBy="cargoType.name"><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+            <th jhiSortBy="distance"><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="contact"><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="price"><span jhiTranslate="nitroCarriersApp.rating.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="flexibility"><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="recommendation"><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="average"><span jhiTranslate="nitroCarriersApp.rating.average">Average</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="carrierName"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="personFirstName"><span jhiTranslate="nitroCarriersApp.rating.person">Person</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="chargeAddressPostalCode"><span jhiTranslate="nitroCarriersApp.rating.chargeAddress">Charge Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="dischargeAddressPostalCode"><span jhiTranslate="nitroCarriersApp.rating.dischargeAddress">Discharge Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="cargoTypeName"><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let rating of ratings ;trackBy: trackId">
                 <td><a [routerLink]="['/rating', rating.id, 'view' ]">{{rating.id}}</a></td>
+                <td>
+                    <div *ngIf="rating.carrier">
+                        <a [routerLink]="['../carrier', rating.carrier?.id, 'view' ]">{{rating.carrier?.name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="rating.person">
+                        <a [routerLink]="['../person', rating.person?.id, 'view' ]">{{rating.person?.firstName + ' ' + rating.person.lastName}}</a>
+                    </div>
+                </td>
+                <td>{{rating.chargeCountry?.countryName + ', ' + rating.chargePostalCode}}</td>
+                <td>{{rating.dischargeCountry?.countryName + ', ' + rating.dischargePostalCode}}</td>
+                <td>{{rating.cargoType?.name}}</td>
+                <td>{{rating.distance}}</td>
                 <td>{{rating.contact}}</td>
                 <td>{{rating.price}}</td>
                 <td>{{rating.flexibility}}</td>
                 <td jhiTranslate="{{'nitroCarriersApp.Grade.' + rating.recommendation}}">{{rating.recommendation}}</td>
                 <td>{{rating.average}}</td>
-                <td>
-                    <div *ngIf="rating.carrierId">
-                        <a [routerLink]="['../carrier', rating.carrierId , 'view' ]" >{{rating.carrierName}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="rating.personId">
-                        <a [routerLink]="['../person', rating.personId , 'view' ]" >{{rating.personFirstName}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="rating.chargeAddressId">
-                        <a [routerLink]="['../address', rating.chargeAddressId , 'view' ]" >{{rating.chargeAddressPostalCode}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="rating.dischargeAddressId">
-                        <a [routerLink]="['../address', rating.dischargeAddressId , 'view' ]" >{{rating.dischargeAddressPostalCode}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="rating.cargoTypeId">
-                        <a [routerLink]="['../cargo-type', rating.cargoTypeId , 'view' ]" >{{rating.cargoTypeName}}</a>
-                    </div>
-                </td>
+
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
@@ -70,7 +86,7 @@
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/rating', rating.id, 'edit']"
+                                [routerLink]="['/nitro-rating', rating.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>

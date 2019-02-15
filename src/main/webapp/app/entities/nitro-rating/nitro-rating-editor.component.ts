@@ -1,17 +1,17 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {filter, map} from 'rxjs/operators';
-import {JhiAlertService} from 'ng-jhipster';
-import {Grade, INitroRating} from 'app/shared/model/nitro-rating.model';
-import {NitroRatingService} from './nitro-rating.service';
-import {IPerson} from 'app/shared/model/person.model';
-import {ICargoType} from 'app/shared/model/cargo-type.model';
-import {CargoTypeService} from 'app/entities/cargo-type';
-import {ICarrier} from 'app/shared/model/carrier.model';
-import {ICountry} from 'app/shared/model/country.model';
-import {CountryService} from 'app/entities/country';
+import { Component, DoCheck, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { JhiAlertService } from 'ng-jhipster';
+import { Grade, IRating, Rating } from 'app/shared/model/rating.model';
+import { NitroRatingService } from './nitro-rating.service';
+import { IPerson, Person } from 'app/shared/model/person.model';
+import { ICargoType } from 'app/shared/model/cargo-type.model';
+import { CargoTypeService } from 'app/entities/cargo-type';
+import { Carrier, ICarrier } from 'app/shared/model/carrier.model';
+import { ICountry } from 'app/shared/model/country.model';
+import { CountryService } from 'app/entities/country';
 
 @Component({
     selector: 'jhi-ext-rating-update',
@@ -19,7 +19,7 @@ import {CountryService} from 'app/entities/country';
 })
 export class NitroRatingEditorComponent implements OnInit, DoCheck {
     carrierAndPerson: string;
-    rating: INitroRating;
+    rating: IRating;
     isSaving: boolean;
 
     people: IPerson[];
@@ -40,6 +40,18 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ rating }) => {
             this.rating = rating;
+            if (this.rating.id) {
+                this.carrierAndPerson =
+                    this.rating.carrier.name +
+                    '\n' +
+                    this.rating.person.firstName +
+                    ' ' +
+                    this.rating.person.lastName +
+                    ', ' +
+                    this.rating.carrier.transId +
+                    '-' +
+                    this.rating.person.companyId;
+            }
         });
 
         this.countryService
@@ -75,18 +87,39 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         }
     }
 
-    extractCarrierAndPerson(rating: INitroRating, str: string): INitroRating {
+    extractCarrierAndPerson(rating: IRating, str: string): IRating {
         const result = rating;
         const lines = str.split('\n');
-        const nameAndTransId = lines[2].split(',');
+        const personLineIndex = getPersonLineIndex();
+        const nameAndTransId = lines[personLineIndex].split(',');
         const fullName = nameAndTransId[0].split(' ');
         const transId = nameAndTransId[1].split('-');
-        result.carrierName = lines[0];
-        result.carrierTransId = Number(transId[0]);
-        result.personFirstName = fullName[0];
-        result.personLastName = fullName[1];
-        result.personTransId = Number(transId[1]);
+        result.carrier = new Carrier();
+        result.carrier.name = lines[0];
+        result.carrier.transId = Number(transId[0]);
+
+        result.person = new Person();
+        result.person.firstName = fullName[0];
+        result.person.lastName = fullName[1];
+        result.person.companyId = Number(transId[1]);
         return result;
+
+        function getPersonLineIndex() {
+            switch (lines.length) {
+                case 2: // only company name line and person with transId line
+                    return 1;
+                case 3: // missing telephone line or address line
+                    if (lines[2].startsWith('tel')) {
+                        return 1;
+                    } else {
+                        return 2;
+                    }
+                case 4: // full data
+                    return 2;
+                default:
+                    throw new Error('Bad input');
+            }
+        }
     }
 
     private getRecommendationAsInt() {
@@ -116,7 +149,9 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         return recommendation;
     }
 
-    previousState() {}
+    previousState() {
+        window.history.back();
+    }
 
     save() {
         this.rating = this.extractCarrierAndPerson(this.rating, this.carrierAndPerson);
@@ -128,8 +163,8 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         }
     }
 
-    protected subscribeToSaveResponse(result: Observable<HttpResponse<INitroRating>>) {
-        result.subscribe((res: HttpResponse<INitroRating>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IRating>>) {
+        result.subscribe((res: HttpResponse<IRating>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     protected onSaveSuccess() {

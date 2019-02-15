@@ -2,29 +2,41 @@
     "nitroCarriersApp": {
         "rating": {
             "home": {
-                "title": "Rating",
-                "createLabel": "Dodaj Rating",
-                "createOrEditLabel": "Dodaj lub edytuj: Rating"
+                "title": "Ocena",
+                "createLabel": "Dodaj ocenę",
+                "createOrEditLabel": "Dodaj lub edytuj: Ocena",
+                "search": "Wyszukaj Ocenę"
             },
-            "created": "Utworzono nowy obiekt typu Rating z identyfikatorem {{ param }}",
-            "updated": "Uaktualniono obiekt typu Rating z identyfikatorem {{ param }}",
-            "deleted": "Usunięto obiekt typu Rating z identyfikatorem {{ param }}",
+            "created": "Utworzono nowy obiekt typu Ocena z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono obiekt typu Ocena z identyfikatorem {{ param }}",
+            "deleted": "Usunięto obiekt typu Ocena z identyfikatorem {{ param }}",
             "delete": {
-                "question": "Czy na pewno chcesz usunąć Rating {{ id }}?"
+                "question": "Czy na pewno chcesz usunąć Ocena {{ id }}?"
             },
             "detail": {
-                "title": "Rating"
+                "title": "Ocena"
             },
-            "contact": "Contact",
-            "price": "Price",
-            "flexibility": "Flexibility",
-            "recommendation": "Recommendation",
-            "average": "Average",
-            "carrier": "Carrier",
-            "person": "Person",
-            "chargeAddress": "Charge Address",
-            "dischargeAddress": "Discharge Address",
-            "cargoType": "Cargo Type"
+            "flexibility": "Elastyczność",
+            "contact": "Kontakt",
+            "price": "Cena",
+            "recommendation": "Polecam",
+            "average": "Średnia ocena",
+            "person": "Osoba kontaktowa",
+            "personFirstName": "Imię",
+            "personLastName": "Nazwisko",
+            "personTransId": "Trans ID",
+            "chargeAddress": "Adres załadunku",
+            "chargeCountry": "Kraj",
+            "chargePostalCode": "Kod pocztowy",
+            "dischargeAddress": "Adres rozładunku",
+            "dischargeCountry": "Kraj",
+            "dischargePostalCode": "Kod pocztowy",
+            "cargoType": "Typ ładunku",
+            "carrierName": "Nazwa firmy",
+            "carrierTransId": "Trans ID firmy",
+            "carrier": "Firma",
+            "carrierAndPerson": "Dane firmy i osoby kontaktowej",
+            "distance": "Dystans"
         }
     }
 }

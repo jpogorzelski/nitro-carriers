@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { IPerson } from 'app/shared/model/person.model';
 import { AccountService } from 'app/core';
-
-import { ITEMS_PER_PAGE } from 'app/shared';
 import { PersonService } from './person.service';
 
 @Component({
@@ -16,78 +14,62 @@ import { PersonService } from './person.service';
     templateUrl: './person.component.html'
 })
 export class PersonComponent implements OnInit, OnDestroy {
-    currentAccount: any;
     people: IPerson[];
-    error: any;
-    success: any;
+    currentAccount: any;
     eventSubscriber: Subscription;
-    routeData: any;
-    links: any;
-    totalItems: any;
-    itemsPerPage: any;
-    page: any;
-    predicate: any;
-    previousPage: any;
-    reverse: any;
+    currentSearch: string;
 
     constructor(
         protected personService: PersonService,
-        protected parseLinks: JhiParseLinks,
         protected jhiAlertService: JhiAlertService,
-        protected accountService: AccountService,
+        protected eventManager: JhiEventManager,
         protected activatedRoute: ActivatedRoute,
-        protected router: Router,
-        protected eventManager: JhiEventManager
+        protected accountService: AccountService
     ) {
-        this.itemsPerPage = ITEMS_PER_PAGE;
-        this.routeData = this.activatedRoute.data.subscribe(data => {
-            this.page = data.pagingParams.page;
-            this.previousPage = data.pagingParams.page;
-            this.reverse = data.pagingParams.ascending;
-            this.predicate = data.pagingParams.predicate;
-        });
+        this.currentSearch =
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
+                ? this.activatedRoute.snapshot.params['search']
+                : '';
     }
 
     loadAll() {
+        if (this.currentSearch) {
+            this.personService
+                .search({
+                    query: this.currentSearch
+                })
+                .pipe(
+                    filter((res: HttpResponse<IPerson[]>) => res.ok),
+                    map((res: HttpResponse<IPerson[]>) => res.body)
+                )
+                .subscribe((res: IPerson[]) => (this.people = res), (res: HttpErrorResponse) => this.onError(res.message));
+            return;
+        }
         this.personService
-            .query({
-                page: this.page - 1,
-                size: this.itemsPerPage,
-                sort: this.sort()
-            })
+            .query()
+            .pipe(
+                filter((res: HttpResponse<IPerson[]>) => res.ok),
+                map((res: HttpResponse<IPerson[]>) => res.body)
+            )
             .subscribe(
-                (res: HttpResponse<IPerson[]>) => this.paginatePeople(res.body, res.headers),
+                (res: IPerson[]) => {
+                    this.people = res;
+                    this.currentSearch = '';
+                },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
 
-    loadPage(page: number) {
-        if (page !== this.previousPage) {
-            this.previousPage = page;
-            this.transition();
+    search(query) {
+        if (!query) {
+            return this.clear();
         }
-    }
-
-    transition() {
-        this.router.navigate(['/person'], {
-            queryParams: {
-                page: this.page,
-                size: this.itemsPerPage,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
-        });
+        this.currentSearch = query;
         this.loadAll();
     }
 
     clear() {
-        this.page = 0;
-        this.router.navigate([
-            '/person',
-            {
-                page: this.page,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
-        ]);
+        this.currentSearch = '';
         this.loadAll();
     }
 
@@ -109,20 +91,6 @@ export class PersonComponent implements OnInit, OnDestroy {
 
     registerChangeInPeople() {
         this.eventSubscriber = this.eventManager.subscribe('personListModification', response => this.loadAll());
-    }
-
-    sort() {
-        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-        if (this.predicate !== 'id') {
-            result.push('id');
-        }
-        return result;
-    }
-
-    protected paginatePeople(data: IPerson[], headers: HttpHeaders) {
-        this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-        this.people = data;
     }
 
     protected onError(errorMessage: string) {
