@@ -2,6 +2,8 @@ package io.pogorzelski.nitro.carriers.service.impl;
 
 import io.pogorzelski.nitro.carriers.domain.*;
 import io.pogorzelski.nitro.carriers.repository.*;
+import io.pogorzelski.nitro.carriers.repository.search.CarrierSearchRepository;
+import io.pogorzelski.nitro.carriers.repository.search.PersonSearchRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import org.slf4j.Logger;
@@ -21,6 +23,8 @@ public class RatingExtServiceImpl implements RatingExtService {
     private final RatingRepository ratingRepository;
 
     private final RatingSearchRepository ratingSearchRepository;
+    private final PersonSearchRepository personSearchRepository;
+    private final CarrierSearchRepository carrierSearchRepository;
 
     private final CountryRepository countryRepository;
     private final CarrierRepository carrierRepository;
@@ -28,7 +32,7 @@ public class RatingExtServiceImpl implements RatingExtService {
     private final CargoTypeRepository cargoTypeRepository;
 
 
-    public RatingExtServiceImpl(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, CargoTypeRepository cargoTypeRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository) {
+    public RatingExtServiceImpl(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, CargoTypeRepository cargoTypeRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository, PersonSearchRepository personSearchRepository, CarrierSearchRepository carrierSearchRepository) {
         this.ratingRepository = ratingRepository;
         this.ratingSearchRepository = ratingSearchRepository;
 
@@ -36,6 +40,8 @@ public class RatingExtServiceImpl implements RatingExtService {
         this.carrierRepository = carrierRepository;
         this.personRepository = personRepository;
         this.cargoTypeRepository = cargoTypeRepository;
+        this.personSearchRepository = personSearchRepository;
+        this.carrierSearchRepository = carrierSearchRepository;
     }
 
     /**
@@ -82,9 +88,14 @@ public class RatingExtServiceImpl implements RatingExtService {
 
 
         Rating result = ratingRepository.save(rating);
-        ratingSearchRepository.save(rating);
 
-         result.getPerson().setCarrier(result.getCarrier());
+        Carrier dbCarrier = result.getCarrier();
+        Person dbPerson = result.getPerson();
+        dbPerson.setCarrier(dbCarrier);
+
+        ratingSearchRepository.save(rating);
+        carrierSearchRepository.save(dbCarrier);
+        personSearchRepository.save(dbPerson);
         return result;
     }
 
