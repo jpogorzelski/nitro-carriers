@@ -3,14 +3,9 @@ import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.service.PersonService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
-import io.pogorzelski.nitro.carriers.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,15 +79,12 @@ public class PersonResource {
     /**
      * GET  /people : get all the people.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of people in body
      */
     @GetMapping("/people")
-    public ResponseEntity<List<Person>> getAllPeople(Pageable pageable) {
-        log.debug("REST request to get a page of People");
-        Page<Person> page = personService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/people");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    public List<Person> getAllPeople() {
+        log.debug("REST request to get all People");
+        return personService.findAll();
     }
 
     /**
@@ -126,15 +118,12 @@ public class PersonResource {
      * to the query.
      *
      * @param query the query of the person search
-     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/people")
-    public ResponseEntity<List<Person>> searchPeople(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of People for query {}", query);
-        Page<Person> page = personService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/people");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    public List<Person> searchPeople(@RequestParam String query) {
+        log.debug("REST request to search People for query {}", query);
+        return personService.search(query);
     }
 
 }

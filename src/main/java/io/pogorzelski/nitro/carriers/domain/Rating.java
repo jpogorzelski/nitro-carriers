@@ -70,7 +70,7 @@ public class Rating implements Serializable {
 
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @NotNull
-    @JsonIgnoreProperties("ratings(carrier)S")
+    @JsonIgnoreProperties("ratings")
     private Carrier carrier;
 
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)

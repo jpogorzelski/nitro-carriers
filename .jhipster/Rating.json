@@ -74,47 +74,42 @@
             "relationshipValidateRules": "required",
             "relationshipName": "carrier",
             "otherEntityName": "carrier",
-            "otherEntityField": "name",
-            "otherEntityRelationshipName": "ratings(carrier)"
+            "otherEntityField": "name"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "person",
             "otherEntityName": "person",
-            "otherEntityField": "firstName",
-            "otherEntityRelationshipName": "rating"
+            "otherEntityField": "firstName"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "chargeCountry",
             "otherEntityName": "country",
-            "otherEntityField": "countryName",
-            "otherEntityRelationshipName": "rating"
+            "otherEntityField": "countryName"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "dischargeCountry",
             "otherEntityName": "country",
-            "otherEntityField": "countryName",
-            "otherEntityRelationshipName": "rating"
+            "otherEntityField": "countryName"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "cargoType",
             "otherEntityName": "cargoType",
-            "otherEntityField": "name",
-            "otherEntityRelationshipName": "rating"
+            "otherEntityField": "name"
         }
     ],
     "changelogDate": "20190123145855",
     "entityTableName": "rating",
     "dto": "no",
     "pagination": "infinite-scroll",
-    "service": "serviceImpl",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",

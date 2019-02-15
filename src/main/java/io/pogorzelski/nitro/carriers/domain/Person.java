@@ -44,7 +44,7 @@ public class Person implements Serializable {
     private String phoneNumber;
 
     @ManyToOne
-    @JsonIgnoreProperties("people(firstName)S")
+    @JsonIgnoreProperties("people")
     private Carrier carrier;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

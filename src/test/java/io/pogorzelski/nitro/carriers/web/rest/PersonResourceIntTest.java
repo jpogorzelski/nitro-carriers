@@ -14,8 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -351,8 +349,8 @@ public class PersonResourceIntTest {
     public void searchPerson() throws Exception {
         // Initialize the database
         personService.save(person);
-        when(mockPersonSearchRepository.search(queryStringQuery("id:" + person.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(person), PageRequest.of(0, 1), 1));
+        when(mockPersonSearchRepository.search(queryStringQuery("id:" + person.getId())))
+            .thenReturn(Collections.singletonList(person));
         // Search the person
         restPersonMockMvc.perform(get("/api/_search/people?query=id:" + person.getId()))
             .andExpect(status().isOk())

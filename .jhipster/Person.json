@@ -32,15 +32,14 @@
             "relationshipType": "many-to-one",
             "relationshipName": "carrier",
             "otherEntityName": "carrier",
-            "otherEntityField": "name",
-            "otherEntityRelationshipName": "people(firstName)"
+            "otherEntityField": "name"
         }
     ],
     "changelogDate": "20190123145853",
     "entityTableName": "person",
     "dto": "no",
-    "pagination": "pagination",
-    "service": "serviceImpl",
+    "pagination": "no",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
