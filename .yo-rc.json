@@ -32,9 +32,9 @@
         "enableTranslation": true,
         "nativeLanguage": "en",
         "languages": ["en", "pl"],
-        "herokuAppName": "nitro-carriers",
-        "herokuDeployType": "git",
         "entitySuffix": "",
-        "dtoSuffix": "DTO"
+        "dtoSuffix": "DTO",
+        "herokuAppName": "nitro-carriers",
+        "herokuDeployType": "git"
     }
 }
