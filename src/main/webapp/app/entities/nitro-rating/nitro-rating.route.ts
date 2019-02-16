@@ -7,6 +7,8 @@ import { filter, map } from 'rxjs/operators';
 import { IRating, Rating } from 'app/shared/model/rating.model';
 import { NitroRatingService } from './nitro-rating.service';
 import { NitroRatingEditorComponent } from './nitro-rating-editor.component';
+import { NitroRatingComponent } from 'app/entities/nitro-rating/nitro-rating.component';
+import { NitroRatingDetailComponent } from 'app/entities/nitro-rating/nitro-rating-detail.component';
 
 @Injectable({ providedIn: 'root' })
 export class NitroRatingResolve implements Resolve<IRating> {
@@ -25,6 +27,27 @@ export class NitroRatingResolve implements Resolve<IRating> {
 }
 
 export const nitroRatingRoute: Routes = [
+    {
+        path: '',
+        component: NitroRatingComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'nitroCarriersApp.rating.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: ':id/view',
+        component: NitroRatingDetailComponent,
+        resolve: {
+            rating: NitroRatingResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'nitroCarriersApp.rating.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
     {
         path: 'new',
         component: NitroRatingEditorComponent,

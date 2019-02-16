@@ -32,7 +32,8 @@
             "relationshipType": "many-to-one",
             "relationshipName": "carrier",
             "otherEntityName": "carrier",
-            "otherEntityField": "name"
+            "otherEntityField": "name",
+            "otherEntityRelationshipName": "people(firstName)"
         }
     ],
     "changelogDate": "20190123145853",

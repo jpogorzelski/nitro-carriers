@@ -4,14 +4,14 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { JhiLanguageHelper } from 'app/core';
 
 import { NitroCarriersSharedModule } from 'app/shared';
-import { NitroRatingEditorComponent, nitroRatingRoute } from './';
+import { NitroRatingComponent, NitroRatingDetailComponent, NitroRatingEditorComponent, nitroRatingRoute } from './';
 
 const ENTITY_STATES = [...nitroRatingRoute];
 
 @NgModule({
     imports: [NitroCarriersSharedModule, RouterModule.forChild(ENTITY_STATES)],
-    declarations: [NitroRatingEditorComponent],
-    entryComponents: [NitroRatingEditorComponent],
+    declarations: [NitroRatingComponent, NitroRatingDetailComponent, NitroRatingEditorComponent],
+    entryComponents: [NitroRatingComponent, NitroRatingDetailComponent, NitroRatingEditorComponent],
     providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

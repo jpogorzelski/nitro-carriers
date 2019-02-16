@@ -42,6 +42,7 @@ relationship ManyToOne {
     Rating{chargeCountry(countryName) required} to Country
     Rating{dischargeCountry(countryName) required} to Country
     Rating{cargoType(name) required} to CargoType
+    Rating{createdBy(login)} to User
 }
 
 //filter Person

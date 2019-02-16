@@ -93,6 +93,10 @@ public class Rating implements Serializable {
     @JsonIgnoreProperties("ratings")
     private CargoType cargoType;
 
+    @ManyToOne
+    @JsonIgnoreProperties("ratings")
+    private User createdBy;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -269,6 +273,19 @@ public class Rating implements Serializable {
 
     public void setCargoType(CargoType cargoType) {
         this.cargoType = cargoType;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public Rating createdBy(User user) {
+        this.createdBy = user;
+        return this;
+    }
+
+    public void setCreatedBy(User user) {
+        this.createdBy = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -32,6 +32,7 @@
             "dischargeCountry": "Country",
             "dischargePostalCode": "Postal code",
             "cargoType": "Cargo Type",
+            "createdBy": "Created By",
             "carrierTransId": "Carrier Trans ID",
             "carrierName": "Carrier Name",
             "carrier": "Carrier",

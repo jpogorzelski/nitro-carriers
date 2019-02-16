@@ -36,7 +36,8 @@
             "carrierTransId": "Trans ID firmy",
             "carrier": "Firma",
             "carrierAndPerson": "Dane firmy i osoby kontaktowej",
-            "distance": "Dystans"
+            "distance": "Dystans",
+            "createdBy": "Utworzył"
         }
     }
 }

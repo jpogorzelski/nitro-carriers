@@ -14,7 +14,7 @@
                 <dt><span jhiTranslate="nitroCarriersApp.rating.person">Person</span></dt>
                 <dd>
                     <div *ngIf="rating.person">
-                        <a [routerLink]="['/person', rating.person?.id, 'view']">{{rating.person?.firstName}}</a>
+                        <a [routerLink]="['/person', rating.person?.id, 'view']">{{rating.person?.firstName + ' ' + rating.person?.lastName}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.chargePostalCode">Charge Postal Code</span></dt>
@@ -67,6 +67,10 @@
                 <dd>
                     <span>{{rating.average}}</span>
                 </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.createdBy">Created By</span></dt>
+                <dd>
+                    {{rating.createdBy?.login}}
+                </dd>
             </dl>
 
             <button type="submit"
@@ -76,7 +80,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/rating', rating.id, 'edit']"
+                    [routerLink]="['/nitro-rating', rating.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>

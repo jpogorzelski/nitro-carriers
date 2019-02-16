@@ -74,35 +74,47 @@
             "relationshipValidateRules": "required",
             "relationshipName": "carrier",
             "otherEntityName": "carrier",
-            "otherEntityField": "name"
+            "otherEntityField": "name",
+            "otherEntityRelationshipName": "ratings(carrier)"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "person",
             "otherEntityName": "person",
-            "otherEntityField": "firstName"
+            "otherEntityField": "firstName",
+            "otherEntityRelationshipName": "rating"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "chargeCountry",
             "otherEntityName": "country",
-            "otherEntityField": "countryName"
+            "otherEntityField": "countryName",
+            "otherEntityRelationshipName": "rating"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "dischargeCountry",
             "otherEntityName": "country",
-            "otherEntityField": "countryName"
+            "otherEntityField": "countryName",
+            "otherEntityRelationshipName": "rating"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "cargoType",
             "otherEntityName": "cargoType",
-            "otherEntityField": "name"
+            "otherEntityField": "name",
+            "otherEntityRelationshipName": "rating"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "createdBy",
+            "otherEntityName": "user",
+            "otherEntityField": "login",
+            "otherEntityRelationshipName": "rating"
         }
     ],
     "changelogDate": "20190123145855",

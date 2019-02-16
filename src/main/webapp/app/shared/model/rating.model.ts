@@ -2,6 +2,7 @@ import { ICarrier } from 'app/shared/model/carrier.model';
 import { IPerson } from 'app/shared/model/person.model';
 import { ICountry } from 'app/shared/model/country.model';
 import { ICargoType } from 'app/shared/model/cargo-type.model';
+import { IUser } from 'app/core/user/user.model';
 
 export const enum Grade {
     DEF_YES = 'DEF_YES',
@@ -27,6 +28,7 @@ export interface IRating {
     chargeCountry?: ICountry;
     dischargeCountry?: ICountry;
     cargoType?: ICargoType;
+    createdBy?: IUser;
 }
 
 export class Rating implements IRating {
@@ -44,6 +46,7 @@ export class Rating implements IRating {
         public person?: IPerson,
         public chargeCountry?: ICountry,
         public dischargeCountry?: ICountry,
-        public cargoType?: ICargoType
+        public cargoType?: ICargoType,
+        public createdBy?: IUser
     ) {}
 }

@@ -38,5 +38,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cargo_type"/>
 
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="rating"
+                                 constraintName="fk_rating_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
     </changeSet>
 </databaseChangeLog>

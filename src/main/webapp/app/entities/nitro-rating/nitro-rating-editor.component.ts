@@ -169,7 +169,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     protected onSaveSuccess() {
         this.isSaving = false;
-        this.router.navigate(['/rating']);
+        this.previousState();
     }
 
     protected onSaveError() {

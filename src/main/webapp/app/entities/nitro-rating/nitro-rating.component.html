@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="nitroCarriersApp.rating.home.title">Ratings</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-rating" [routerLink]="['/nitro-rating']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-rating" [routerLink]="['/nitro-rating/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="nitroCarriersApp.rating.home.createLabel">
             Create new Rating
@@ -29,7 +29,7 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="carrier.name"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
@@ -45,13 +45,14 @@
                 <th jhiSortBy="cargoType.name"><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-            <th jhiSortBy="distance"><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="contact"><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="price"><span jhiTranslate="nitroCarriersApp.rating.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="flexibility"><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="recommendation"><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="average"><span jhiTranslate="nitroCarriersApp.rating.average">Average</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th></th>
+                <th jhiSortBy="distance"><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="contact"><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="price"><span jhiTranslate="nitroCarriersApp.rating.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="flexibility"><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="recommendation"><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="average"><span jhiTranslate="nitroCarriersApp.rating.average">Average</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="createdBy.login"><span jhiTranslate="nitroCarriersApp.rating.createdBy">Created By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
@@ -76,23 +77,23 @@
                 <td>{{rating.flexibility}}</td>
                 <td jhiTranslate="{{'nitroCarriersApp.Grade.' + rating.recommendation}}">{{rating.recommendation}}</td>
                 <td>{{rating.average}}</td>
-
+                <td>{{rating.createdBy?.login}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['/rating', rating.id, 'view' ]"
+                                [routerLink]="['/nitro-rating', rating.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit"
-                                [routerLink]="['/rating', rating.id, 'edit']"
+                        <button type="submit" [hidden]="rating.createdBy?.login != login"
+                                [routerLink]="['/nitro-rating', rating.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'rating', { outlets: { popup: rating.id + '/delete'} }]"
+                                [routerLink]="['/', 'nitro-rating', { outlets: { popup: rating.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
