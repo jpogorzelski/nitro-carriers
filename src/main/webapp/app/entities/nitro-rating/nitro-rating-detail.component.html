@@ -24,7 +24,7 @@
                 <dt><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span></dt>
                 <dd>
                     <div *ngIf="rating.chargeCountry">
-                        <a [routerLink]="['/country', rating.chargeCountry?.id, 'view']">{{rating.chargeCountry?.countryName}}</a>
+                        {{rating.chargeCountry?.countryNamePL}}
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.dischargePostalCode">Discharge Postal Code</span></dt>
@@ -34,7 +34,7 @@
                 <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeCountry">Discharge Country</span></dt>
                 <dd>
                     <div *ngIf="rating.dischargeCountry">
-                        <a [routerLink]="['/country', rating.dischargeCountry?.id, 'view']">{{rating.dischargeCountry?.countryName}}</a>
+                        {{rating.dischargeCountry?.countryNamePL}}
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>
@@ -77,7 +77,7 @@
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
             </button>
 
-            <button type="button"
+            <button type="button" [hidden]="rating.createdBy?.login != currentAccount.login"
                     [routerLink]="['/nitro-rating', rating.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>

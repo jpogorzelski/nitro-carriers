@@ -11,7 +11,7 @@
                 "carrier": "Carrier",
                 "person": "Person",
                 "rating": "Rating",
-                "nitroRating": "Nitro Rating",
+                "nitroRating": "Oceny",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
