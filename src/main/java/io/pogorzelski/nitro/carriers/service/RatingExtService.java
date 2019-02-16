@@ -1,7 +1,13 @@
 package io.pogorzelski.nitro.carriers.service;
 
-import io.pogorzelski.nitro.carriers.domain.*;
-import io.pogorzelski.nitro.carriers.repository.*;
+import io.pogorzelski.nitro.carriers.domain.Carrier;
+import io.pogorzelski.nitro.carriers.domain.Country;
+import io.pogorzelski.nitro.carriers.domain.Person;
+import io.pogorzelski.nitro.carriers.domain.Rating;
+import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
+import io.pogorzelski.nitro.carriers.repository.CountryRepository;
+import io.pogorzelski.nitro.carriers.repository.PersonRepository;
+import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.search.CarrierSearchRepository;
 import io.pogorzelski.nitro.carriers.repository.search.PersonSearchRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
@@ -29,17 +35,15 @@ public class RatingExtService {
     private final CountryRepository countryRepository;
     private final CarrierRepository carrierRepository;
     private final PersonRepository personRepository;
-    private final CargoTypeRepository cargoTypeRepository;
     private final UserService userService;
 
-    public RatingExtService(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, CargoTypeRepository cargoTypeRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository, PersonSearchRepository personSearchRepository, CarrierSearchRepository carrierSearchRepository, UserService userService) {
+    public RatingExtService(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository, PersonSearchRepository personSearchRepository, CarrierSearchRepository carrierSearchRepository, UserService userService) {
         this.ratingRepository = ratingRepository;
         this.ratingSearchRepository = ratingSearchRepository;
 
         this.countryRepository = countryRepository;
         this.carrierRepository = carrierRepository;
         this.personRepository = personRepository;
-        this.cargoTypeRepository = cargoTypeRepository;
         this.personSearchRepository = personSearchRepository;
         this.carrierSearchRepository = carrierSearchRepository;
         this.userService = userService;
@@ -69,25 +73,20 @@ public class RatingExtService {
             rating.setPerson(person);
         }
 
-        String chargeAddressCountry = rating.getChargeCountry().getCountryName();
-        Country chargeCountry = countryRepository.findByCountryName(chargeAddressCountry);
+        String chargeAddressCountry = rating.getChargeCountry().getCountryNamePL();
+        Country chargeCountry = countryRepository.findByCountryNamePL(chargeAddressCountry);
         rating.setChargeCountry(chargeCountry);
         if (chargeCountry == null) {
             throw new RuntimeException("Charge country cannot be null!");
         }
 
 
-        String dischargeAddressCountry = rating.getDischargeCountry().getCountryName();
-        Country dischargeCountry = countryRepository.findByCountryName(dischargeAddressCountry);
+        String dischargeAddressCountry = rating.getDischargeCountry().getCountryNamePL();
+        Country dischargeCountry = countryRepository.findByCountryNamePL(dischargeAddressCountry);
         rating.setDischargeCountry(dischargeCountry);
         if (dischargeCountry == null) {
             throw new RuntimeException("Discharge country cannot be null!");
         }
-
-        Long cargoTypeId = rating.getCargoType().getId();
-        CargoType cargoType = cargoTypeRepository.findById(cargoTypeId)
-            .orElseThrow(() -> new RuntimeException("Cargo type cannot be null!"));
-
 
         rating.setCreatedBy(userService.getUserWithAuthorities().orElseThrow(() -> new RuntimeException("WTF not logged in")));
         Rating result = ratingRepository.save(rating);

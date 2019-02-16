@@ -1,8 +1,20 @@
 import { ICarrier } from 'app/shared/model/carrier.model';
 import { IPerson } from 'app/shared/model/person.model';
 import { ICountry } from 'app/shared/model/country.model';
-import { ICargoType } from 'app/shared/model/cargo-type.model';
 import { IUser } from 'app/core/user/user.model';
+
+export const enum CargoType {
+    FTL_13_6 = 'FTL_13_6',
+    EXTRA_13_6 = 'EXTRA_13_6',
+    REEFER = 'REEFER',
+    EXTRA_REEFER = 'EXTRA_REEFER',
+    SOLO = 'SOLO',
+    FULL_BUS_BLASZKA = 'FULL_BUS_BLASZKA',
+    FULL_BUS_PLANDEKA = 'FULL_BUS_PLANDEKA',
+    EXTRA_BUS = 'EXTRA_BUS',
+    OVERSIZED = 'OVERSIZED',
+    OTHER = 'OTHER'
+}
 
 export const enum Grade {
     DEF_YES = 'DEF_YES',
@@ -17,6 +29,7 @@ export interface IRating {
     id?: number;
     chargePostalCode?: string;
     dischargePostalCode?: string;
+    cargoType?: CargoType;
     distance?: number;
     contact?: number;
     price?: number;
@@ -27,7 +40,6 @@ export interface IRating {
     person?: IPerson;
     chargeCountry?: ICountry;
     dischargeCountry?: ICountry;
-    cargoType?: ICargoType;
     createdBy?: IUser;
 }
 
@@ -36,6 +48,7 @@ export class Rating implements IRating {
         public id?: number,
         public chargePostalCode?: string,
         public dischargePostalCode?: string,
+        public cargoType?: CargoType,
         public distance?: number,
         public contact?: number,
         public price?: number,
@@ -46,7 +59,6 @@ export class Rating implements IRating {
         public person?: IPerson,
         public chargeCountry?: ICountry,
         public dischargeCountry?: ICountry,
-        public cargoType?: ICargoType,
         public createdBy?: IUser
     ) {}
 }

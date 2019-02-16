@@ -28,8 +28,16 @@ public class Country implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "country_name", nullable = false)
-    private String countryName;
+    @Column(name = "country_code", nullable = false)
+    private String countryCode;
+
+    @NotNull
+    @Column(name = "country_name_pl", nullable = false)
+    private String countryNamePL;
+
+    @NotNull
+    @Column(name = "country_name_en", nullable = false)
+    private String countryNameEN;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -40,17 +48,43 @@ public class Country implements Serializable {
         this.id = id;
     }
 
-    public String getCountryName() {
-        return countryName;
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public Country countryName(String countryName) {
-        this.countryName = countryName;
+    public Country countryCode(String countryCode) {
+        this.countryCode = countryCode;
         return this;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getCountryNamePL() {
+        return countryNamePL;
+    }
+
+    public Country countryNamePL(String countryNamePL) {
+        this.countryNamePL = countryNamePL;
+        return this;
+    }
+
+    public void setCountryNamePL(String countryNamePL) {
+        this.countryNamePL = countryNamePL;
+    }
+
+    public String getCountryNameEN() {
+        return countryNameEN;
+    }
+
+    public Country countryNameEN(String countryNameEN) {
+        this.countryNameEN = countryNameEN;
+        return this;
+    }
+
+    public void setCountryNameEN(String countryNameEN) {
+        this.countryNameEN = countryNameEN;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -78,7 +112,9 @@ public class Country implements Serializable {
     public String toString() {
         return "Country{" +
             "id=" + getId() +
-            ", countryName='" + getCountryName() + "'" +
+            ", countryCode='" + getCountryCode() + "'" +
+            ", countryNamePL='" + getCountryNamePL() + "'" +
+            ", countryNameEN='" + getCountryNameEN() + "'" +
             "}";
     }
 }

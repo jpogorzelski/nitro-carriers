@@ -10,12 +10,34 @@
                         [(ngModel)]="country.id" readonly />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.country.countryName" for="field_countryName">Country Name</label>
-                    <input type="text" class="form-control" name="countryName" id="field_countryName"
-                        [(ngModel)]="country.countryName" required/>
-                    <div [hidden]="!(editForm.controls.countryName?.dirty && editForm.controls.countryName?.invalid)">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.country.countryCode" for="field_countryCode">Country Code</label>
+                    <input type="text" class="form-control" name="countryCode" id="field_countryCode"
+                        [(ngModel)]="country.countryCode" required/>
+                    <div [hidden]="!(editForm.controls.countryCode?.dirty && editForm.controls.countryCode?.invalid)">
                         <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.countryName?.errors?.required" jhiTranslate="entity.validation.required">
+                        [hidden]="!editForm.controls.countryCode?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.country.countryNamePL" for="field_countryNamePL">Country Name PL</label>
+                    <input type="text" class="form-control" name="countryNamePL" id="field_countryNamePL"
+                        [(ngModel)]="country.countryNamePL" required/>
+                    <div [hidden]="!(editForm.controls.countryNamePL?.dirty && editForm.controls.countryNamePL?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.countryNamePL?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.country.countryNameEN" for="field_countryNameEN">Country Name EN</label>
+                    <input type="text" class="form-control" name="countryNameEN" id="field_countryNameEN"
+                        [(ngModel)]="country.countryNameEN" required/>
+                    <div [hidden]="!(editForm.controls.countryNameEN?.dirty && editForm.controls.countryNameEN?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.countryNameEN?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>

@@ -12,8 +12,6 @@ import { IPerson } from 'app/shared/model/person.model';
 import { PersonService } from 'app/entities/person';
 import { ICountry } from 'app/shared/model/country.model';
 import { CountryService } from 'app/entities/country';
-import { ICargoType } from 'app/shared/model/cargo-type.model';
-import { CargoTypeService } from 'app/entities/cargo-type';
 import { IUser, UserService } from 'app/core';
 
 @Component({
@@ -30,8 +28,6 @@ export class RatingUpdateComponent implements OnInit {
 
     countries: ICountry[];
 
-    cargotypes: ICargoType[];
-
     users: IUser[];
 
     constructor(
@@ -40,7 +36,6 @@ export class RatingUpdateComponent implements OnInit {
         protected carrierService: CarrierService,
         protected personService: PersonService,
         protected countryService: CountryService,
-        protected cargoTypeService: CargoTypeService,
         protected userService: UserService,
         protected activatedRoute: ActivatedRoute
     ) {}
@@ -71,13 +66,6 @@ export class RatingUpdateComponent implements OnInit {
                 map((response: HttpResponse<ICountry[]>) => response.body)
             )
             .subscribe((res: ICountry[]) => (this.countries = res), (res: HttpErrorResponse) => this.onError(res.message));
-        this.cargoTypeService
-            .query()
-            .pipe(
-                filter((mayBeOk: HttpResponse<ICargoType[]>) => mayBeOk.ok),
-                map((response: HttpResponse<ICargoType[]>) => response.body)
-            )
-            .subscribe((res: ICargoType[]) => (this.cargotypes = res), (res: HttpErrorResponse) => this.onError(res.message));
         this.userService
             .query()
             .pipe(
@@ -126,10 +114,6 @@ export class RatingUpdateComponent implements OnInit {
     }
 
     trackCountryById(index: number, item: ICountry) {
-        return item.id;
-    }
-
-    trackCargoTypeById(index: number, item: ICargoType) {
         return item.id;
     }
 

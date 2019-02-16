@@ -4,11 +4,9 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-import { Grade, IRating, Rating } from 'app/shared/model/rating.model';
+import { Grade, IRating } from 'app/shared/model/rating.model';
 import { NitroRatingService } from './nitro-rating.service';
 import { IPerson, Person } from 'app/shared/model/person.model';
-import { ICargoType } from 'app/shared/model/cargo-type.model';
-import { CargoTypeService } from 'app/entities/cargo-type';
 import { Carrier, ICarrier } from 'app/shared/model/carrier.model';
 import { ICountry } from 'app/shared/model/country.model';
 import { CountryService } from 'app/entities/country';
@@ -24,14 +22,12 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     people: IPerson[];
     countries: ICountry[];
-    cargotypes: ICargoType[];
     carriers: ICarrier[];
 
     constructor(
         protected jhiAlertService: JhiAlertService,
         protected ratingExtService: NitroRatingService,
         protected countryService: CountryService,
-        protected cargoTypeService: CargoTypeService,
         protected activatedRoute: ActivatedRoute,
         private router: Router
     ) {}
@@ -63,18 +59,6 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
             .subscribe(
                 (res: ICountry[]) => {
                     this.countries = res;
-                },
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        this.cargoTypeService
-            .query({ filter: 'rating-is-null' })
-            .pipe(
-                filter((mayBeOk: HttpResponse<ICargoType[]>) => mayBeOk.ok),
-                map((response: HttpResponse<ICargoType[]>) => response.body)
-            )
-            .subscribe(
-                (res: ICargoType[]) => {
-                    this.cargotypes = res;
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -181,10 +165,6 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     }
 
     trackCountryById(index: number, item: ICountry) {
-        return item.id;
-    }
-
-    trackCargoTypeById(index: number, item: ICargoType) {
         return item.id;
     }
 }

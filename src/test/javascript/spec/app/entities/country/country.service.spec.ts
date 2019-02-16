@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(CountryService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Country(0, 'AAAAAAA');
+            elemDefault = new Country(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
@@ -55,7 +55,9 @@ describe('Service Tests', () => {
             it('should update a Country', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        countryName: 'BBBBBB'
+                        countryCode: 'BBBBBB',
+                        countryNamePL: 'BBBBBB',
+                        countryNameEN: 'BBBBBB'
                     },
                     elemDefault
                 );
@@ -72,7 +74,9 @@ describe('Service Tests', () => {
             it('should return a list of Country', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        countryName: 'BBBBBB'
+                        countryCode: 'BBBBBB',
+                        countryNamePL: 'BBBBBB',
+                        countryNameEN: 'BBBBBB'
                     },
                     elemDefault
                 );

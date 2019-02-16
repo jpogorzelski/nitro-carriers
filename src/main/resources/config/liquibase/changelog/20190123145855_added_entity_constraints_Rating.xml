@@ -32,12 +32,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="country"/>
 
-        <addForeignKeyConstraint baseColumnNames="cargo_type_id"
-                                 baseTableName="rating"
-                                 constraintName="fk_rating_cargo_type_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cargo_type"/>
-
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="rating"
                                  constraintName="fk_rating_created_by_id"

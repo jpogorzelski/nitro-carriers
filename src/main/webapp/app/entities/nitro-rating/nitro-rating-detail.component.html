@@ -39,9 +39,7 @@
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>
                 <dd>
-                    <div *ngIf="rating.cargoType">
-                        <a [routerLink]="['/cargo-type', rating.cargoType?.id, 'view']">{{rating.cargoType?.name}}</a>
-                    </div>
+                    <span jhiTranslate="{{'nitroCarriersApp.CargoType.' + rating.cargoType}}">{{rating.cargoType}}</span>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span></dt>
                 <dd>

@@ -2,17 +2,19 @@ package io.pogorzelski.nitro.carriers.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
+import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.Objects;
+
+import io.pogorzelski.nitro.carriers.domain.enumeration.CargoType;
+
+import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 
 /**
  * A Rating.
@@ -37,6 +39,11 @@ public class Rating implements Serializable {
     @NotNull
     @Column(name = "discharge_postal_code", nullable = false)
     private String dischargePostalCode;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cargo_type", nullable = false)
+    private CargoType cargoType;
 
     @NotNull
     @Column(name = "distance", nullable = false)
@@ -88,11 +95,6 @@ public class Rating implements Serializable {
     @JsonIgnoreProperties("ratings")
     private Country dischargeCountry;
 
-    @ManyToOne(optional = false)
-    @NotNull
-    @JsonIgnoreProperties("ratings")
-    private CargoType cargoType;
-
     @ManyToOne
     @JsonIgnoreProperties("ratings")
     private User createdBy;
@@ -130,6 +132,19 @@ public class Rating implements Serializable {
 
     public void setDischargePostalCode(String dischargePostalCode) {
         this.dischargePostalCode = dischargePostalCode;
+    }
+
+    public CargoType getCargoType() {
+        return cargoType;
+    }
+
+    public Rating cargoType(CargoType cargoType) {
+        this.cargoType = cargoType;
+        return this;
+    }
+
+    public void setCargoType(CargoType cargoType) {
+        this.cargoType = cargoType;
     }
 
     public Double getDistance() {
@@ -262,19 +277,6 @@ public class Rating implements Serializable {
         this.dischargeCountry = country;
     }
 
-    public CargoType getCargoType() {
-        return cargoType;
-    }
-
-    public Rating cargoType(CargoType cargoType) {
-        this.cargoType = cargoType;
-        return this;
-    }
-
-    public void setCargoType(CargoType cargoType) {
-        this.cargoType = cargoType;
-    }
-
     public User getCreatedBy() {
         return createdBy;
     }
@@ -315,6 +317,7 @@ public class Rating implements Serializable {
             "id=" + getId() +
             ", chargePostalCode='" + getChargePostalCode() + "'" +
             ", dischargePostalCode='" + getDischargePostalCode() + "'" +
+            ", cargoType='" + getCargoType() + "'" +
             ", distance=" + getDistance() +
             ", contact=" + getContact() +
             ", price=" + getPrice() +

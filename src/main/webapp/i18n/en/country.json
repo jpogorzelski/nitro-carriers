@@ -1,6 +1,6 @@
 {
     "nitroCarriersApp": {
-        " is created with identifie": {
+        "country": {
             "home": {
                 "title": "Countries",
                 "createLabel": "Create a new Country",
@@ -16,7 +16,9 @@
             "detail": {
                 "title": "Country"
             },
-            "countryName": "Country Name"
+            "countryCode": "Country Code",
+            "countryNamePL": "Country Name PL",
+            "countryNameEN": "Country Name EN"
         }
     }
 }

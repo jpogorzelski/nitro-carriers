@@ -45,8 +45,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = NitroCarriersApp.class)
 public class CountryResourceIntTest {
 
-    private static final String DEFAULT_COUNTRY_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_COUNTRY_NAME = "BBBBBBBBBB";
+    private static final String DEFAULT_COUNTRY_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_COUNTRY_CODE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_COUNTRY_NAME_PL = "AAAAAAAAAA";
+    private static final String UPDATED_COUNTRY_NAME_PL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_COUNTRY_NAME_EN = "AAAAAAAAAA";
+    private static final String UPDATED_COUNTRY_NAME_EN = "BBBBBBBBBB";
 
     @Autowired
     private CountryRepository countryRepository;
@@ -101,7 +107,9 @@ public class CountryResourceIntTest {
      */
     public static Country createEntity(EntityManager em) {
         Country country = new Country()
-            .countryName(DEFAULT_COUNTRY_NAME);
+            .countryCode(DEFAULT_COUNTRY_CODE)
+            .countryNamePL(DEFAULT_COUNTRY_NAME_PL)
+            .countryNameEN(DEFAULT_COUNTRY_NAME_EN);
         return country;
     }
 
@@ -125,7 +133,9 @@ public class CountryResourceIntTest {
         List<Country> countryList = countryRepository.findAll();
         assertThat(countryList).hasSize(databaseSizeBeforeCreate + 1);
         Country testCountry = countryList.get(countryList.size() - 1);
-        assertThat(testCountry.getCountryName()).isEqualTo(DEFAULT_COUNTRY_NAME);
+        assertThat(testCountry.getCountryCode()).isEqualTo(DEFAULT_COUNTRY_CODE);
+        assertThat(testCountry.getCountryNamePL()).isEqualTo(DEFAULT_COUNTRY_NAME_PL);
+        assertThat(testCountry.getCountryNameEN()).isEqualTo(DEFAULT_COUNTRY_NAME_EN);
 
         // Validate the Country in Elasticsearch
         verify(mockCountrySearchRepository, times(1)).save(testCountry);
@@ -155,10 +165,46 @@ public class CountryResourceIntTest {
 
     @Test
     @Transactional
-    public void checkCountryNameIsRequired() throws Exception {
+    public void checkCountryCodeIsRequired() throws Exception {
         int databaseSizeBeforeTest = countryRepository.findAll().size();
         // set the field null
-        country.setCountryName(null);
+        country.setCountryCode(null);
+
+        // Create the Country, which fails.
+
+        restCountryMockMvc.perform(post("/api/countries")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(country)))
+            .andExpect(status().isBadRequest());
+
+        List<Country> countryList = countryRepository.findAll();
+        assertThat(countryList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCountryNamePLIsRequired() throws Exception {
+        int databaseSizeBeforeTest = countryRepository.findAll().size();
+        // set the field null
+        country.setCountryNamePL(null);
+
+        // Create the Country, which fails.
+
+        restCountryMockMvc.perform(post("/api/countries")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(country)))
+            .andExpect(status().isBadRequest());
+
+        List<Country> countryList = countryRepository.findAll();
+        assertThat(countryList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCountryNameENIsRequired() throws Exception {
+        int databaseSizeBeforeTest = countryRepository.findAll().size();
+        // set the field null
+        country.setCountryNameEN(null);
 
         // Create the Country, which fails.
 
@@ -182,7 +228,9 @@ public class CountryResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(country.getId().intValue())))
-            .andExpect(jsonPath("$.[*].countryName").value(hasItem(DEFAULT_COUNTRY_NAME.toString())));
+            .andExpect(jsonPath("$.[*].countryCode").value(hasItem(DEFAULT_COUNTRY_CODE.toString())))
+            .andExpect(jsonPath("$.[*].countryNamePL").value(hasItem(DEFAULT_COUNTRY_NAME_PL.toString())))
+            .andExpect(jsonPath("$.[*].countryNameEN").value(hasItem(DEFAULT_COUNTRY_NAME_EN.toString())));
     }
     
     @Test
@@ -196,7 +244,9 @@ public class CountryResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(country.getId().intValue()))
-            .andExpect(jsonPath("$.countryName").value(DEFAULT_COUNTRY_NAME.toString()));
+            .andExpect(jsonPath("$.countryCode").value(DEFAULT_COUNTRY_CODE.toString()))
+            .andExpect(jsonPath("$.countryNamePL").value(DEFAULT_COUNTRY_NAME_PL.toString()))
+            .andExpect(jsonPath("$.countryNameEN").value(DEFAULT_COUNTRY_NAME_EN.toString()));
     }
 
     @Test
@@ -222,7 +272,9 @@ public class CountryResourceIntTest {
         // Disconnect from session so that the updates on updatedCountry are not directly saved in db
         em.detach(updatedCountry);
         updatedCountry
-            .countryName(UPDATED_COUNTRY_NAME);
+            .countryCode(UPDATED_COUNTRY_CODE)
+            .countryNamePL(UPDATED_COUNTRY_NAME_PL)
+            .countryNameEN(UPDATED_COUNTRY_NAME_EN);
 
         restCountryMockMvc.perform(put("/api/countries")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -233,7 +285,9 @@ public class CountryResourceIntTest {
         List<Country> countryList = countryRepository.findAll();
         assertThat(countryList).hasSize(databaseSizeBeforeUpdate);
         Country testCountry = countryList.get(countryList.size() - 1);
-        assertThat(testCountry.getCountryName()).isEqualTo(UPDATED_COUNTRY_NAME);
+        assertThat(testCountry.getCountryCode()).isEqualTo(UPDATED_COUNTRY_CODE);
+        assertThat(testCountry.getCountryNamePL()).isEqualTo(UPDATED_COUNTRY_NAME_PL);
+        assertThat(testCountry.getCountryNameEN()).isEqualTo(UPDATED_COUNTRY_NAME_EN);
 
         // Validate the Country in Elasticsearch
         verify(mockCountrySearchRepository, times(1)).save(testCountry);
@@ -293,7 +347,9 @@ public class CountryResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(country.getId().intValue())))
-            .andExpect(jsonPath("$.[*].countryName").value(hasItem(DEFAULT_COUNTRY_NAME)));
+            .andExpect(jsonPath("$.[*].countryCode").value(hasItem(DEFAULT_COUNTRY_CODE)))
+            .andExpect(jsonPath("$.[*].countryNamePL").value(hasItem(DEFAULT_COUNTRY_NAME_PL)))
+            .andExpect(jsonPath("$.[*].countryNameEN").value(hasItem(DEFAULT_COUNTRY_NAME_EN)));
     }
 
     @Test

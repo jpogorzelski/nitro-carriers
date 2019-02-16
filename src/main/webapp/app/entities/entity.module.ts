@@ -17,10 +17,6 @@ import { RouterModule } from '@angular/router';
                 loadChildren: './person/person.module#NitroCarriersPersonModule'
             },
             {
-                path: 'cargo-type',
-                loadChildren: './cargo-type/cargo-type.module#NitroCarriersCargoTypeModule'
-            },
-            {
                 path: 'rating',
                 loadChildren: './rating/rating.module#NitroCarriersRatingModule'
             },

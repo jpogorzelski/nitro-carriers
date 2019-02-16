@@ -1,5 +1,7 @@
 entity Country {
-	countryName String required
+    countryCode String required
+	countryNamePL String required
+	countryNameEN String required
 }
 
 entity Carrier {
@@ -14,13 +16,10 @@ entity Person {
 	phoneNumber String
 }
 
-entity CargoType {
-	name String required
-}
-
 entity Rating {
 chargePostalCode String required,
 dischargePostalCode String required,
+cargoType CargoType required,
 distance Double required,
 contact Integer min(1) max(6) required,
 price Integer min(1) max(6) required,
@@ -34,14 +33,17 @@ enum Grade {
 	DEF_YES, YES, FINE, NO, DEF_NO, BLACK_LIST
 }
 
+enum CargoType {
+    FTL_13_6, EXTRA_13_6, REEFER, EXTRA_REEFER, SOLO, FULL_BUS_BLASZKA, FULL_BUS_PLANDEKA, EXTRA_BUS, OVERSIZED, OTHER
+}
+
 relationship ManyToOne {
 	Person{carrier(name)} to Carrier{people(firstName)}
 
     Rating{carrier(name) required} to Carrier{ratings(carrier)}
     Rating{person(firstName) required} to Person
-    Rating{chargeCountry(countryName) required} to Country
-    Rating{dischargeCountry(countryName) required} to Country
-    Rating{cargoType(name) required} to CargoType
+    Rating{chargeCountry(countryNamePL) required} to Country
+    Rating{dischargeCountry(countryNamePL) required} to Country
     Rating{createdBy(login)} to User
 }
 

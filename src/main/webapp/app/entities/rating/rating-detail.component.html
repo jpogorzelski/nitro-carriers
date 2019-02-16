@@ -13,6 +13,10 @@
                 <dd>
                     <span>{{rating.dischargePostalCode}}</span>
                 </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'nitroCarriersApp.CargoType.' + rating.cargoType}}">{{rating.cargoType}}</span>
+                </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span></dt>
                 <dd>
                     <span>{{rating.distance}}</span>
@@ -52,19 +56,13 @@
                 <dt><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span></dt>
                 <dd>
                     <div *ngIf="rating.chargeCountry">
-                        <a [routerLink]="['/country', rating.chargeCountry?.id, 'view']">{{rating.chargeCountry?.countryName}}</a>
+                        <a [routerLink]="['/country', rating.chargeCountry?.id, 'view']">{{rating.chargeCountry?.countryNamePL}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeCountry">Discharge Country</span></dt>
                 <dd>
                     <div *ngIf="rating.dischargeCountry">
-                        <a [routerLink]="['/country', rating.dischargeCountry?.id, 'view']">{{rating.dischargeCountry?.countryName}}</a>
-                    </div>
-                </dd>
-                <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>
-                <dd>
-                    <div *ngIf="rating.cargoType">
-                        <a [routerLink]="['/cargo-type', rating.cargoType?.id, 'view']">{{rating.cargoType?.name}}</a>
+                        <a [routerLink]="['/country', rating.dischargeCountry?.id, 'view']">{{rating.dischargeCountry?.countryNamePL}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.createdBy">Created By</span></dt>

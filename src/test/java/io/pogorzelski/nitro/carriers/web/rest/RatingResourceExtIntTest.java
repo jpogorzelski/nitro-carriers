@@ -1,7 +1,11 @@
 package io.pogorzelski.nitro.carriers.web.rest;
 
 import io.pogorzelski.nitro.carriers.NitroCarriersApp;
-import io.pogorzelski.nitro.carriers.domain.*;
+import io.pogorzelski.nitro.carriers.domain.Carrier;
+import io.pogorzelski.nitro.carriers.domain.Country;
+import io.pogorzelski.nitro.carriers.domain.Person;
+import io.pogorzelski.nitro.carriers.domain.Rating;
+import io.pogorzelski.nitro.carriers.domain.enumeration.CargoType;
 import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
@@ -41,6 +45,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RatingResourceExtIntTest {
 
     private static final String DEFAULT_POSTAL_CODE = "15-111";
+
+    private static final CargoType DEFAULT_CARGO_TYPE = CargoType.FTL_13_6;
+    private static final CargoType UPDATED_CARGO_TYPE = CargoType.EXTRA_13_6;
 
     private static final Double DEFAULT_DISTANCE = 1D;
     private static final Double UPDATED_DISTANCE = 2D;
@@ -121,10 +128,6 @@ public class RatingResourceExtIntTest {
         em.persist(country);
         em.flush();
 
-        CargoType cargoType = CargoTypeResourceIntTest.createEntity(em);
-        em.persist(cargoType);
-        em.flush();
-
         return new Rating()
             .distance(DEFAULT_DISTANCE)
             .contact(DEFAULT_CONTACT)
@@ -138,7 +141,7 @@ public class RatingResourceExtIntTest {
             .chargePostalCode(DEFAULT_POSTAL_CODE)
             .dischargeCountry(country)
             .dischargePostalCode(DEFAULT_POSTAL_CODE)
-            .cargoType(cargoType);
+            .cargoType(DEFAULT_CARGO_TYPE);
     }
 
     @Before

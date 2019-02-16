@@ -39,7 +39,7 @@
                             <option *ngIf="!editForm.value.chargeCountry" [ngValue]="null" selected></option>
                             <option
                                 [ngValue]="countryOption.id === rating.chargeCountry?.id ? rating.chargeCountry : countryOption"
-                                *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryName}}</option>
+                                *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryNamePL}}</option>
                         </select>
                         <div
                             [hidden]="!(editForm.controls.chargeCountry?.dirty && editForm.controls.chargeCountry?.invalid)">
@@ -75,7 +75,7 @@
                                 [(ngModel)]="rating.dischargeCountry" required>
                             <option *ngIf="!editForm.value.dischargeCountry" [ngValue]="null" selected></option>
                             <option [ngValue]="countryOption.id === rating.dischargeCountry?.id ? rating.dischargeCountry : countryOption"
-                                    *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryName}}</option>
+                                    *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryNamePL}}</option>
                         </select>
                         <div
                             [hidden]="!(editForm.controls.dischargeCountry?.dirty && editForm.controls.dischargeCountry?.invalid)">
@@ -104,16 +104,21 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.cargoType"
                            for="field_cargoType">Cargo Type</label>
-                    <select class="form-control" id="field_cargoType" name="cargoType" [(ngModel)]="rating.cargoType"
-                            required>
-                        <option *ngIf="!editForm.value.cargoType" [ngValue]="null" selected></option>
-                        <option [ngValue]="cargoTypeOption.id === rating.cargoType?.id ? rating.cargoType : cargoTypeOption"
-                                *ngFor="let cargoTypeOption of cargotypes; trackBy: trackCargoTypeById">{{cargoTypeOption.name}}</option>
+                    <select class="form-control" name="cargoType" [(ngModel)]="rating.cargoType" id="field_cargoType"  required>
+                        <option value="FTL_13_6">{{'nitroCarriersApp.CargoType.FTL_13_6' | translate}}</option>
+                        <option value="EXTRA_13_6">{{'nitroCarriersApp.CargoType.EXTRA_13_6' | translate}}</option>
+                        <option value="REEFER">{{'nitroCarriersApp.CargoType.REEFER' | translate}}</option>
+                        <option value="EXTRA_REEFER">{{'nitroCarriersApp.CargoType.EXTRA_REEFER' | translate}}</option>
+                        <option value="SOLO">{{'nitroCarriersApp.CargoType.SOLO' | translate}}</option>
+                        <option value="FULL_BUS_BLASZKA">{{'nitroCarriersApp.CargoType.FULL_BUS_BLASZKA' | translate}}</option>
+                        <option value="FULL_BUS_PLANDEKA">{{'nitroCarriersApp.CargoType.FULL_BUS_PLANDEKA' | translate}}</option>
+                        <option value="EXTRA_BUS">{{'nitroCarriersApp.CargoType.EXTRA_BUS' | translate}}</option>
+                        <option value="OVERSIZED">{{'nitroCarriersApp.CargoType.OVERSIZED' | translate}}</option>
+                        <option value="OTHER">{{'nitroCarriersApp.CargoType.OTHER' | translate}}</option>
                     </select>
                     <div [hidden]="!(editForm.controls.cargoType?.dirty && editForm.controls.cargoType?.invalid)">
                         <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.cargoType?.errors?.required"
-                               jhiTranslate="entity.validation.required">
+                               [hidden]="!editForm.controls.cargoType?.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                     </div>

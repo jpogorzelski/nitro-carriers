@@ -29,6 +29,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="cargo_type" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
             <column name="distance" type="double">
                 <constraints nullable="false" />
             </column>
@@ -66,10 +70,6 @@
             </column>
 
             <column name="discharge_country_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="cargo_type_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 

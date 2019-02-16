@@ -5,7 +5,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { RatingService } from 'app/entities/rating/rating.service';
-import { IRating, Rating, Grade } from 'app/shared/model/rating.model';
+import { IRating, Rating, CargoType, Grade } from 'app/shared/model/rating.model';
 
 describe('Service Tests', () => {
     describe('Rating Service', () => {
@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(RatingService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Rating(0, 'AAAAAAA', 'AAAAAAA', 0, 0, 0, 0, Grade.DEF_YES, 0);
+            elemDefault = new Rating(0, 'AAAAAAA', 'AAAAAAA', CargoType.FTL_13_6, 0, 0, 0, 0, Grade.DEF_YES, 0);
         });
 
         describe('Service methods', async () => {
@@ -57,6 +57,7 @@ describe('Service Tests', () => {
                     {
                         chargePostalCode: 'BBBBBB',
                         dischargePostalCode: 'BBBBBB',
+                        cargoType: 'BBBBBB',
                         distance: 1,
                         contact: 1,
                         price: 1,
@@ -81,6 +82,7 @@ describe('Service Tests', () => {
                     {
                         chargePostalCode: 'BBBBBB',
                         dischargePostalCode: 'BBBBBB',
+                        cargoType: 'BBBBBB',
                         distance: 1,
                         contact: 1,
                         price: 1,

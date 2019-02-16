@@ -10,7 +10,6 @@
                 "country": "Country",
                 "carrier": "Carrier",
                 "person": "Person",
-                "cargoType": "Cargo Type",
                 "rating": "Rating",
                 "nitroRating": "Nitro Rating",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"

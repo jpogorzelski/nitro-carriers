@@ -32,6 +32,7 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="chargePostalCode"><span jhiTranslate="nitroCarriersApp.rating.chargePostalCode">Charge Postal Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="dischargePostalCode"><span jhiTranslate="nitroCarriersApp.rating.dischargePostalCode">Discharge Postal Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="cargoType"><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="distance"><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="contact"><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="price"><span jhiTranslate="nitroCarriersApp.rating.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -40,9 +41,8 @@
             <th jhiSortBy="average"><span jhiTranslate="nitroCarriersApp.rating.average">Average</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="carrier.name"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="person.firstName"><span jhiTranslate="nitroCarriersApp.rating.person">Person</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="chargeCountry.countryName"><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="dischargeCountry.countryName"><span jhiTranslate="nitroCarriersApp.rating.dischargeCountry">Discharge Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="cargoType.name"><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="chargeCountry.countryNamePL"><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dischargeCountry.countryNamePL"><span jhiTranslate="nitroCarriersApp.rating.dischargeCountry">Discharge Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="createdBy.login"><span jhiTranslate="nitroCarriersApp.rating.createdBy">Created By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
@@ -52,6 +52,7 @@
                 <td><a [routerLink]="['/rating', rating.id, 'view' ]">{{rating.id}}</a></td>
                 <td>{{rating.chargePostalCode}}</td>
                 <td>{{rating.dischargePostalCode}}</td>
+                <td jhiTranslate="{{'nitroCarriersApp.CargoType.' + rating.cargoType}}">{{rating.cargoType}}</td>
                 <td>{{rating.distance}}</td>
                 <td>{{rating.contact}}</td>
                 <td>{{rating.price}}</td>
@@ -70,17 +71,12 @@
                 </td>
                 <td>
                     <div *ngIf="rating.chargeCountry">
-                        <a [routerLink]="['../country', rating.chargeCountry?.id, 'view' ]" >{{rating.chargeCountry?.countryName}}</a>
+                        <a [routerLink]="['../country', rating.chargeCountry?.id, 'view' ]" >{{rating.chargeCountry?.countryNamePL}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="rating.dischargeCountry">
-                        <a [routerLink]="['../country', rating.dischargeCountry?.id, 'view' ]" >{{rating.dischargeCountry?.countryName}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="rating.cargoType">
-                        <a [routerLink]="['../cargo-type', rating.cargoType?.id, 'view' ]" >{{rating.cargoType?.name}}</a>
+                        <a [routerLink]="['../country', rating.dischargeCountry?.id, 'view' ]" >{{rating.dischargeCountry?.countryNamePL}}</a>
                     </div>
                 </td>
                 <td>

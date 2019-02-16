@@ -2,21 +2,23 @@
     "nitroCarriersApp": {
         "country": {
             "home": {
-                "title": "Country",
-                "createLabel": "Dodaj Country",
-                "createOrEditLabel": "Dodaj lub edytuj: Country",
-                "search": "Szukaj Country"
+                "title": "Kraj",
+                "createLabel": "Dodaj Kraj",
+                "createOrEditLabel": "Dodaj lub edytuj: Kraj",
+                "search": "Szukaj Kraj"
             },
-            "created": "Utworzono nowy obiekt typu Country z identyfikatorem {{ param }}",
-            "updated": "Uaktualniono obiekt typu Country z identyfikatorem {{ param }}",
-            "deleted": "Usunięto obiekt typu Country z identyfikatorem {{ param }}",
+            "created": "Utworzono nowy obiekt typu Kraj z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono obiekt typu Kraj z identyfikatorem {{ param }}",
+            "deleted": "Usunięto obiekt typu Kraj z identyfikatorem {{ param }}",
             "delete": {
-                "question": "Czy na pewno chcesz usunąć Country {{ id }}?"
+                "question": "Czy na pewno chcesz usunąć Kraj {{ id }}?"
             },
             "detail": {
-                "title": "Country"
+                "title": "Kraj"
             },
-            "countryName": "Country Name"
+            "countryCode": "Kod kraju",
+            "countryNamePL": "Nazwa kraju PL",
+            "countryNameEN": "Nazwa kraju EN"
         }
     }
 }

@@ -18,16 +18,27 @@
     -->
     <changeSet id="20190123145850-1" author="jhipster">
         <createTable tableName="country">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="country_name" type="varchar(255)">
+            <column name="country_code" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="country_name_pl" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="country_name_en" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+        <loadData encoding="UTF-8"
+            file="config/liquibase/countries.csv"
+            separator=";"
+            tableName="country"/>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

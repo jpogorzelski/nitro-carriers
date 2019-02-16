@@ -1,22 +1,17 @@
 {
     "nitroCarriersApp": {
-        "cargoType": {
-            "home": {
-                "title": "Cargo Type",
-                "createLabel": "Dodaj Cargo Type",
-                "createOrEditLabel": "Dodaj lub edytuj: Cargo Type",
-                "search": "Szukaj Cargo Type"
-            },
-            "created": "Utworzono nowy obiekt typu Cargo Type z identyfikatorem {{ param }}",
-            "updated": "Uaktualniono obiekt typu Cargo Type z identyfikatorem {{ param }}",
-            "deleted": "Usunięto obiekt typu Cargo Type z identyfikatorem {{ param }}",
-            "delete": {
-                "question": "Czy na pewno chcesz usunąć Cargo Type {{ id }}?"
-            },
-            "detail": {
-                "title": "Cargo Type"
-            },
-            "name": "Name"
+        "CargoType": {
+            "null": "",
+            "FTL_13_6": "FTL 13,6 ",
+            "EXTRA_13_6": "Doładunek 13,6",
+            "REEFER": "Chłodnia",
+            "EXTRA_REEFER": "Doładunek chłodnia",
+            "SOLO": "Solówka",
+            "FULL_BUS_BLASZKA": "Full BUS - blaszka",
+            "FULL_BUS_PLANDEKA": "Full BUS - plandeka",
+            "EXTRA_BUS": "Doładunek BUS",
+            "OVERSIZED": "Ponadgabaryt",
+            "OTHER": "Inne"
         }
     }
 }

@@ -6,7 +6,6 @@ import io.pogorzelski.nitro.carriers.domain.Rating;
 import io.pogorzelski.nitro.carriers.domain.Carrier;
 import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.domain.Country;
-import io.pogorzelski.nitro.carriers.domain.CargoType;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingService;
@@ -42,6 +41,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import io.pogorzelski.nitro.carriers.domain.enumeration.CargoType;
 import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 /**
  * Test class for the RatingResource REST controller.
@@ -57,6 +57,9 @@ public class RatingResourceIntTest {
 
     private static final String DEFAULT_DISCHARGE_POSTAL_CODE = "AAAAAAAAAA";
     private static final String UPDATED_DISCHARGE_POSTAL_CODE = "BBBBBBBBBB";
+
+    private static final CargoType DEFAULT_CARGO_TYPE = CargoType.FTL_13_6;
+    private static final CargoType UPDATED_CARGO_TYPE = CargoType.EXTRA_13_6;
 
     private static final Double DEFAULT_DISTANCE = 1D;
     private static final Double UPDATED_DISTANCE = 2D;
@@ -131,6 +134,7 @@ public class RatingResourceIntTest {
         Rating rating = new Rating()
             .chargePostalCode(DEFAULT_CHARGE_POSTAL_CODE)
             .dischargePostalCode(DEFAULT_DISCHARGE_POSTAL_CODE)
+            .cargoType(DEFAULT_CARGO_TYPE)
             .distance(DEFAULT_DISTANCE)
             .contact(DEFAULT_CONTACT)
             .price(DEFAULT_PRICE)
@@ -154,11 +158,6 @@ public class RatingResourceIntTest {
         rating.setChargeCountry(country);
         // Add required entity
         rating.setDischargeCountry(country);
-        // Add required entity
-        CargoType cargoType = CargoTypeResourceIntTest.createEntity(em);
-        em.persist(cargoType);
-        em.flush();
-        rating.setCargoType(cargoType);
         return rating;
     }
 
@@ -184,6 +183,7 @@ public class RatingResourceIntTest {
         Rating testRating = ratingList.get(ratingList.size() - 1);
         assertThat(testRating.getChargePostalCode()).isEqualTo(DEFAULT_CHARGE_POSTAL_CODE);
         assertThat(testRating.getDischargePostalCode()).isEqualTo(DEFAULT_DISCHARGE_POSTAL_CODE);
+        assertThat(testRating.getCargoType()).isEqualTo(DEFAULT_CARGO_TYPE);
         assertThat(testRating.getDistance()).isEqualTo(DEFAULT_DISTANCE);
         assertThat(testRating.getContact()).isEqualTo(DEFAULT_CONTACT);
         assertThat(testRating.getPrice()).isEqualTo(DEFAULT_PRICE);
@@ -241,6 +241,24 @@ public class RatingResourceIntTest {
         int databaseSizeBeforeTest = ratingRepository.findAll().size();
         // set the field null
         rating.setDischargePostalCode(null);
+
+        // Create the Rating, which fails.
+
+        restRatingMockMvc.perform(post("/api/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
+            .andExpect(status().isBadRequest());
+
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCargoTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ratingRepository.findAll().size();
+        // set the field null
+        rating.setCargoType(null);
 
         // Create the Rating, which fails.
 
@@ -356,6 +374,7 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
             .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE.toString())))
             .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE.toString())))
+            .andExpect(jsonPath("$.[*].cargoType").value(hasItem(DEFAULT_CARGO_TYPE.toString())))
             .andExpect(jsonPath("$.[*].distance").value(hasItem(DEFAULT_DISTANCE.doubleValue())))
             .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
@@ -377,6 +396,7 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.id").value(rating.getId().intValue()))
             .andExpect(jsonPath("$.chargePostalCode").value(DEFAULT_CHARGE_POSTAL_CODE.toString()))
             .andExpect(jsonPath("$.dischargePostalCode").value(DEFAULT_DISCHARGE_POSTAL_CODE.toString()))
+            .andExpect(jsonPath("$.cargoType").value(DEFAULT_CARGO_TYPE.toString()))
             .andExpect(jsonPath("$.distance").value(DEFAULT_DISTANCE.doubleValue()))
             .andExpect(jsonPath("$.contact").value(DEFAULT_CONTACT))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE))
@@ -410,6 +430,7 @@ public class RatingResourceIntTest {
         updatedRating
             .chargePostalCode(UPDATED_CHARGE_POSTAL_CODE)
             .dischargePostalCode(UPDATED_DISCHARGE_POSTAL_CODE)
+            .cargoType(UPDATED_CARGO_TYPE)
             .distance(UPDATED_DISTANCE)
             .contact(UPDATED_CONTACT)
             .price(UPDATED_PRICE)
@@ -428,6 +449,7 @@ public class RatingResourceIntTest {
         Rating testRating = ratingList.get(ratingList.size() - 1);
         assertThat(testRating.getChargePostalCode()).isEqualTo(UPDATED_CHARGE_POSTAL_CODE);
         assertThat(testRating.getDischargePostalCode()).isEqualTo(UPDATED_DISCHARGE_POSTAL_CODE);
+        assertThat(testRating.getCargoType()).isEqualTo(UPDATED_CARGO_TYPE);
         assertThat(testRating.getDistance()).isEqualTo(UPDATED_DISTANCE);
         assertThat(testRating.getContact()).isEqualTo(UPDATED_CONTACT);
         assertThat(testRating.getPrice()).isEqualTo(UPDATED_PRICE);
@@ -495,6 +517,7 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
             .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE)))
             .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE)))
+            .andExpect(jsonPath("$.[*].cargoType").value(hasItem(DEFAULT_CARGO_TYPE.toString())))
             .andExpect(jsonPath("$.[*].distance").value(hasItem(DEFAULT_DISTANCE.doubleValue())))
             .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
