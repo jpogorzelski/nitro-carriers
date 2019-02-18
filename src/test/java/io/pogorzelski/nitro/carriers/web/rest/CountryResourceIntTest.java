@@ -1,13 +1,10 @@
 package io.pogorzelski.nitro.carriers.web.rest;
 
 import io.pogorzelski.nitro.carriers.NitroCarriersApp;
-
 import io.pogorzelski.nitro.carriers.domain.Country;
 import io.pogorzelski.nitro.carriers.repository.CountryRepository;
-import io.pogorzelski.nitro.carriers.repository.search.CountrySearchRepository;
 import io.pogorzelski.nitro.carriers.service.CountryService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,15 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
-
 
 import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -59,14 +52,6 @@ public class CountryResourceIntTest {
 
     @Autowired
     private CountryService countryService;
-
-    /**
-     * This repository is mocked in the io.pogorzelski.nitro.carriers.repository.search test package.
-     *
-     * @see io.pogorzelski.nitro.carriers.repository.search.CountrySearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private CountrySearchRepository mockCountrySearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -136,9 +121,6 @@ public class CountryResourceIntTest {
         assertThat(testCountry.getCountryCode()).isEqualTo(DEFAULT_COUNTRY_CODE);
         assertThat(testCountry.getCountryNamePL()).isEqualTo(DEFAULT_COUNTRY_NAME_PL);
         assertThat(testCountry.getCountryNameEN()).isEqualTo(DEFAULT_COUNTRY_NAME_EN);
-
-        // Validate the Country in Elasticsearch
-        verify(mockCountrySearchRepository, times(1)).save(testCountry);
     }
 
     @Test
@@ -158,9 +140,6 @@ public class CountryResourceIntTest {
         // Validate the Country in the database
         List<Country> countryList = countryRepository.findAll();
         assertThat(countryList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Country in Elasticsearch
-        verify(mockCountrySearchRepository, times(0)).save(country);
     }
 
     @Test
@@ -262,9 +241,6 @@ public class CountryResourceIntTest {
     public void updateCountry() throws Exception {
         // Initialize the database
         countryService.save(country);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockCountrySearchRepository);
-
         int databaseSizeBeforeUpdate = countryRepository.findAll().size();
 
         // Update the country
@@ -288,9 +264,6 @@ public class CountryResourceIntTest {
         assertThat(testCountry.getCountryCode()).isEqualTo(UPDATED_COUNTRY_CODE);
         assertThat(testCountry.getCountryNamePL()).isEqualTo(UPDATED_COUNTRY_NAME_PL);
         assertThat(testCountry.getCountryNameEN()).isEqualTo(UPDATED_COUNTRY_NAME_EN);
-
-        // Validate the Country in Elasticsearch
-        verify(mockCountrySearchRepository, times(1)).save(testCountry);
     }
 
     @Test
@@ -309,9 +282,6 @@ public class CountryResourceIntTest {
         // Validate the Country in the database
         List<Country> countryList = countryRepository.findAll();
         assertThat(countryList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Country in Elasticsearch
-        verify(mockCountrySearchRepository, times(0)).save(country);
     }
 
     @Test
@@ -330,26 +300,6 @@ public class CountryResourceIntTest {
         // Validate the database is empty
         List<Country> countryList = countryRepository.findAll();
         assertThat(countryList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Country in Elasticsearch
-        verify(mockCountrySearchRepository, times(1)).deleteById(country.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchCountry() throws Exception {
-        // Initialize the database
-        countryService.save(country);
-        when(mockCountrySearchRepository.search(queryStringQuery("id:" + country.getId())))
-            .thenReturn(Collections.singletonList(country));
-        // Search the country
-        restCountryMockMvc.perform(get("/api/_search/countries?query=id:" + country.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(country.getId().intValue())))
-            .andExpect(jsonPath("$.[*].countryCode").value(hasItem(DEFAULT_COUNTRY_CODE)))
-            .andExpect(jsonPath("$.[*].countryNamePL").value(hasItem(DEFAULT_COUNTRY_NAME_PL)))
-            .andExpect(jsonPath("$.[*].countryNameEN").value(hasItem(DEFAULT_COUNTRY_NAME_EN)));
     }
 
     @Test

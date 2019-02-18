@@ -1,9 +1,10 @@
 package io.pogorzelski.nitro.carriers.web.rest;
+
+import io.github.jhipster.web.util.ResponseUtil;
 import io.pogorzelski.nitro.carriers.domain.Carrier;
 import io.pogorzelski.nitro.carriers.service.CarrierService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Carrier.
@@ -111,19 +108,6 @@ public class CarrierResource {
         log.debug("REST request to delete Carrier : {}", id);
         carrierService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/carriers?query=:query : search for the carrier corresponding
-     * to the query.
-     *
-     * @param query the query of the carrier search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/carriers")
-    public List<Carrier> searchCarriers(@RequestParam String query) {
-        log.debug("REST request to search Carriers for query {}", query);
-        return carrierService.search(query);
     }
 
 }

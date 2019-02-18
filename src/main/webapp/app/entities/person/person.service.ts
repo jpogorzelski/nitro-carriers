@@ -12,7 +12,6 @@ type EntityArrayResponseType = HttpResponse<IPerson[]>;
 @Injectable({ providedIn: 'root' })
 export class PersonService {
     public resourceUrl = SERVER_API_URL + 'api/people';
-    public resourceSearchUrl = SERVER_API_URL + 'api/_search/people';
 
     constructor(protected http: HttpClient) {}
 
@@ -35,10 +34,5 @@ export class PersonService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
-    }
-
-    search(req?: any): Observable<EntityArrayResponseType> {
-        const options = createRequestOption(req);
-        return this.http.get<IPerson[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
     }
 }

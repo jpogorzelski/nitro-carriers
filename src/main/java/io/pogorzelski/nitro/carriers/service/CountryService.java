@@ -2,19 +2,13 @@ package io.pogorzelski.nitro.carriers.service;
 
 import io.pogorzelski.nitro.carriers.domain.Country;
 import io.pogorzelski.nitro.carriers.repository.CountryRepository;
-import io.pogorzelski.nitro.carriers.repository.search.CountrySearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Country.
@@ -27,11 +21,8 @@ public class CountryService {
 
     private final CountryRepository countryRepository;
 
-    private final CountrySearchRepository countrySearchRepository;
-
-    public CountryService(CountryRepository countryRepository, CountrySearchRepository countrySearchRepository) {
+    public CountryService(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
-        this.countrySearchRepository = countrySearchRepository;
     }
 
     /**
@@ -42,9 +33,7 @@ public class CountryService {
      */
     public Country save(Country country) {
         log.debug("Request to save Country : {}", country);
-        Country result = countryRepository.save(country);
-        countrySearchRepository.save(result);
-        return result;
+        return countryRepository.save(country);
     }
 
     /**
@@ -77,21 +66,8 @@ public class CountryService {
      * @param id the id of the entity
      */
     public void delete(Long id) {
-        log.debug("Request to delete Country : {}", id);        countryRepository.deleteById(id);
-        countrySearchRepository.deleteById(id);
+        log.debug("Request to delete Country : {}", id);
+        countryRepository.deleteById(id);
     }
 
-    /**
-     * Search for the country corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public List<Country> search(String query) {
-        log.debug("Request to search Countries for query {}", query);
-        return StreamSupport
-            .stream(countrySearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
-    }
 }

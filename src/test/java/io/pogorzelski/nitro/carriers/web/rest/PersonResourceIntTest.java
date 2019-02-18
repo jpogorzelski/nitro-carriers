@@ -1,13 +1,10 @@
 package io.pogorzelski.nitro.carriers.web.rest;
 
 import io.pogorzelski.nitro.carriers.NitroCarriersApp;
-
 import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.repository.PersonRepository;
-import io.pogorzelski.nitro.carriers.repository.search.PersonSearchRepository;
 import io.pogorzelski.nitro.carriers.service.PersonService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,15 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
-
 
 import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -62,14 +55,6 @@ public class PersonResourceIntTest {
 
     @Autowired
     private PersonService personService;
-
-    /**
-     * This repository is mocked in the io.pogorzelski.nitro.carriers.repository.search test package.
-     *
-     * @see io.pogorzelski.nitro.carriers.repository.search.PersonSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private PersonSearchRepository mockPersonSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -141,9 +126,6 @@ public class PersonResourceIntTest {
         assertThat(testPerson.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testPerson.getCompanyId()).isEqualTo(DEFAULT_COMPANY_ID);
         assertThat(testPerson.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
-
-        // Validate the Person in Elasticsearch
-        verify(mockPersonSearchRepository, times(1)).save(testPerson);
     }
 
     @Test
@@ -163,9 +145,6 @@ public class PersonResourceIntTest {
         // Validate the Person in the database
         List<Person> personList = personRepository.findAll();
         assertThat(personList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Person in Elasticsearch
-        verify(mockPersonSearchRepository, times(0)).save(person);
     }
 
     @Test
@@ -269,9 +248,6 @@ public class PersonResourceIntTest {
     public void updatePerson() throws Exception {
         // Initialize the database
         personService.save(person);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockPersonSearchRepository);
-
         int databaseSizeBeforeUpdate = personRepository.findAll().size();
 
         // Update the person
@@ -297,9 +273,6 @@ public class PersonResourceIntTest {
         assertThat(testPerson.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testPerson.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
         assertThat(testPerson.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
-
-        // Validate the Person in Elasticsearch
-        verify(mockPersonSearchRepository, times(1)).save(testPerson);
     }
 
     @Test
@@ -318,9 +291,6 @@ public class PersonResourceIntTest {
         // Validate the Person in the database
         List<Person> personList = personRepository.findAll();
         assertThat(personList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Person in Elasticsearch
-        verify(mockPersonSearchRepository, times(0)).save(person);
     }
 
     @Test
@@ -339,27 +309,6 @@ public class PersonResourceIntTest {
         // Validate the database is empty
         List<Person> personList = personRepository.findAll();
         assertThat(personList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Person in Elasticsearch
-        verify(mockPersonSearchRepository, times(1)).deleteById(person.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchPerson() throws Exception {
-        // Initialize the database
-        personService.save(person);
-        when(mockPersonSearchRepository.search(queryStringQuery("id:" + person.getId())))
-            .thenReturn(Collections.singletonList(person));
-        // Search the person
-        restPersonMockMvc.perform(get("/api/_search/people?query=id:" + person.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(person.getId().intValue())))
-            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
-            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID)))
-            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)));
     }
 
     @Test

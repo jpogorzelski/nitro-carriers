@@ -1,18 +1,15 @@
 package io.pogorzelski.nitro.carriers.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Carrier.
@@ -20,7 +17,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "carrier")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "carrier")
 public class Carrier implements Serializable {
 
     private static final long serialVersionUID = 1L;

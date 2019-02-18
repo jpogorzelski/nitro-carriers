@@ -2,19 +2,13 @@ package io.pogorzelski.nitro.carriers.service;
 
 import io.pogorzelski.nitro.carriers.domain.Carrier;
 import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
-import io.pogorzelski.nitro.carriers.repository.search.CarrierSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Carrier.
@@ -27,11 +21,8 @@ public class CarrierService {
 
     private final CarrierRepository carrierRepository;
 
-    private final CarrierSearchRepository carrierSearchRepository;
-
-    public CarrierService(CarrierRepository carrierRepository, CarrierSearchRepository carrierSearchRepository) {
+    public CarrierService(CarrierRepository carrierRepository) {
         this.carrierRepository = carrierRepository;
-        this.carrierSearchRepository = carrierSearchRepository;
     }
 
     /**
@@ -42,9 +33,7 @@ public class CarrierService {
      */
     public Carrier save(Carrier carrier) {
         log.debug("Request to save Carrier : {}", carrier);
-        Carrier result = carrierRepository.save(carrier);
-        carrierSearchRepository.save(result);
-        return result;
+        return carrierRepository.save(carrier);
     }
 
     /**
@@ -77,21 +66,8 @@ public class CarrierService {
      * @param id the id of the entity
      */
     public void delete(Long id) {
-        log.debug("Request to delete Carrier : {}", id);        carrierRepository.deleteById(id);
-        carrierSearchRepository.deleteById(id);
+        log.debug("Request to delete Carrier : {}", id);
+        carrierRepository.deleteById(id);
     }
 
-    /**
-     * Search for the carrier corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public List<Carrier> search(String query) {
-        log.debug("Request to search Carriers for query {}", query);
-        return StreamSupport
-            .stream(carrierSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
-    }
 }

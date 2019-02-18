@@ -8,8 +8,6 @@ import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
 import io.pogorzelski.nitro.carriers.repository.CountryRepository;
 import io.pogorzelski.nitro.carriers.repository.PersonRepository;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
-import io.pogorzelski.nitro.carriers.repository.search.CarrierSearchRepository;
-import io.pogorzelski.nitro.carriers.repository.search.PersonSearchRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,23 +27,19 @@ public class RatingExtService {
     private final RatingRepository ratingRepository;
 
     private final RatingSearchRepository ratingSearchRepository;
-    private final PersonSearchRepository personSearchRepository;
-    private final CarrierSearchRepository carrierSearchRepository;
 
     private final CountryRepository countryRepository;
     private final CarrierRepository carrierRepository;
     private final PersonRepository personRepository;
     private final UserService userService;
 
-    public RatingExtService(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository, PersonSearchRepository personSearchRepository, CarrierSearchRepository carrierSearchRepository, UserService userService) {
+    public RatingExtService(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository, UserService userService) {
         this.ratingRepository = ratingRepository;
         this.ratingSearchRepository = ratingSearchRepository;
 
         this.countryRepository = countryRepository;
         this.carrierRepository = carrierRepository;
         this.personRepository = personRepository;
-        this.personSearchRepository = personSearchRepository;
-        this.carrierSearchRepository = carrierSearchRepository;
         this.userService = userService;
     }
 
@@ -96,8 +90,6 @@ public class RatingExtService {
         dbPerson.setCarrier(dbCarrier);
 
         ratingSearchRepository.save(rating);
-        carrierSearchRepository.save(dbCarrier);
-        personSearchRepository.save(dbPerson);
         return result;
     }
 

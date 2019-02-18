@@ -1,9 +1,10 @@
 package io.pogorzelski.nitro.carriers.web.rest;
+
+import io.github.jhipster.web.util.ResponseUtil;
 import io.pogorzelski.nitro.carriers.domain.Country;
 import io.pogorzelski.nitro.carriers.service.CountryService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Country.
@@ -111,19 +108,6 @@ public class CountryResource {
         log.debug("REST request to delete Country : {}", id);
         countryService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/countries?query=:query : search for the country corresponding
-     * to the query.
-     *
-     * @param query the query of the country search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/countries")
-    public List<Country> searchCountries(@RequestParam String query) {
-        log.debug("REST request to search Countries for query {}", query);
-        return countryService.search(query);
     }
 
 }

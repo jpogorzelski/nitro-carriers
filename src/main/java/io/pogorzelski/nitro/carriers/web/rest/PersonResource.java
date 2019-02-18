@@ -1,9 +1,10 @@
 package io.pogorzelski.nitro.carriers.web.rest;
+
+import io.github.jhipster.web.util.ResponseUtil;
 import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.service.PersonService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Person.
@@ -111,19 +108,6 @@ public class PersonResource {
         log.debug("REST request to delete Person : {}", id);
         personService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/people?query=:query : search for the person corresponding
-     * to the query.
-     *
-     * @param query the query of the person search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/people")
-    public List<Person> searchPeople(@RequestParam String query) {
-        log.debug("REST request to search People for query {}", query);
-        return personService.search(query);
     }
 
 }

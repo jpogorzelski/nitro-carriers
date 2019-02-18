@@ -12,7 +12,6 @@ type EntityArrayResponseType = HttpResponse<ICarrier[]>;
 @Injectable({ providedIn: 'root' })
 export class CarrierService {
     public resourceUrl = SERVER_API_URL + 'api/carriers';
-    public resourceSearchUrl = SERVER_API_URL + 'api/_search/carriers';
 
     constructor(protected http: HttpClient) {}
 
@@ -35,10 +34,5 @@ export class CarrierService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
-    }
-
-    search(req?: any): Observable<EntityArrayResponseType> {
-        const options = createRequestOption(req);
-        return this.http.get<ICarrier[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
     }
 }
