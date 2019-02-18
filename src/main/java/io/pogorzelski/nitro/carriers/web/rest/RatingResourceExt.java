@@ -71,5 +71,17 @@ public class RatingResourceExt {
     }
 
 
+    /**
+     * DELETE  /ratings/:id : delete the "id" rating.
+     *
+     * @param id the id of the rating to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping("/ratings/{id}")
+    public ResponseEntity<Void> deleteRating(@PathVariable Long id) {
+        log.debug("REST request to delete Rating : {}", id);
+        ratingExtService.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
 
 }

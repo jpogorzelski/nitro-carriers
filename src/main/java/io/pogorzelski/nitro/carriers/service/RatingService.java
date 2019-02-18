@@ -6,26 +6,23 @@ import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.domain.Rating;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
-import io.pogorzelski.nitro.carriers.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Rating.
  */
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class RatingService {
 
     private final Logger log = LoggerFactory.getLogger(RatingService.class);
@@ -50,9 +47,6 @@ public class RatingService {
      */
     public Rating save(Rating rating) {
         log.debug("Request to save Rating : {}", rating);
-        if (rating.getId() != null){
-            checkPermissions(rating.getId());
-        }
         Country chargeCountry = rating.getChargeCountry();
         if (chargeCountry != null && chargeCountry.getId() != null){
             rating.setChargeCountry(entityManager.merge(chargeCountry));
@@ -81,7 +75,6 @@ public class RatingService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    @Transactional(readOnly = true)
     public Page<Rating> findAll(Pageable pageable) {
         log.debug("Request to get all Ratings");
         return ratingRepository.findAll(pageable);
@@ -94,23 +87,11 @@ public class RatingService {
      * @param id the id of the entity
      * @return the entity
      */
-    @Transactional(readOnly = true)
     public Optional<Rating> findOne(Long id) {
         log.debug("Request to get Rating : {}", id);
         return ratingRepository.findById(id);
     }
 
-    /**
-     * Delete the rating by id.
-     *
-     * @param id the id of the entity
-     */
-    public void delete(Long id) {
-        log.debug("Request to delete Rating : {}", id);
-        checkPermissions(id);
-        ratingRepository.deleteById(id);
-        ratingSearchRepository.deleteById(id);
-    }
 
     /**
      * Search for the rating corresponding to the query.
@@ -119,15 +100,7 @@ public class RatingService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    @Transactional(readOnly = true)
     public Page<Rating> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Ratings for query {}", query);
         return ratingSearchRepository.search(queryStringQuery(query), pageable);    }
-
-    public void checkPermissions(Long id) {
-        ratingRepository.findByCreatedByIsCurrentUser().stream()
-            .filter(rating -> rating.getId().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new AccessDeniedException("Not allowed to modify this rating."));
-    }
 }

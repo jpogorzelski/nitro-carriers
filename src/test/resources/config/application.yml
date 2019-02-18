@@ -45,6 +45,9 @@ spring:
             hibernate.generate_statistics: false
             hibernate.hbm2ddl.auto: validate
             hibernate.jdbc.time_zone: UTC
+            hibernate.show_sql: true
+#            hibernate.use_sql_comments: true
+            hibernate.format_sql: true
     data:
         elasticsearch:
             properties:
@@ -61,7 +64,6 @@ spring:
             enabled: false
     thymeleaf:
         mode: HTML
-
 
 server:
     port: 10344
@@ -110,3 +112,12 @@ jhipster:
 # ===================================================================
 
 # application:
+logging:
+    level:
+        org.hibernate.SQL: DEBUG
+        org.hibernate.type.descriptor.sql: TRACE
+        org:
+            hibernate:
+                type:
+                    descriptor:
+                        sql: TRACE

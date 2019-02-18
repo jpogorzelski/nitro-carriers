@@ -1,9 +1,6 @@
 package io.pogorzelski.nitro.carriers.service;
 
-import io.pogorzelski.nitro.carriers.domain.Carrier;
-import io.pogorzelski.nitro.carriers.domain.Country;
-import io.pogorzelski.nitro.carriers.domain.Person;
-import io.pogorzelski.nitro.carriers.domain.Rating;
+import io.pogorzelski.nitro.carriers.domain.*;
 import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
 import io.pogorzelski.nitro.carriers.repository.CountryRepository;
 import io.pogorzelski.nitro.carriers.repository.PersonRepository;
@@ -19,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Service Implementation for managing Rating.
  */
 @Service
-@Transactional
 public class RatingExtService {
 
     private final Logger log = LoggerFactory.getLogger(RatingExtService.class);
@@ -31,7 +27,7 @@ public class RatingExtService {
     private final CountryRepository countryRepository;
     private final CarrierRepository carrierRepository;
     private final PersonRepository personRepository;
-    private final UserService userService;
+    private UserService userService;
 
     public RatingExtService(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository, UserService userService) {
         this.ratingRepository = ratingRepository;
@@ -49,22 +45,11 @@ public class RatingExtService {
      * @param rating the entity to save
      * @return the persisted entity
      */
+    @Transactional
     public Rating save(Rating rating) {
         log.debug("Request to save Rating : {}", rating);
         if (rating.getId() != null) {
             checkPermissions(rating.getId());
-        }
-
-        Integer carrierTransId = rating.getCarrier().getTransId();
-        Carrier carrier = carrierRepository.findByTransId(carrierTransId);
-        if (carrier != null) {
-            rating.setCarrier(carrier);
-        }
-
-        Integer companyId = rating.getPerson().getCompanyId();
-        Person person = personRepository.findByCarrier_TransIdAndCompanyId(carrierTransId, companyId);
-        if (person != null) {
-            rating.setPerson(person);
         }
 
         String chargeAddressCountry = rating.getChargeCountry().getCountryNamePL();
@@ -82,19 +67,37 @@ public class RatingExtService {
             throw new RuntimeException("Discharge country cannot be null!");
         }
 
-        rating.setCreatedBy(userService.getUserWithAuthorities().orElseThrow(() -> new RuntimeException("WTF not logged in")));
-        Rating result = ratingRepository.save(rating);
+        rating.setCreatedBy(getUser());
 
-        Carrier dbCarrier = result.getCarrier();
-        Person dbPerson = result.getPerson();
+        Carrier dbCarrier = carrierRepository.save(rating.getCarrier());
+        Person dbPerson = personRepository.save(rating.getPerson());
         dbPerson.setCarrier(dbCarrier);
 
+        Rating result = ratingRepository.save(rating);
         ratingSearchRepository.save(rating);
         return result;
     }
 
-    public boolean checkPermissions(Long id) {
-        return ratingRepository.findByCreatedByIsCurrentUser().stream()
+    public User getUser() {
+        return userService.getUserWithAuthorities()
+            .orElseThrow(() -> new AccessDeniedException("You are not logged in!"));
+    }
+
+    /**
+     * Delete the rating by id.
+     *
+     * @param id the id of the entity
+     */
+    @Transactional
+    public void delete(Long id) {
+        log.debug("Request to delete Rating : {}", id);
+        checkPermissions(id);
+        ratingRepository.deleteById(id);
+        ratingSearchRepository.deleteById(id);
+    }
+
+    private void checkPermissions(Long id) {
+        ratingRepository.findByCreatedByIsCurrentUser().stream()
             .map(rating -> rating.getId().equals(id))
             .findFirst()
             .orElseThrow(() -> new AccessDeniedException("Not allowed to modify this rating."));

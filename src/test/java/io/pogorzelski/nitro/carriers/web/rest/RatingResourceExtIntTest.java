@@ -8,6 +8,7 @@ import io.pogorzelski.nitro.carriers.domain.Rating;
 import io.pogorzelski.nitro.carriers.domain.enumeration.CargoType;
 import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
+import io.pogorzelski.nitro.carriers.repository.UserRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
@@ -17,8 +18,10 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,9 +33,8 @@ import java.util.List;
 
 import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -45,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RatingResourceExtIntTest {
 
     private static final String DEFAULT_POSTAL_CODE = "15-111";
+    private static final String UPDATED_POSTAL_CODE = "99-999";
 
     private static final CargoType DEFAULT_CARGO_TYPE = CargoType.FTL_13_6;
     private static final CargoType UPDATED_CARGO_TYPE = CargoType.EXTRA_13_6;
@@ -71,6 +74,9 @@ public class RatingResourceExtIntTest {
     private RatingRepository ratingRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @SpyBean
     private RatingExtService ratingExtService;
 
     /**
@@ -105,6 +111,7 @@ public class RatingResourceExtIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final RatingResourceExt ratingResourceExt = new RatingResourceExt(ratingExtService);
+        doReturn(userRepository.findOneByLogin("user").get()).when(ratingExtService).getUser();
         this.restRatingMockMvc = MockMvcBuilders.standaloneSetup(ratingResourceExt)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -119,7 +126,7 @@ public class RatingResourceExtIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Rating createEntity(EntityManager em) {
+    public Rating createEntity(EntityManager em) {
 
         Carrier carrier = CarrierResourceIntTest.createEntity(em);
         Person person = PersonResourceIntTest.createEntity(em);
@@ -151,6 +158,7 @@ public class RatingResourceExtIntTest {
 
     @Test
     @Transactional
+    @WithUserDetails
     public void createRating() throws Exception {
         int databaseSizeBeforeCreate = ratingRepository.findAll().size();
 
@@ -323,6 +331,145 @@ public class RatingResourceExtIntTest {
 
         List<Rating> ratingList = ratingRepository.findAll();
         assertThat(ratingList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void updateRatingSuccess() throws Exception {
+        // Initialize the database
+        Rating ratingDB = ratingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        // Disconnect from session so that the updates on updatedRating are not directly saved in db
+        em.detach(updatedRating);
+        updatedRating
+            .chargePostalCode(UPDATED_POSTAL_CODE)
+            .dischargePostalCode(UPDATED_POSTAL_CODE)
+            .cargoType(UPDATED_CARGO_TYPE)
+            .distance(UPDATED_DISTANCE)
+            .contact(UPDATED_CONTACT)
+            .price(UPDATED_PRICE)
+            .flexibility(UPDATED_FLEXIBILITY)
+            .recommendation(UPDATED_RECOMMENDATION)
+            .average(UPDATED_AVERAGE);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getChargePostalCode()).isEqualTo(UPDATED_POSTAL_CODE);
+        assertThat(testRating.getDischargePostalCode()).isEqualTo(UPDATED_POSTAL_CODE);
+        assertThat(testRating.getCargoType()).isEqualTo(UPDATED_CARGO_TYPE);
+        assertThat(testRating.getDistance()).isEqualTo(UPDATED_DISTANCE);
+        assertThat(testRating.getContact()).isEqualTo(UPDATED_CONTACT);
+        assertThat(testRating.getPrice()).isEqualTo(UPDATED_PRICE);
+        assertThat(testRating.getFlexibility()).isEqualTo(UPDATED_FLEXIBILITY);
+        assertThat(testRating.getRecommendation()).isEqualTo(UPDATED_RECOMMENDATION);
+        assertThat(testRating.getAverage()).isEqualTo(UPDATED_AVERAGE);
+        assertThat(testRating.getCarrier().getId()).isEqualTo(ratingDB.getCarrier().getId());
+        assertThat(testRating.getPerson().getId()).isEqualTo(ratingDB.getPerson().getId());
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("admin")
+    public void updateRatingFailWrongUser() throws Exception {
+        // Initialize the database
+        ratingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        // Disconnect from session so that the updates on updatedRating are not directly saved in db
+        em.detach(updatedRating);
+        updatedRating
+            .chargePostalCode(UPDATED_POSTAL_CODE)
+            .dischargePostalCode(UPDATED_POSTAL_CODE)
+            .cargoType(UPDATED_CARGO_TYPE)
+            .distance(UPDATED_DISTANCE)
+            .contact(UPDATED_CONTACT)
+            .price(UPDATED_PRICE)
+            .flexibility(UPDATED_FLEXIBILITY)
+            .recommendation(UPDATED_RECOMMENDATION)
+            .average(UPDATED_AVERAGE);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().is(403));
+    }
+
+    @Test
+    @Transactional
+    public void updateNonExistingRating() throws Exception {
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Create the Rating
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(0)).save(rating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("admin")
+    public void deleteRatingFailWrongUser() throws Exception {
+        // Initialize the database
+        ratingExtService.save(rating);
+
+        // Delete the rating
+        restRatingMockMvc.perform(delete("/api/ext/ratings/{id}", rating.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().is(403));
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void deleteRatingSuccess() throws Exception {
+        // Initialize the database
+        ratingExtService.save(rating);
+
+        int databaseSizeBeforeDelete = ratingRepository.findAll().size();
+
+        // Delete the rating
+        restRatingMockMvc.perform(delete("/api/ext/ratings/{id}", rating.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+
+        // Validate the database is empty
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeDelete - 1);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).deleteById(rating.getId());
     }
 
     @Test
