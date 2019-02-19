@@ -8,13 +8,14 @@ import io.pogorzelski.nitro.carriers.domain.Rating;
 import io.pogorzelski.nitro.carriers.domain.enumeration.CargoType;
 import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
+import io.pogorzelski.nitro.carriers.repository.UserRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
@@ -72,7 +73,10 @@ public class RatingResourceExtIntTest {
     private RatingRepository ratingRepository;
 
     @Autowired
-    private RatingExtService ratingExtService;
+    private UserRepository userRepository;
+
+    @Autowired
+    private RatingExtService mockRatingExtService;
 
     /**
      * This repository is mocked in the io.pogorzelski.nitro.carriers.repository.search test package.
@@ -105,7 +109,8 @@ public class RatingResourceExtIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final RatingResourceExt ratingResourceExt = new RatingResourceExt(ratingExtService);
+        final RatingResourceExt ratingResourceExt = new RatingResourceExt(mockRatingExtService);
+        doReturn(userRepository.findOneByLogin("user").get()).when(mockRatingExtService).getUser();
         this.restRatingMockMvc = MockMvcBuilders.standaloneSetup(ratingResourceExt)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -124,7 +129,6 @@ public class RatingResourceExtIntTest {
 
         Carrier carrier = CarrierResourceIntTest.createEntity(em);
         Person person = PersonResourceIntTest.createEntity(em);
-           // .carrier(carrier);
         Country country = CountryResourceIntTest.createEntity(em);
         em.persist(country);
         em.flush();
@@ -332,7 +336,7 @@ public class RatingResourceExtIntTest {
     @WithUserDetails
     public void updateRatingSuccess() throws Exception {
         // Initialize the database
-        Rating ratingDB = ratingExtService.save(rating);
+        Rating ratingDB = mockRatingExtService.save(rating);
         // As the test used the service layer, reset the Elasticsearch mock repository
         reset(mockRatingSearchRepository);
 
@@ -383,7 +387,7 @@ public class RatingResourceExtIntTest {
     @WithUserDetails("admin")
     public void updateRatingFailWrongUser() throws Exception {
         // Initialize the database
-        ratingExtService.save(rating);
+        mockRatingExtService.save(rating);
         // As the test used the service layer, reset the Elasticsearch mock repository
         reset(mockRatingSearchRepository);
 
@@ -436,7 +440,7 @@ public class RatingResourceExtIntTest {
     @WithUserDetails("admin")
     public void deleteRatingFailWrongUser() throws Exception {
         // Initialize the database
-        ratingExtService.save(rating);
+        mockRatingExtService.save(rating);
 
         // Delete the rating
         restRatingMockMvc.perform(delete("/api/ext/ratings/{id}", rating.getId())
@@ -449,7 +453,7 @@ public class RatingResourceExtIntTest {
     @WithUserDetails
     public void deleteRatingSuccess() throws Exception {
         // Initialize the database
-        ratingExtService.save(rating);
+        mockRatingExtService.save(rating);
 
         int databaseSizeBeforeDelete = ratingRepository.findAll().size();
 
