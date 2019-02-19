@@ -8,7 +8,6 @@ import io.pogorzelski.nitro.carriers.domain.Rating;
 import io.pogorzelski.nitro.carriers.domain.enumeration.CargoType;
 import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
-import io.pogorzelski.nitro.carriers.repository.UserRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
@@ -18,7 +17,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -74,9 +72,6 @@ public class RatingResourceExtIntTest {
     private RatingRepository ratingRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @SpyBean
     private RatingExtService ratingExtService;
 
     /**
@@ -111,7 +106,6 @@ public class RatingResourceExtIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final RatingResourceExt ratingResourceExt = new RatingResourceExt(ratingExtService);
-        doReturn(userRepository.findOneByLogin("user").get()).when(ratingExtService).getUser();
         this.restRatingMockMvc = MockMvcBuilders.standaloneSetup(ratingResourceExt)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -126,7 +120,7 @@ public class RatingResourceExtIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public Rating createEntity(EntityManager em) {
+    public static Rating createEntity(EntityManager em) {
 
         Carrier carrier = CarrierResourceIntTest.createEntity(em);
         Person person = PersonResourceIntTest.createEntity(em);
