@@ -1,6 +1,7 @@
 package io.pogorzelski.nitro.carriers.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -34,9 +35,12 @@ public class Carrier implements Serializable {
     private Integer transId;
 
     @OneToMany(mappedBy = "carrier")
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Person> people = new HashSet<>();
+
     @OneToMany(mappedBy = "carrier")
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Rating> ratings = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
