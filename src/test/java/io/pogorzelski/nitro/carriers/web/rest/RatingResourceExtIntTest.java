@@ -363,6 +363,8 @@ public class RatingResourceExtIntTest {
             .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
             .andDo(print())
             .andExpect(status().isOk());
+        System.out.println("1: Standard Out Message");
+        System.err.println("1: Standard Error Message");
 
         // Validate the Rating in the database
         List<Rating> ratingList = ratingRepository.findAll();
