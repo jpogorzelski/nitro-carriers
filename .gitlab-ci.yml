@@ -29,7 +29,7 @@ gradle-compile:
 gradle-test:
     stage: test
     script:
-        - ./gradlew test -PnodeInstall --no-daemon
+        - ./gradlew test -i -PnodeInstall --no-daemon
     artifacts:
         reports:
             junit: build/test-results/test/TEST-*.xml
