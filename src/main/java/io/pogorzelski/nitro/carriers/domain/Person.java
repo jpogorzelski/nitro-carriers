@@ -1,7 +1,7 @@
 package io.pogorzelski.nitro.carriers.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -41,7 +41,7 @@ public class Person implements Serializable {
     private String phoneNumber;
 
     @ManyToOne
-    @JsonIgnoreProperties("people")
+    @JsonIgnore
     private Carrier carrier;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
