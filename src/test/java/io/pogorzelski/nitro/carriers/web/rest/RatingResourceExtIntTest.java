@@ -388,29 +388,10 @@ public class RatingResourceExtIntTest {
     public void updateRatingFailWrongUser() throws Exception {
         // Initialize the database
         mockRatingExtService.save(rating);
-        // As the test used the service layer, reset the Elasticsearch mock repository
-        reset(mockRatingSearchRepository);
-
-        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
-
-        // Update the rating
-        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
-        // Disconnect from session so that the updates on updatedRating are not directly saved in db
-        em.detach(updatedRating);
-        updatedRating
-            .chargePostalCode(UPDATED_POSTAL_CODE)
-            .dischargePostalCode(UPDATED_POSTAL_CODE)
-            .cargoType(UPDATED_CARGO_TYPE)
-            .distance(UPDATED_DISTANCE)
-            .contact(UPDATED_CONTACT)
-            .price(UPDATED_PRICE)
-            .flexibility(UPDATED_FLEXIBILITY)
-            .recommendation(UPDATED_RECOMMENDATION)
-            .average(UPDATED_AVERAGE);
 
         restRatingMockMvc.perform(put("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .content(TestUtil.convertObjectToJsonBytes(rating)))
             .andExpect(status().is(403));
     }
 
@@ -418,8 +399,6 @@ public class RatingResourceExtIntTest {
     @Transactional
     public void updateNonExistingRating() throws Exception {
         int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
-
-        // Create the Rating
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restRatingMockMvc.perform(put("/api/ext/ratings")
@@ -442,7 +421,7 @@ public class RatingResourceExtIntTest {
         // Initialize the database
         mockRatingExtService.save(rating);
 
-        // Delete the rating
+        // Try to delete the rating
         restRatingMockMvc.perform(delete("/api/ext/ratings/{id}", rating.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().is(403));
