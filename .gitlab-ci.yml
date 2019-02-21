@@ -55,7 +55,7 @@ frontend-test:
 gradle-package:
     stage: package
     script:
-        - ./gradlew bootWar -Pprod -x check --no-daemon
+        - ./gradlew bootWar -Pprod -Pno-liquibase -x check --no-daemon
     artifacts:
         paths:
             - build/libs/*.war
