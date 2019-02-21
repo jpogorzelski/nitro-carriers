@@ -34,6 +34,7 @@ import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingCo
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -360,6 +361,7 @@ public class RatingResourceExtIntTest {
         restRatingMockMvc.perform(put("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andDo(print())
             .andExpect(status().isOk());
 
         // Validate the Rating in the database
@@ -392,6 +394,7 @@ public class RatingResourceExtIntTest {
         restRatingMockMvc.perform(put("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(rating)))
+            .andDo(print())
             .andExpect(status().is(403));
     }
 
