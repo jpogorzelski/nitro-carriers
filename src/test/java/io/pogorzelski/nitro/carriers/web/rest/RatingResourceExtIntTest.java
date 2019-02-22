@@ -70,6 +70,9 @@ public class RatingResourceExtIntTest {
     private static final Double DEFAULT_AVERAGE = 1D;
     private static final Double UPDATED_AVERAGE = 2D;
 
+    private static final String DEFAULT_REMARKS = "AAAAAAAAAA";
+    private static final String UPDATED_REMARKS = "BBBBBBBBBB";
+
     @Autowired
     private RatingRepository ratingRepository;
 
@@ -142,6 +145,7 @@ public class RatingResourceExtIntTest {
             .flexibility(DEFAULT_FLEXIBILITY)
             .recommendation(DEFAULT_RECOMMENDATION)
             .average(DEFAULT_AVERAGE)
+            .remarks(DEFAULT_REMARKS)
             .carrier(carrier)
             .person(person)
             .chargeCountry(country)
@@ -180,6 +184,7 @@ public class RatingResourceExtIntTest {
         assertThat(testRating.getFlexibility()).isEqualTo(DEFAULT_FLEXIBILITY);
         assertThat(testRating.getRecommendation()).isEqualTo(DEFAULT_RECOMMENDATION);
         assertThat(testRating.getAverage()).isEqualTo(DEFAULT_AVERAGE);
+        assertThat(testRating.getRemarks()).isEqualTo(DEFAULT_REMARKS);
 
         // Validate the Rating in Elasticsearch
         verify(mockRatingSearchRepository, times(1)).save(testRating);
@@ -357,7 +362,8 @@ public class RatingResourceExtIntTest {
             .price(UPDATED_PRICE)
             .flexibility(UPDATED_FLEXIBILITY)
             .recommendation(UPDATED_RECOMMENDATION)
-            .average(UPDATED_AVERAGE);
+            .average(UPDATED_AVERAGE)
+            .remarks(UPDATED_REMARKS);
 
         restRatingMockMvc.perform(put("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -377,6 +383,7 @@ public class RatingResourceExtIntTest {
         assertThat(testRating.getFlexibility()).isEqualTo(UPDATED_FLEXIBILITY);
         assertThat(testRating.getRecommendation()).isEqualTo(UPDATED_RECOMMENDATION);
         assertThat(testRating.getAverage()).isEqualTo(UPDATED_AVERAGE);
+        assertThat(testRating.getRemarks()).isEqualTo(UPDATED_REMARKS);
         assertThat(testRating.getCarrier().getId()).isEqualTo(ratingDB.getCarrier().getId());
         assertThat(testRating.getPerson().getId()).isEqualTo(ratingDB.getPerson().getId());
 
