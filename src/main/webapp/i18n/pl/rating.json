@@ -37,7 +37,8 @@
             "carrier": "Firma",
             "carrierAndPerson": "Dane firmy i osoby kontaktowej",
             "distance": "Dystans (km)",
-            "createdBy": "Utworzył"
+            "createdBy": "Utworzył",
+            "remarks": "Uwagi"
         }
     }
 }

@@ -75,6 +75,9 @@ public class Rating implements Serializable {
     @Column(name = "average")
     private Double average;
 
+    @Column(name = "remarks")
+    private String remarks;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("ratings")
@@ -225,6 +228,19 @@ public class Rating implements Serializable {
         this.average = average;
     }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public Rating remarks(String remarks) {
+        this.remarks = remarks;
+        return this;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
     public Carrier getCarrier() {
         return carrier;
     }
@@ -324,6 +340,7 @@ public class Rating implements Serializable {
             ", flexibility=" + getFlexibility() +
             ", recommendation='" + getRecommendation() + "'" +
             ", average=" + getAverage() +
+            ", remarks='" + getRemarks() + "'" +
             "}";
     }
 }

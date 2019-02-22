@@ -33,7 +33,7 @@
             "relationshipName": "carrier",
             "otherEntityName": "carrier",
             "otherEntityField": "name",
-            "otherEntityRelationshipName": "people(firstName)"
+            "otherEntityRelationshipName": "people"
         }
     ],
     "changelogDate": "20190123145853",
