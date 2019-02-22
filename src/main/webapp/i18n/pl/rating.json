@@ -38,7 +38,10 @@
             "carrierAndPerson": "Dane firmy i osoby kontaktowej",
             "distance": "Dystans (km)",
             "createdBy": "Utworzył",
-            "remarks": "Uwagi"
+            "remarks": "Uwagi",
+            "countryPlaceholder": "Wybierz kraj...",
+            "cargoTypePlaceholder": "Wybierz typ ładunku...",
+            "selectPlaceholder": "-- wybierz --"
         }
     }
 }

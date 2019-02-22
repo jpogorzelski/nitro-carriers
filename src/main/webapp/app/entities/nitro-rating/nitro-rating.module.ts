@@ -3,13 +3,16 @@ import { RouterModule } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
 import { JhiLanguageHelper } from 'app/core';
 
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
+
 import { NitroCarriersSharedModule } from 'app/shared';
 import { NitroRatingComponent, NitroRatingDetailComponent, NitroRatingEditorComponent, nitroRatingRoute } from './';
 
 const ENTITY_STATES = [...nitroRatingRoute];
 
 @NgModule({
-    imports: [NitroCarriersSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    imports: [NitroCarriersSharedModule, RouterModule.forChild(ENTITY_STATES), NgSelectModule, FormsModule],
     declarations: [NitroRatingComponent, NitroRatingDetailComponent, NitroRatingEditorComponent],
     entryComponents: [NitroRatingComponent, NitroRatingDetailComponent, NitroRatingEditorComponent],
     providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
