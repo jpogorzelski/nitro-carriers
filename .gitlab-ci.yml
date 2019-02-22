@@ -33,10 +33,13 @@ gradle-test:
     artifacts:
         when: always
         reports:
-            junit: build/test-results/test/TEST-*.xml
+            junit:
+                - build/test-results/test/TEST-*.xml
+                - build/reports/tests/test/index.html
         paths:
             - build/test-results/
             - build/jacoco/
+            - build/reports
         expire_in: 1 day
 
 frontend-test:
