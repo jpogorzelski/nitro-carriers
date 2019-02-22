@@ -48,6 +48,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
                     '-' +
                     this.rating.person.companyId;
             }
+            console.log('aaaaa ' + this.rating.contact);
         });
 
         this.countryService

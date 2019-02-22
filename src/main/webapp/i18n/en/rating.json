@@ -38,7 +38,10 @@
             "carrier": "Carrier",
             "carrierAndPerson": "Carrier and contact person data",
             "distance": "Distance (km)",
-            "remarks": "Remarks"
+            "remarks": "Remarks",
+            "countryPlaceholder": "Select country...",
+            "cargoTypePlaceholder": "Select cargo type...",
+            "selectPlaceholder": "-- choose --"
         }
     }
 }
