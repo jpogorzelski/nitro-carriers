@@ -37,7 +37,7 @@
             "carrierName": "Carrier Name",
             "carrier": "Carrier",
             "carrierAndPerson": "Carrier and contact person data",
-            "distance": "Distance"
+            "distance": "Distance (km)"
         }
     }
 }

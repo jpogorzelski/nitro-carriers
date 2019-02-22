@@ -2,7 +2,7 @@
     "nitroCarriersApp": {
         "rating": {
             "home": {
-                "title": "Ocena",
+                "title": "Oceny",
                 "createLabel": "Dodaj ocenę",
                 "createOrEditLabel": "Dodaj lub edytuj: Ocena",
                 "search": "Wyszukaj Ocenę"
@@ -36,7 +36,7 @@
             "carrierTransId": "Trans ID firmy",
             "carrier": "Firma",
             "carrierAndPerson": "Dane firmy i osoby kontaktowej",
-            "distance": "Dystans",
+            "distance": "Dystans (km)",
             "createdBy": "Utworzył"
         }
     }
