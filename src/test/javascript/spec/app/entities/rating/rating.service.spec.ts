@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(RatingService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Rating(0, 'AAAAAAA', 'AAAAAAA', CargoType.FTL_13_6, 0, 0, 0, 0, Grade.DEF_YES, 0);
+            elemDefault = new Rating(0, 'AAAAAAA', 'AAAAAAA', CargoType.FTL_13_6, 0, 0, 0, 0, Grade.DEF_YES, 0, 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
@@ -63,7 +63,8 @@ describe('Service Tests', () => {
                         price: 1,
                         flexibility: 1,
                         recommendation: 'BBBBBB',
-                        average: 1
+                        average: 1,
+                        remarks: 'BBBBBB'
                     },
                     elemDefault
                 );
@@ -88,7 +89,8 @@ describe('Service Tests', () => {
                         price: 1,
                         flexibility: 1,
                         recommendation: 'BBBBBB',
-                        average: 1
+                        average: 1,
+                        remarks: 'BBBBBB'
                     },
                     elemDefault
                 );

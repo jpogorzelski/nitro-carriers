@@ -74,6 +74,10 @@
         {
             "fieldName": "average",
             "fieldType": "Double"
+        },
+        {
+            "fieldName": "remarks",
+            "fieldType": "String"
         }
     ],
     "relationships": [
@@ -83,7 +87,7 @@
             "relationshipName": "carrier",
             "otherEntityName": "carrier",
             "otherEntityField": "name",
-            "otherEntityRelationshipName": "ratings(carrier)"
+            "otherEntityRelationshipName": "rating"
         },
         {
             "relationshipType": "many-to-one",
@@ -117,7 +121,7 @@
             "otherEntityRelationshipName": "rating"
         }
     ],
-    "changelogDate": "20190123145855",
+    "changelogDate": "20190222100855",
     "entityTableName": "rating",
     "dto": "no",
     "pagination": "infinite-scroll",

@@ -36,6 +36,7 @@ export interface IRating {
     flexibility?: number;
     recommendation?: Grade;
     average?: number;
+    remarks?: string;
     carrier?: ICarrier;
     person?: IPerson;
     chargeCountry?: ICountry;
@@ -55,6 +56,7 @@ export class Rating implements IRating {
         public flexibility?: number,
         public recommendation?: Grade,
         public average?: number,
+        public remarks?: string,
         public carrier?: ICarrier,
         public person?: IPerson,
         public chargeCountry?: ICountry,
