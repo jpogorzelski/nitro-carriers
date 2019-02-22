@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-            <h2 id="jhi-rating-heading" jhiTranslate="nitroCarriersApp.nitroRating.home.createOrEditLabel">Create or
+            <h2 id="jhi-rating-heading" jhiTranslate="nitroCarriersApp.rating.home.createOrEditLabel">Create or
                 edit a Rating</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
@@ -12,7 +12,7 @@
                 </div>
 
                 <fieldset>
-                    <legend jhiTranslate="nitroCarriersApp.nitroRating.carrierAndPerson">Carrier and person</legend>
+                    <legend jhiTranslate="nitroCarriersApp.rating.carrierAndPerson">Carrier and person</legend>
                     <div class="form-group">
                         <textarea [(ngModel)]="carrierAndPerson" class="form-control" name="carrierAndPerson"
                                   id="field_carrierAndPerson" required rows="5"></textarea>
@@ -27,10 +27,10 @@
                     </div>
                 </fieldset>
                 <fieldset>
-                    <h4 jhiTranslate="nitroCarriersApp.nitroRating.chargeAddress">Charge address</h4>
+                    <h4 jhiTranslate="nitroCarriersApp.rating.chargeAddress">Charge address</h4>
                     <div class="form-group">
                         <label class="form-control-label"
-                               jhiTranslate="nitroCarriersApp.nitroRating.chargeCountry"
+                               jhiTranslate="nitroCarriersApp.rating.chargeCountry"
                                for="field_chargeCountry">
                             Charge Address Country
                         </label>
@@ -50,7 +50,7 @@
                             </small>
                         </div>
                         <label class="form-control-label"
-                               jhiTranslate="nitroCarriersApp.nitroRating.chargePostalCode"
+                               jhiTranslate="nitroCarriersApp.rating.chargePostalCode"
                                for="field_chargePostalCode">Charge Address Postal Code</label>
                         <input type="text" class="form-control" name="chargePostalCode"
                                id="field_chargePostalCode" [(ngModel)]="rating.chargePostalCode"
@@ -66,10 +66,10 @@
                     </div>
                 </fieldset>
                 <fieldset>
-                    <h4 jhiTranslate="nitroCarriersApp.nitroRating.dischargeAddress">Discharge address</h4>
+                    <h4 jhiTranslate="nitroCarriersApp.rating.dischargeAddress">Discharge address</h4>
                     <div class="form-group">
                         <label class="form-control-label"
-                               jhiTranslate="nitroCarriersApp.nitroRating.dischargeCountry"
+                               jhiTranslate="nitroCarriersApp.rating.dischargeCountry"
                                for="field_dischargeCountry">Discharge Address</label>
                         <select class="form-control" id="field_dischargeCountry" name="dischargeCountry"
                                 [(ngModel)]="rating.dischargeCountry" required>
@@ -86,7 +86,7 @@
                             </small>
                         </div>
                         <label class="form-control-label"
-                               jhiTranslate="nitroCarriersApp.nitroRating.dischargePostalCode"
+                               jhiTranslate="nitroCarriersApp.rating.dischargePostalCode"
                                for="field_dischargePostalCode">Discharge Address Postal Code</label>
                         <input type="text" class="form-control" name="dischargePostalCode"
                                id="field_dischargePostalCode" [(ngModel)]="rating.dischargePostalCode"
@@ -102,7 +102,7 @@
                     </div>
                 </fieldset>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.cargoType"
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.cargoType"
                            for="field_cargoType">Cargo Type</label>
                     <select class="form-control" name="cargoType" [(ngModel)]="rating.cargoType" id="field_cargoType"  required>
                         <option value="FTL_13_6">{{'nitroCarriersApp.CargoType.FTL_13_6' | translate}}</option>
@@ -142,7 +142,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.contact"
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.contact"
                            for="field_contact">Contact</label>
                     <select class="form-control" name="contact" [(ngModel)]="rating.contact"
                             id="field_contact" required>
@@ -158,7 +158,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.price"
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.price"
                            for="field_price">Price</label>
                     <select class="form-control" name="price" [(ngModel)]="rating.price"
                             id="field_price" required>
@@ -174,7 +174,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.flexibility"
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.flexibility"
                            for="field_flexibility">Flexibility</label>
                     <select class="form-control" name="flexibility" [(ngModel)]="rating.flexibility"
                             id="field_flexibility" required>
@@ -190,7 +190,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.recommendation"
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.recommendation"
                            for="field_recommendation">Recommendation</label>
                     <select class="form-control" name="recommendation" [(ngModel)]="rating.recommendation"
                             id="field_recommendation" required>
@@ -211,7 +211,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.nitroRating.average"
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.average"
                            for="field_average">Average</label>
                     <input type="number" class="form-control" name="average" id="field_average"
                            [(ngModel)]="rating.average" readonly/>
