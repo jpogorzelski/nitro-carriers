@@ -36,6 +36,7 @@ describe('Service Tests', () => {
                 3,
                 Grade.DEF_YES,
                 3,
+                'test remarks',
                 carrier,
                 person,
                 country,
