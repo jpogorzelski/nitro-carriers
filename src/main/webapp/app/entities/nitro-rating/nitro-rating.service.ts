@@ -26,4 +26,8 @@ export class NitroRatingService {
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<IRating>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
+
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceExtUrl}/${id}`, { observe: 'response' });
+    }
 }

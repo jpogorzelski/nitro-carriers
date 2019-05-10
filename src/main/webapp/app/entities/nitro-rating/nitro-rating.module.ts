@@ -7,14 +7,34 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 
 import { NitroCarriersSharedModule } from 'app/shared';
-import { NitroRatingComponent, NitroRatingDetailComponent, NitroRatingEditorComponent, nitroRatingRoute } from './';
+import {
+    NitroRatingComponent,
+    NitroRatingDetailComponent,
+    NitroRatingEditorComponent,
+    NitroRatingDeleteDialogComponent,
+    NitroRatingDeletePopupComponent,
+    nitroRatingRoute,
+    nitroRatingPopupRoute
+} from './';
 
-const ENTITY_STATES = [...nitroRatingRoute];
+const ENTITY_STATES = [...nitroRatingRoute, ...nitroRatingPopupRoute];
 
 @NgModule({
     imports: [NitroCarriersSharedModule, RouterModule.forChild(ENTITY_STATES), NgSelectModule, FormsModule],
-    declarations: [NitroRatingComponent, NitroRatingDetailComponent, NitroRatingEditorComponent],
-    entryComponents: [NitroRatingComponent, NitroRatingDetailComponent, NitroRatingEditorComponent],
+    declarations: [
+        NitroRatingComponent,
+        NitroRatingDetailComponent,
+        NitroRatingEditorComponent,
+        NitroRatingDeleteDialogComponent,
+        NitroRatingDeletePopupComponent
+    ],
+    entryComponents: [
+        NitroRatingComponent,
+        NitroRatingDetailComponent,
+        NitroRatingEditorComponent,
+        NitroRatingDeleteDialogComponent,
+        NitroRatingDeletePopupComponent
+    ],
     providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

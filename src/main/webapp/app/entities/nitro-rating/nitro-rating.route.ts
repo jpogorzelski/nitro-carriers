@@ -9,6 +9,7 @@ import { NitroRatingService } from './nitro-rating.service';
 import { NitroRatingEditorComponent } from './nitro-rating-editor.component';
 import { NitroRatingComponent } from 'app/entities/nitro-rating/nitro-rating.component';
 import { NitroRatingDetailComponent } from 'app/entities/nitro-rating/nitro-rating-detail.component';
+import { NitroRatingDeletePopupComponent } from './nitro-rating-delete-dialog.component';
 
 @Injectable({ providedIn: 'root' })
 export class NitroRatingResolve implements Resolve<IRating> {
@@ -71,5 +72,21 @@ export const nitroRatingRoute: Routes = [
             pageTitle: 'nitroCarriersApp.rating.home.title'
         },
         canActivate: [UserRouteAccessService]
+    }
+];
+
+export const nitroRatingPopupRoute: Routes = [
+    {
+        path: ':id/delete',
+        component: NitroRatingDeletePopupComponent,
+        resolve: {
+            rating: NitroRatingResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'nitroCarriersApp.rating.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     }
 ];

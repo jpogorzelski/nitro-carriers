@@ -1,12 +1,14 @@
 package io.pogorzelski.nitro.carriers.web.rest;
 
 import io.pogorzelski.nitro.carriers.domain.Rating;
+import io.pogorzelski.nitro.carriers.security.AuthoritiesConstants;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -78,6 +80,7 @@ public class RatingResourceExt {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/ratings/{id}")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteRating(@PathVariable Long id) {
         log.debug("REST request to delete Rating : {}", id);
         ratingExtService.delete(id);
