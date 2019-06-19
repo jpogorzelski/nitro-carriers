@@ -12,6 +12,8 @@ import { IPerson } from 'app/shared/model/person.model';
 import { PersonService } from 'app/entities/person';
 import { ICountry } from 'app/shared/model/country.model';
 import { CountryService } from 'app/entities/country';
+import { ICity } from 'app/shared/model/city.model';
+import { CityService } from 'app/entities/city';
 import { IUser, UserService } from 'app/core';
 
 @Component({
@@ -28,6 +30,8 @@ export class RatingUpdateComponent implements OnInit {
 
     countries: ICountry[];
 
+    cities: ICity[];
+
     users: IUser[];
 
     constructor(
@@ -36,6 +40,7 @@ export class RatingUpdateComponent implements OnInit {
         protected carrierService: CarrierService,
         protected personService: PersonService,
         protected countryService: CountryService,
+        protected cityService: CityService,
         protected userService: UserService,
         protected activatedRoute: ActivatedRoute
     ) {}
@@ -66,6 +71,13 @@ export class RatingUpdateComponent implements OnInit {
                 map((response: HttpResponse<ICountry[]>) => response.body)
             )
             .subscribe((res: ICountry[]) => (this.countries = res), (res: HttpErrorResponse) => this.onError(res.message));
+        this.cityService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<ICity[]>) => mayBeOk.ok),
+                map((response: HttpResponse<ICity[]>) => response.body)
+            )
+            .subscribe((res: ICity[]) => (this.cities = res), (res: HttpErrorResponse) => this.onError(res.message));
         this.userService
             .query()
             .pipe(
@@ -114,6 +126,10 @@ export class RatingUpdateComponent implements OnInit {
     }
 
     trackCountryById(index: number, item: ICountry) {
+        return item.id;
+    }
+
+    trackCityById(index: number, item: ICity) {
         return item.id;
     }
 

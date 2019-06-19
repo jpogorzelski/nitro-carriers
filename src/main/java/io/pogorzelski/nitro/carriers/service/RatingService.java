@@ -1,6 +1,7 @@
 package io.pogorzelski.nitro.carriers.service;
 
 import io.pogorzelski.nitro.carriers.domain.Carrier;
+import io.pogorzelski.nitro.carriers.domain.City;
 import io.pogorzelski.nitro.carriers.domain.Country;
 import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.domain.Rating;
@@ -55,6 +56,10 @@ public class RatingService {
         if (dischargeCountry != null && dischargeCountry.getId() != null){
             rating.setDischargeCountry(entityManager.merge(dischargeCountry));
         }
+        City dischargeCity = rating.getDischargeCity();
+        if (dischargeCity != null && dischargeCity.getId() != null){
+            rating.setDischargeCity(entityManager.merge(dischargeCity));
+        }
         Person person = rating.getPerson();
         if (person != null && person.getId() != null){
             rating.setPerson(entityManager.merge(person));
@@ -62,6 +67,10 @@ public class RatingService {
         Carrier carrier = rating.getCarrier();
         if (dischargeCountry != null && carrier.getId() != null){
             rating.setCarrier(entityManager.merge(carrier));
+        }
+        City chargeCity = rating.getChargeCity();
+        if (chargeCity != null && chargeCity.getId() != null){
+            rating.setChargeCity(entityManager.merge(chargeCity));
         }
 
         Rating result = ratingRepository.save(rating);

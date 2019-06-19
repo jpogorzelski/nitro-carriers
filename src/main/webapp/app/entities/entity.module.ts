@@ -9,6 +9,10 @@ import { RouterModule } from '@angular/router';
                 loadChildren: './country/country.module#NitroCarriersCountryModule'
             },
             {
+                path: 'city',
+                loadChildren: './city/city.module#NitroCarriersCityModule'
+            },
+            {
                 path: 'carrier',
                 loadChildren: './carrier/carrier.module#NitroCarriersCarrierModule'
             },

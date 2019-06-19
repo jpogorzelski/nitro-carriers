@@ -4,6 +4,10 @@ entity Country {
 	countryNameEN String required
 }
 
+entity City {
+    cityName String required
+}
+
 entity Carrier {
 	name String required
     transId Integer
@@ -38,18 +42,22 @@ enum CargoType {
 }
 
 relationship ManyToOne {
+    City{country(countryName) required} to Country{cities(cityName)}
+
 	Person{carrier(name)} to Carrier{people(firstName)}
 
     Rating{carrier(name) required} to Carrier{ratings(carrier)}
     Rating{person(firstName) required} to Person
     Rating{chargeCountry(countryNamePL) required} to Country
+    Rating{chargeCity(cityName) required} to City
     Rating{dischargeCountry(countryNamePL) required} to Country
+    Rating{dischargeCity(cityName) required} to City
     Rating{createdBy(login)} to User
 }
 
 //filter Person
 
-search Rating with elasticsearch
+//search Rating with elasticsearch
 // Set pagination options
 paginate Rating with infinite-scroll
 

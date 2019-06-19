@@ -23,7 +23,14 @@
             ]
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "cities",
+            "otherEntityName": "city",
+            "otherEntityRelationshipName": "country"
+        }
+    ],
     "changelogDate": "20190123145850",
     "entityTableName": "country",
     "dto": "no",
