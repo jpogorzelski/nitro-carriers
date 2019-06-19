@@ -26,7 +26,7 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 public class Rating implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -96,7 +96,17 @@ public class Rating implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("ratings")
+    private City chargeCity;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("ratings")
     private Country dischargeCountry;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("ratings")
+    private City dischargeCity;
 
     @ManyToOne
     @JsonIgnoreProperties("ratings")
@@ -280,6 +290,19 @@ public class Rating implements Serializable {
         this.chargeCountry = country;
     }
 
+    public City getChargeCity() {
+        return chargeCity;
+    }
+
+    public Rating chargeCity(City city) {
+        this.chargeCity = city;
+        return this;
+    }
+
+    public void setChargeCity(City city) {
+        this.chargeCity = city;
+    }
+
     public Country getDischargeCountry() {
         return dischargeCountry;
     }
@@ -291,6 +314,19 @@ public class Rating implements Serializable {
 
     public void setDischargeCountry(Country country) {
         this.dischargeCountry = country;
+    }
+
+    public City getDischargeCity() {
+        return dischargeCity;
+    }
+
+    public Rating dischargeCity(City city) {
+        this.dischargeCity = city;
+        return this;
+    }
+
+    public void setDischargeCity(City city) {
+        this.dischargeCity = city;
     }
 
     public User getCreatedBy() {

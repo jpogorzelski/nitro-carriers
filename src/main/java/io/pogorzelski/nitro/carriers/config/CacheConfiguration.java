@@ -48,6 +48,8 @@ public class CacheConfiguration {
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Rating.class.getName() + ".chargeAddresses", jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Rating.class.getName() + ".dischargeAddresses", jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Rating.class.getName() + ".cargoTypes", jcacheConfiguration);
+            cm.createCache(io.pogorzelski.nitro.carriers.domain.Country.class.getName() + ".cities", jcacheConfiguration);
+            cm.createCache(io.pogorzelski.nitro.carriers.domain.City.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

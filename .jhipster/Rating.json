@@ -108,9 +108,25 @@
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
+            "relationshipName": "chargeCity",
+            "otherEntityName": "city",
+            "otherEntityField": "cityName",
+            "otherEntityRelationshipName": "rating"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "dischargeCountry",
             "otherEntityName": "country",
             "otherEntityField": "countryNamePL",
+            "otherEntityRelationshipName": "rating"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "dischargeCity",
+            "otherEntityName": "city",
+            "otherEntityField": "cityName",
             "otherEntityRelationshipName": "rating"
         },
         {

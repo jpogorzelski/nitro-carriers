@@ -18,7 +18,8 @@
             },
             "countryCode": "Kod kraju",
             "countryNamePL": "Nazwa kraju PL",
-            "countryNameEN": "Nazwa kraju EN"
+            "countryNameEN": "Nazwa kraju EN",
+            "cities": "Miasta"
         }
     }
 }

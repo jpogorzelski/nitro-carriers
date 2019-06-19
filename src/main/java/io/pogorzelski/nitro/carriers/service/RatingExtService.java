@@ -2,6 +2,7 @@ package io.pogorzelski.nitro.carriers.service;
 
 import io.pogorzelski.nitro.carriers.domain.*;
 import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
+import io.pogorzelski.nitro.carriers.repository.CityRepository;
 import io.pogorzelski.nitro.carriers.repository.CountryRepository;
 import io.pogorzelski.nitro.carriers.repository.PersonRepository;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
@@ -25,17 +26,19 @@ public class RatingExtService {
     private final RatingSearchRepository ratingSearchRepository;
 
     private final CountryRepository countryRepository;
+    private final CityRepository cityRepository;
     private final CarrierRepository carrierRepository;
     private final PersonRepository personRepository;
     private UserService userService;
 
-    public RatingExtService(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository, UserService userService) {
+    public RatingExtService(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository, final CityRepository cityRepository, UserService userService) {
         this.ratingRepository = ratingRepository;
         this.ratingSearchRepository = ratingSearchRepository;
 
         this.countryRepository = countryRepository;
         this.carrierRepository = carrierRepository;
         this.personRepository = personRepository;
+        this.cityRepository = cityRepository;
         this.userService = userService;
     }
 
@@ -59,12 +62,25 @@ public class RatingExtService {
             throw new RuntimeException("Charge country cannot be null!");
         }
 
+        String chargeAddressCity = rating.getChargeCity().getCityName();
+        City chargeCity = cityRepository.findByCityName(chargeAddressCity);
+        rating.setChargeCity(chargeCity);
+        if (chargeCity == null) {
+            throw new RuntimeException("Charge city cannot be null!");
+        }
 
         String dischargeAddressCountry = rating.getDischargeCountry().getCountryNamePL();
         Country dischargeCountry = countryRepository.findByCountryNamePL(dischargeAddressCountry);
         rating.setDischargeCountry(dischargeCountry);
         if (dischargeCountry == null) {
             throw new RuntimeException("Discharge country cannot be null!");
+        }
+
+        String dischargeAddressCity = rating.getDischargeCity().getCityName();
+        City dischargeCity = cityRepository.findByCityName(dischargeAddressCity);
+        rating.setDischargeCity(dischargeCity);
+        if (dischargeCity == null) {
+            throw new RuntimeException("Discharge city cannot be null!");
         }
 
         rating.setCreatedBy(getUser());

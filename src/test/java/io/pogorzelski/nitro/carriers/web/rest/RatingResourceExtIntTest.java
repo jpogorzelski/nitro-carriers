@@ -2,6 +2,7 @@ package io.pogorzelski.nitro.carriers.web.rest;
 
 import io.pogorzelski.nitro.carriers.NitroCarriersApp;
 import io.pogorzelski.nitro.carriers.domain.Carrier;
+import io.pogorzelski.nitro.carriers.domain.City;
 import io.pogorzelski.nitro.carriers.domain.Country;
 import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.domain.Rating;
@@ -136,6 +137,9 @@ public class RatingResourceExtIntTest {
         Person person = PersonResourceIntTest.createEntity(em);
         Country country = CountryResourceIntTest.createEntity(em);
         em.persist(country);
+        City city = CityResourceIntTest.createEntity(em);
+        city.setCountry(country);
+        em.persist(city);
         em.flush();
 
         return new Rating()
@@ -149,8 +153,10 @@ public class RatingResourceExtIntTest {
             .carrier(carrier)
             .person(person)
             .chargeCountry(country)
+            .chargeCity(city)
             .chargePostalCode(DEFAULT_POSTAL_CODE)
             .dischargeCountry(country)
+            .dischargeCity(city)
             .dischargePostalCode(DEFAULT_POSTAL_CODE)
             .cargoType(DEFAULT_CARGO_TYPE);
     }

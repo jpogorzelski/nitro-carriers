@@ -5,8 +5,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
+import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -18,7 +22,7 @@ import java.util.Objects;
 public class Country implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -36,6 +40,9 @@ public class Country implements Serializable {
     @Column(name = "country_name_en", nullable = false)
     private String countryNameEN;
 
+    @OneToMany(mappedBy = "country")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<City> cities = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -82,6 +89,31 @@ public class Country implements Serializable {
 
     public void setCountryNameEN(String countryNameEN) {
         this.countryNameEN = countryNameEN;
+    }
+
+    public Set<City> getCities() {
+        return cities;
+    }
+
+    public Country cities(Set<City> cities) {
+        this.cities = cities;
+        return this;
+    }
+
+    public Country addCities(City city) {
+        this.cities.add(city);
+        city.setCountry(this);
+        return this;
+    }
+
+    public Country removeCities(City city) {
+        this.cities.remove(city);
+        city.setCountry(null);
+        return this;
+    }
+
+    public void setCities(Set<City> cities) {
+        this.cities = cities;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -204,6 +204,19 @@
                     </small>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.chargeCity" for="field_chargeCity">Charge City</label>
+                    <select class="form-control" id="field_chargeCity" name="chargeCity" [(ngModel)]="rating.chargeCity"  required>
+                        <option *ngIf="!editForm.value.chargeCity" [ngValue]="null" selected></option>
+                        <option [ngValue]="cityOption.id === rating.chargeCity?.id ? rating.chargeCity : cityOption" *ngFor="let cityOption of cities; trackBy: trackCityById">{{cityOption.cityName}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.chargeCity?.dirty && editForm.controls.chargeCity?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.chargeCity?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.dischargeCountry" for="field_dischargeCountry">Discharge Country</label>
                     <select class="form-control" id="field_dischargeCountry" name="dischargeCountry" [(ngModel)]="rating.dischargeCountry"  required>
                         <option *ngIf="!editForm.value.dischargeCountry" [ngValue]="null" selected></option>
@@ -213,6 +226,19 @@
                 <div [hidden]="!(editForm.controls.dischargeCountry?.dirty && editForm.controls.dischargeCountry?.invalid)">
                     <small class="form-text text-danger"
                         [hidden]="!editForm.controls.dischargeCountry?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.dischargeCity" for="field_dischargeCity">Discharge City</label>
+                    <select class="form-control" id="field_dischargeCity" name="dischargeCity" [(ngModel)]="rating.dischargeCity"  required>
+                        <option *ngIf="!editForm.value.dischargeCity" [ngValue]="null" selected></option>
+                        <option [ngValue]="cityOption.id === rating.dischargeCity?.id ? rating.dischargeCity : cityOption" *ngFor="let cityOption of cities; trackBy: trackCityById">{{cityOption.cityName}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.dischargeCity?.dirty && editForm.controls.dischargeCity?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.dischargeCity?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>
                 </div>

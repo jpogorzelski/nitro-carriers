@@ -1,6 +1,7 @@
 import { ICarrier } from 'app/shared/model/carrier.model';
 import { IPerson } from 'app/shared/model/person.model';
 import { ICountry } from 'app/shared/model/country.model';
+import { ICity } from 'app/shared/model/city.model';
 import { IUser } from 'app/core/user/user.model';
 
 export const enum CargoType {
@@ -40,7 +41,9 @@ export interface IRating {
     carrier?: ICarrier;
     person?: IPerson;
     chargeCountry?: ICountry;
+    chargeCity?: ICity;
     dischargeCountry?: ICountry;
+    dischargeCity?: ICity;
     createdBy?: IUser;
 }
 
@@ -60,7 +63,9 @@ export class Rating implements IRating {
         public carrier?: ICarrier,
         public person?: IPerson,
         public chargeCountry?: ICountry,
+        public chargeCity?: ICity,
         public dischargeCountry?: ICountry,
+        public dischargeCity?: ICity,
         public createdBy?: IUser
     ) {}
 }

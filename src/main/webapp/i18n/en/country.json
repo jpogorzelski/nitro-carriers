@@ -18,7 +18,8 @@
             },
             "countryCode": "Country Code",
             "countryNamePL": "Country Name PL",
-            "countryNameEN": "Country Name EN"
+            "countryNameEN": "Country Name EN",
+            "cities": "Cities"
         }
     }
 }

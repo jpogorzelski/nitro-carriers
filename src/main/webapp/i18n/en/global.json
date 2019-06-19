@@ -13,6 +13,7 @@
                 "person": "Person",
                 "rating": "Rating",
                 "nitroRating": "Rating",
+                "city": "City",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

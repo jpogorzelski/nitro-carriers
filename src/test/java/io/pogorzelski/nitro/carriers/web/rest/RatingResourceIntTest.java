@@ -6,6 +6,7 @@ import io.pogorzelski.nitro.carriers.domain.Rating;
 import io.pogorzelski.nitro.carriers.domain.Carrier;
 import io.pogorzelski.nitro.carriers.domain.Person;
 import io.pogorzelski.nitro.carriers.domain.Country;
+import io.pogorzelski.nitro.carriers.domain.City;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingService;
@@ -161,7 +162,14 @@ public class RatingResourceIntTest {
         em.flush();
         rating.setChargeCountry(country);
         // Add required entity
+        City city = CityResourceIntTest.createEntity(em);
+        em.persist(city);
+        em.flush();
+        rating.setChargeCity(city);
+        // Add required entity
         rating.setDischargeCountry(country);
+        // Add required entity
+        rating.setDischargeCity(city);
         return rating;
     }
 
@@ -192,7 +200,7 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].average").value(hasItem(DEFAULT_AVERAGE.doubleValue())))
             .andExpect(jsonPath("$.[*].remarks").value(hasItem(DEFAULT_REMARKS.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getRating() throws Exception {
