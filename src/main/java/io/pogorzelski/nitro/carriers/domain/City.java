@@ -22,7 +22,7 @@ import java.util.Objects;
 public class City implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -34,7 +34,7 @@ public class City implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties("cities(cityName)S")
+    @JsonIgnoreProperties("cities")
     private Country country;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
