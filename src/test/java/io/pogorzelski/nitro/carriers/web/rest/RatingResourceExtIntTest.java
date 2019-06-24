@@ -135,10 +135,8 @@ public class RatingResourceExtIntTest {
 
         Carrier carrier = CarrierResourceIntTest.createEntity(em);
         Person person = PersonResourceIntTest.createEntity(em);
-        Country country = CountryResourceIntTest.createEntity(em);
-        em.persist(country);
         City city = CityResourceIntTest.createEntity(em);
-        city.setCountry(country);
+        Country country = city.getCountry();
         em.persist(city);
         em.flush();
 
