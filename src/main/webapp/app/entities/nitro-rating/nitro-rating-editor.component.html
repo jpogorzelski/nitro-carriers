@@ -38,6 +38,7 @@
                                    id="field_chargeCountry"
                                    name="chargeCountry"
                                    bindLabel="countryNamePL"
+                                   (change)="onChargeCountrySelect($event)"
                                    placeholder="{{'nitroCarriersApp.rating.countryPlaceholder' | translate}}"n
                                    [(ngModel)]="rating.chargeCountry"
                                    selectOnTab="true"
@@ -54,7 +55,7 @@
                         </div>
 
                         <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.chargeCity" for="field_chargeCity">Charge City</label>
-                        <ng-select [items]="cities"
+                        <ng-select [items]="chargeCities"
                                    id="field_chargeCity"
                                    name="chargeCity"
                                    bindLabel="cityName"
@@ -62,7 +63,7 @@
                                    [(ngModel)]="rating.chargeCity"
                                    selectOnTab="true"
                                    trackByFn="trackCityById"
-                                   [addTag]="addTag"
+                                   [addTag]="addCity"
                                    required="true">
                         </ng-select>
                         <div [hidden]="!(editForm.controls.chargeCity?.dirty && editForm.controls.chargeCity?.invalid)">
@@ -98,6 +99,7 @@
                                    id="field_dischargeCountry"
                                    name="dischargeCountry"
                                    bindLabel="countryNamePL"
+                                   (change)="onDischargeCountrySelect($event)"
                                    placeholder="{{'nitroCarriersApp.rating.countryPlaceholder' | translate}}"
                                    [(ngModel)]="rating.dischargeCountry"
                                    selectOnTab="true"
@@ -114,7 +116,7 @@
                         </div>
 
                         <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.dischargeCity" for="field_dischargeCity">Discharge City</label>
-                        <ng-select [items]="cities"
+                        <ng-select [items]="dischargeCities"
                                    id="field_dischargeCity"
                                    name="dischargeCity"
                                    bindLabel="cityName"
@@ -122,7 +124,7 @@
                                    [(ngModel)]="rating.dischargeCity"
                                    selectOnTab="true"
                                    trackByFn="trackCityById"
-                                   [addTag]="addTag"
+                                   [addTag]="addCity"
                                    required="true">
                         </ng-select>
                         <div [hidden]="!(editForm.controls.dischargeCity?.dirty && editForm.controls.dischargeCity?.invalid)">
