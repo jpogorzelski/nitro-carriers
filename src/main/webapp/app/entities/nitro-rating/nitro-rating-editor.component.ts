@@ -1,7 +1,7 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { Grade, IRating } from 'app/shared/model/rating.model';
@@ -24,7 +24,8 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     people: IPerson[];
     countries: ICountry[];
-    cities: ICity[];
+    chargeCities: ICity[] = [];
+    dischargeCities: ICity[] = [];
     carriers: ICarrier[];
 
     constructor(
@@ -38,7 +39,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     ngOnInit() {
         this.isSaving = false;
-        this.activatedRoute.data.subscribe(({ rating }) => {
+        this.activatedRoute.data.subscribe(({rating}) => {
             this.rating = rating;
             if (this.rating.id) {
                 this.carrierAndPerson =
@@ -52,7 +53,6 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
                     '-' +
                     this.rating.person.companyId;
             }
-            console.log('aaaaa ' + this.rating.contact);
         });
 
         this.countryService
@@ -67,13 +67,9 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
-        this.cityService
-            .query()
-            .pipe(
-                filter((mayBeOk: HttpResponse<ICity[]>) => mayBeOk.ok),
-                map((response: HttpResponse<ICity[]>) => response.body)
-            )
-            .subscribe((res: ICity[]) => (this.cities = res), (res: HttpErrorResponse) => this.onError(res.message));
+        this.onChargeCountrySelect(this.rating.chargeCountry);
+        this.onDischargeCountrySelect(this.rating.dischargeCountry);
+
 
     }
 
@@ -185,9 +181,42 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         return item.id;
     }
 
-    addTag(tag: string) {
-        console.log('#### ADD NEW CITY: ' + tag);
-        return Object.assign(new City(), {cityName: tag});
-        // return tag;
+    addCity(cityName: string) {
+        return Object.assign(new City(), {cityName: cityName});
+    }
+
+    onChargeCountrySelect(country: ICountry) {
+        this.onCountrySelectInternal(country).subscribe(res => {
+            this.chargeCities = res;
+        });
+    }
+
+    onDischargeCountrySelect(country: ICountry) {
+        this.onCountrySelectInternal(country).subscribe(res => {
+            this.dischargeCities = res;
+        });
+    }
+
+    onCountrySelectInternal(country: ICountry): Observable<ICity[]> {
+        const cities: ICity[] = [];
+        if (country) {
+            console.table('### Selected country: ', country.countryNamePL);
+            return Observable.create((observer: Observer<ICity[]>) => {
+                this.cityService
+                    .search({
+                        query: country.countryNamePL
+                    })
+                    .pipe(
+                        filter((mayBeOk: HttpResponse<ICity[]>) => mayBeOk.ok),
+                        map((response: HttpResponse<ICity[]>) => response.body)
+                    )
+                    .subscribe((res: ICity[]) => {
+                        console.table('Downloaded cities: ', cities);
+                        observer.next(res);
+                        observer.complete();
+                    }, (res: HttpErrorResponse) => this.onError(res.message));
+            });
+        }
+
     }
 }

@@ -27,11 +27,12 @@ public class RatingExtService {
 
     private final CountryRepository countryRepository;
     private final CityRepository cityRepository;
+    private final CityService cityService;
     private final CarrierRepository carrierRepository;
     private final PersonRepository personRepository;
     private UserService userService;
 
-    public RatingExtService(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository, final CityRepository cityRepository, UserService userService) {
+    public RatingExtService(CountryRepository countryRepository, CarrierRepository carrierRepository, PersonRepository personRepository, RatingRepository ratingRepository, RatingSearchRepository ratingSearchRepository, final CityRepository cityRepository, CityService cityService, UserService userService) {
         this.ratingRepository = ratingRepository;
         this.ratingSearchRepository = ratingSearchRepository;
 
@@ -39,6 +40,7 @@ public class RatingExtService {
         this.carrierRepository = carrierRepository;
         this.personRepository = personRepository;
         this.cityRepository = cityRepository;
+        this.cityService = cityService;
         this.userService = userService;
     }
 
@@ -67,8 +69,7 @@ public class RatingExtService {
         if (chargeCity == null) {
             City chargeCityDTO = rating.getChargeCity();
             chargeCityDTO.setCountry(chargeCountry);
-            chargeCity = cityRepository.save(chargeCityDTO);
-
+            chargeCity = cityService.save(chargeCityDTO);
             cityRepository.flush();
         }
         rating.setChargeCity(chargeCity);
@@ -85,7 +86,7 @@ public class RatingExtService {
         if (dischargeCity == null) {
             City dischargeCityDTO = rating.getDischargeCity();
             dischargeCityDTO.setCountry(dischargeCountry);
-            dischargeCity = cityRepository.save(dischargeCityDTO);
+            dischargeCity = cityService.save(dischargeCityDTO);
             cityRepository.flush();
         }
         rating.setDischargeCity(dischargeCity);
