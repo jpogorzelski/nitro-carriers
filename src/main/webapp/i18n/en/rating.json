@@ -42,6 +42,7 @@
             "distance": "Distance (km)",
             "remarks": "Remarks",
             "countryPlaceholder": "Select country...",
+            "cityPlaceholder": "Select city...",
             "cargoTypePlaceholder": "Select cargo type...",
             "selectPlaceholder": "-- choose --"
         }

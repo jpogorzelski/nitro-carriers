@@ -10,6 +10,8 @@ import { IPerson, Person } from 'app/shared/model/person.model';
 import { Carrier, ICarrier } from 'app/shared/model/carrier.model';
 import { ICountry } from 'app/shared/model/country.model';
 import { CountryService } from 'app/entities/country';
+import { City, ICity } from 'app/shared/model/city.model';
+import { CityService } from 'app/entities/city';
 
 @Component({
     selector: 'jhi-ext-rating-update',
@@ -22,12 +24,14 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     people: IPerson[];
     countries: ICountry[];
+    cities: ICity[];
     carriers: ICarrier[];
 
     constructor(
         protected jhiAlertService: JhiAlertService,
         protected ratingExtService: NitroRatingService,
         protected countryService: CountryService,
+        protected cityService: CityService,
         protected activatedRoute: ActivatedRoute,
         private router: Router
     ) {}
@@ -63,6 +67,14 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
                 },
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+        this.cityService
+            .query()
+            .pipe(
+                filter((mayBeOk: HttpResponse<ICity[]>) => mayBeOk.ok),
+                map((response: HttpResponse<ICity[]>) => response.body)
+            )
+            .subscribe((res: ICity[]) => (this.cities = res), (res: HttpErrorResponse) => this.onError(res.message));
+
     }
 
     ngDoCheck(): void {
@@ -167,5 +179,15 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     trackCountryById(index: number, item: ICountry) {
         return item.id;
+    }
+
+    trackCityById(index: number, item: ICity) {
+        return item.id;
+    }
+
+    addTag(tag: string) {
+        console.log('#### ADD NEW CITY: ' + tag);
+        return Object.assign(new City(), {cityName: tag});
+        // return tag;
     }
 }

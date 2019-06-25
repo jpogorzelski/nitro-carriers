@@ -14,10 +14,10 @@ describe('Component Tests', () => {
         let fixture: ComponentFixture<NitroRatingEditorComponent>;
         let service: NitroRatingService;
         const src =
-            'DK Spółka Z Ograniczoną Odpowiedzialnością\n' +
-            'Stara Iwiczna, Nowa 17/1, 05-500 Piaseczno, PL\n' +
-            'Anna Gotlib, 915298-1\n' +
-            'tel. 577902102';
+            `DK Spółka Z Ograniczoną Odpowiedzialnością
+            Stara Iwiczna, Nowa 17/1, 05-500 Piaseczno, PL
+            Anna Gotlib, 915298-1
+            tel. 577902102`;
         const srcWithoutTel =
             'DK Spółka Z Ograniczoną Odpowiedzialnością\n' + 'Stara Iwiczna, Nowa 17/1, 05-500 Piaseczno, PL\n' + 'Anna Gotlib, 915298-1';
         const srcWithoutAddress = 'DK Spółka Z Ograniczoną Odpowiedzialnością\n' + 'Anna Gotlib, 915298-1\n' + 'tel. 577902102';
