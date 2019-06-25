@@ -27,6 +27,12 @@
                         {{rating.chargeCountry?.countryNamePL}}
                     </div>
                 </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.chargeCity">Charge City</span></dt>
+                <dd>
+                    <div *ngIf="rating.chargeCity">
+                        {{rating.chargeCity?.cityName}}
+                    </div>
+                </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.dischargePostalCode">Discharge Postal Code</span></dt>
                 <dd>
                     <span>{{rating.dischargePostalCode}}</span>
@@ -35,6 +41,12 @@
                 <dd>
                     <div *ngIf="rating.dischargeCountry">
                         {{rating.dischargeCountry?.countryNamePL}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeCity">DischargeCity City</span></dt>
+                <dd>
+                    <div *ngIf="rating.dischargeCity">
+                        {{rating.dischargeCity?.cityName}}
                     </div>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>
