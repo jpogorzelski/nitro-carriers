@@ -17,6 +17,7 @@
                         <a [routerLink]="['/person', rating.person?.id, 'view']">{{rating.person?.firstName + ' ' + rating.person?.lastName}}</a>
                     </div>
                 </dd>
+                <div><h4 jhiTranslate="nitroCarriersApp.rating.chargeAddress">Charge address</h4>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.chargePostalCode">Charge Postal Code</span></dt>
                 <dd>
                     <span>{{rating.chargePostalCode}}</span>
@@ -33,6 +34,8 @@
                         {{rating.chargeCity?.cityName}}
                     </div>
                 </dd>
+                </div>
+                <div><h4 jhiTranslate="nitroCarriersApp.rating.dischargeAddress">Discharge address</h4>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.dischargePostalCode">Discharge Postal Code</span></dt>
                 <dd>
                     <span>{{rating.dischargePostalCode}}</span>
@@ -43,20 +46,24 @@
                         {{rating.dischargeCountry?.countryNamePL}}
                     </div>
                 </dd>
-                <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeCity">DischargeCity City</span></dt>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.dischargeCity">Discharge City</span></dt>
                 <dd>
                     <div *ngIf="rating.dischargeCity">
                         {{rating.dischargeCity?.cityName}}
                     </div>
                 </dd>
+                </div>
+                <div>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span></dt>
                 <dd>
                     <span jhiTranslate="{{'nitroCarriersApp.CargoType.' + rating.cargoType}}">{{rating.cargoType}}</span>
                 </dd>
+                </div>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span></dt>
                 <dd>
                     <span>{{rating.distance}} km</span>
                 </dd>
+                <div><h4 jhiTranslate="nitroCarriersApp.rating.detail.title">Rating</h4>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span></dt>
                 <dd>
                     <span>{{rating.contact}}</span>
@@ -81,6 +88,7 @@
                 <dd>
                     <span>{{rating.remarks}}</span>
                 </dd>
+                </div>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.createdBy">Created By</span></dt>
                 <dd>
                     {{rating.createdBy?.login}}
