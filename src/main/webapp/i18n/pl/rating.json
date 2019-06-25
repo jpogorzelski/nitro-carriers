@@ -42,6 +42,7 @@
             "createdBy": "Utworzył",
             "remarks": "Uwagi",
             "countryPlaceholder": "Wybierz kraj...",
+            "cityPlaceholder": "Wybierz miasto...",
             "cargoTypePlaceholder": "Wybierz typ ładunku...",
             "selectPlaceholder": "-- wybierz --"
         }

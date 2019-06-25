@@ -64,10 +64,14 @@ public class RatingExtService {
 
         String chargeAddressCity = rating.getChargeCity().getCityName();
         City chargeCity = cityRepository.findByCityName(chargeAddressCity);
-        rating.setChargeCity(chargeCity);
         if (chargeCity == null) {
-            throw new RuntimeException("Charge city cannot be null!");
+            City chargeCityDTO = rating.getChargeCity();
+            chargeCityDTO.setCountry(chargeCountry);
+            chargeCity = cityRepository.save(chargeCityDTO);
+
+            cityRepository.flush();
         }
+        rating.setChargeCity(chargeCity);
 
         String dischargeAddressCountry = rating.getDischargeCountry().getCountryNamePL();
         Country dischargeCountry = countryRepository.findByCountryNamePL(dischargeAddressCountry);
@@ -78,10 +82,13 @@ public class RatingExtService {
 
         String dischargeAddressCity = rating.getDischargeCity().getCityName();
         City dischargeCity = cityRepository.findByCityName(dischargeAddressCity);
-        rating.setDischargeCity(dischargeCity);
         if (dischargeCity == null) {
-            throw new RuntimeException("Discharge city cannot be null!");
+            City dischargeCityDTO = rating.getDischargeCity();
+            dischargeCityDTO.setCountry(dischargeCountry);
+            dischargeCity = cityRepository.save(dischargeCityDTO);
+            cityRepository.flush();
         }
+        rating.setDischargeCity(dischargeCity);
 
         rating.setCreatedBy(getUser());
 

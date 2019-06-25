@@ -38,8 +38,10 @@
                                    id="field_chargeCountry"
                                    name="chargeCountry"
                                    bindLabel="countryNamePL"
-                                   placeholder="{{'nitroCarriersApp.rating.countryPlaceholder' | translate}}"
+                                   placeholder="{{'nitroCarriersApp.rating.countryPlaceholder' | translate}}"n
                                    [(ngModel)]="rating.chargeCountry"
+                                   selectOnTab="true"
+                                   trackByFn="trackCountryById"
                                    required="true">
                         </ng-select>
                         <div
@@ -50,6 +52,26 @@
                                 This field is required.
                             </small>
                         </div>
+
+                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.chargeCity" for="field_chargeCity">Charge City</label>
+                        <ng-select [items]="cities"
+                                   id="field_chargeCity"
+                                   name="chargeCity"
+                                   bindLabel="cityName"
+                                   placeholder="{{'nitroCarriersApp.rating.cityPlaceholder' | translate}}"
+                                   [(ngModel)]="rating.chargeCity"
+                                   selectOnTab="true"
+                                   trackByFn="trackCityById"
+                                   [addTag]="addTag"
+                                   required="true">
+                        </ng-select>
+                        <div [hidden]="!(editForm.controls.chargeCity?.dirty && editForm.controls.chargeCity?.invalid)">
+                            <small class="form-text text-danger"
+                                   [hidden]="!editForm.controls.chargeCity?.errors?.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+
                         <label class="form-control-label"
                                jhiTranslate="nitroCarriersApp.rating.chargePostalCode"
                                for="field_chargePostalCode">Charge Address Postal Code</label>
@@ -78,6 +100,8 @@
                                    bindLabel="countryNamePL"
                                    placeholder="{{'nitroCarriersApp.rating.countryPlaceholder' | translate}}"
                                    [(ngModel)]="rating.dischargeCountry"
+                                   selectOnTab="true"
+                                   trackByFn="trackCountryById"
                                    required="true">
                         </ng-select>
                         <div
@@ -88,6 +112,26 @@
                                 This field is required.
                             </small>
                         </div>
+
+                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.dischargeCity" for="field_dischargeCity">Discharge City</label>
+                        <ng-select [items]="cities"
+                                   id="field_dischargeCity"
+                                   name="dischargeCity"
+                                   bindLabel="cityName"
+                                   placeholder="{{'nitroCarriersApp.rating.cityPlaceholder' | translate}}"
+                                   [(ngModel)]="rating.dischargeCity"
+                                   selectOnTab="true"
+                                   trackByFn="trackCityById"
+                                   [addTag]="addTag"
+                                   required="true">
+                        </ng-select>
+                        <div [hidden]="!(editForm.controls.dischargeCity?.dirty && editForm.controls.dischargeCity?.invalid)">
+                            <small class="form-text text-danger"
+                                   [hidden]="!editForm.controls.dischargeCity?.errors?.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+
                         <label class="form-control-label"
                                jhiTranslate="nitroCarriersApp.rating.dischargePostalCode"
                                for="field_dischargePostalCode">Discharge Address Postal Code</label>
@@ -107,7 +151,12 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.cargoType"
                            for="field_cargoType">Cargo Type</label>
-                    <ng-select name="cargoType" [(ngModel)]="rating.cargoType" id="field_cargoType" placeholder="{{'nitroCarriersApp.rating.cargoTypePlaceholder' | translate}}" required>
+                    <ng-select name="cargoType"
+                               [(ngModel)]="rating.cargoType"
+                               id="field_cargoType"
+                               placeholder="{{'nitroCarriersApp.rating.cargoTypePlaceholder' | translate}}"
+                               selectOnTab="true"
+                               required="true">
                         <ng-option value="FTL_13_6">{{'nitroCarriersApp.CargoType.FTL_13_6' | translate}}</ng-option>
                         <ng-option value="EXTRA_13_6">{{'nitroCarriersApp.CargoType.EXTRA_13_6' | translate}}</ng-option>
                         <ng-option value="REEFER">{{'nitroCarriersApp.CargoType.REEFER' | translate}}</ng-option>
