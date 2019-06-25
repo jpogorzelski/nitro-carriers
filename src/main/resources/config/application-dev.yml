@@ -29,6 +29,7 @@ spring:
     devtools:
         restart:
             enabled: true
+            additional-exclude: .h2.server.properties
         livereload:
             enabled: false # we use Webpack dev server + BrowserSync for livereload
     jackson:
@@ -36,15 +37,18 @@ spring:
             indent-output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://localhost:5432/nitro
-        username: nitro
-        password: nitro
+        url: jdbc:h2:file:./build/h2db/db/nitrocarriers;DB_CLOSE_DELAY=-1
+        username: NitroCarriers
+        password:
         hikari:
             poolName: Hikari
             auto-commit: false
+    h2:
+        console:
+            enabled: false
     jpa:
-        database-platform: io.github.jhipster.domain.util.FixedPostgreSQL82Dialect
-        database: POSTGRESQL
+        database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+        database: H2
         show-sql: true
         properties:
             hibernate.id.new_generator_mappings: true
