@@ -25,7 +25,7 @@
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.city.country" for="field_country">Country</label>
                     <select class="form-control" id="field_country" name="country" [(ngModel)]="city.country"  required>
                         <option *ngIf="!editForm.value.country" [ngValue]="null" selected></option>
-                        <option [ngValue]="countryOption.id === city.country?.id ? city.country : countryOption" *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryName}}</option>
+                        <option [ngValue]="countryOption.id === city.country?.id ? city.country : countryOption" *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryNamePL}}</option>
                     </select>
                 </div>
                 <div [hidden]="!(editForm.controls.country?.dirty && editForm.controls.country?.invalid)">
