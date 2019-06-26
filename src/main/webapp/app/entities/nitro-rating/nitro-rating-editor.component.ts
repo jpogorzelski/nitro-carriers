@@ -1,7 +1,7 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, EMPTY } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { Grade, IRating } from 'app/shared/model/rating.model';
@@ -69,7 +69,6 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
             );
         this.onChargeCountrySelect(this.rating.chargeCountry);
         this.onDischargeCountrySelect(this.rating.dischargeCountry);
-
 
     }
 
@@ -182,7 +181,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     }
 
     addCity(cityName: string) {
-        return Object.assign(new City(), {cityName: cityName});
+        return Object.assign(new City(), {cityName});
     }
 
     onChargeCountrySelect(country: ICountry) {
@@ -217,6 +216,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
                     }, (res: HttpErrorResponse) => this.onError(res.message));
             });
         }
+        return EMPTY;
 
     }
 }
