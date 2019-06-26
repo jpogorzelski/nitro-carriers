@@ -42,7 +42,6 @@
                                    placeholder="{{'nitroCarriersApp.rating.countryPlaceholder' | translate}}"n
                                    [(ngModel)]="rating.chargeCountry"
                                    selectOnTab="true"
-                                   trackByFn="trackCountryById"
                                    required="true">
                         </ng-select>
                         <div
@@ -62,7 +61,6 @@
                                    placeholder="{{'nitroCarriersApp.rating.cityPlaceholder' | translate}}"
                                    [(ngModel)]="rating.chargeCity"
                                    selectOnTab="true"
-                                   trackByFn="trackCityById"
                                    [addTag]="addCity"
                                    required="true">
                         </ng-select>
@@ -103,7 +101,6 @@
                                    placeholder="{{'nitroCarriersApp.rating.countryPlaceholder' | translate}}"
                                    [(ngModel)]="rating.dischargeCountry"
                                    selectOnTab="true"
-                                   trackByFn="trackCountryById"
                                    required="true">
                         </ng-select>
                         <div
@@ -123,7 +120,6 @@
                                    placeholder="{{'nitroCarriersApp.rating.cityPlaceholder' | translate}}"
                                    [(ngModel)]="rating.dischargeCity"
                                    selectOnTab="true"
-                                   trackByFn="trackCityById"
                                    [addTag]="addCity"
                                    required="true">
                         </ng-select>
