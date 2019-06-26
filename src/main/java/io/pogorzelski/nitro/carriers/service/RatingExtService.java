@@ -9,6 +9,8 @@ import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,4 +129,9 @@ public class RatingExtService {
             .orElseThrow(() -> new AccessDeniedException("Not allowed to modify this rating."));
     }
 
+    @Transactional(readOnly = true)
+    public Page<Rating> findCarrierRatings(Long id, Pageable pageable) {
+        return ratingRepository.findByCarrier_Id(pageable, id);
+
+    }
 }
