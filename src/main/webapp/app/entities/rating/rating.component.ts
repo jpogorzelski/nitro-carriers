@@ -27,6 +27,8 @@ export class RatingComponent implements OnInit, OnDestroy {
     totalItems: number;
     currentSearch: string;
 
+    searchEnabled = true;
+
     constructor(
         protected ratingService: RatingService,
         protected jhiAlertService: JhiAlertService,
@@ -44,13 +46,13 @@ export class RatingComponent implements OnInit, OnDestroy {
         this.predicate = 'id';
         this.reverse = true;
         this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
+            this.searchEnabled && this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
                 ? this.activatedRoute.snapshot.params['search']
                 : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
+        if (this.currentSearch && this.searchEnabled) {
             this.ratingService
                 .search({
                     query: this.currentSearch,
