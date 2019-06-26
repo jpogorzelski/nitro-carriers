@@ -4,6 +4,7 @@ import io.pogorzelski.nitro.carriers.NitroCarriersApp;
 import io.pogorzelski.nitro.carriers.domain.Carrier;
 import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
 import io.pogorzelski.nitro.carriers.service.CarrierService;
+import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +52,9 @@ public class CarrierResourceIntTest {
     private CarrierService carrierService;
 
     @Autowired
+    private RatingExtService ratingExtService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,7 +76,7 @@ public class CarrierResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final CarrierResource carrierResource = new CarrierResource(carrierService);
+        final CarrierResource carrierResource = new CarrierResource(carrierService, ratingExtService);
         this.restCarrierMockMvc = MockMvcBuilders.standaloneSetup(carrierResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -169,7 +173,7 @@ public class CarrierResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].transId").value(hasItem(DEFAULT_TRANS_ID)));
     }
-    
+
     @Test
     @Transactional
     public void getCarrier() throws Exception {

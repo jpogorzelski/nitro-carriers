@@ -2,11 +2,17 @@ package io.pogorzelski.nitro.carriers.web.rest;
 
 import io.github.jhipster.web.util.ResponseUtil;
 import io.pogorzelski.nitro.carriers.domain.Carrier;
+import io.pogorzelski.nitro.carriers.domain.Rating;
 import io.pogorzelski.nitro.carriers.service.CarrierService;
+import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
+import io.pogorzelski.nitro.carriers.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +34,11 @@ public class CarrierResource {
     private static final String ENTITY_NAME = "carrier";
 
     private final CarrierService carrierService;
+    private final RatingExtService ratingExtService;
 
-    public CarrierResource(CarrierService carrierService) {
+    public CarrierResource(CarrierService carrierService, RatingExtService ratingExtService) {
         this.carrierService = carrierService;
+        this.ratingExtService = ratingExtService;
     }
 
     /**
@@ -95,6 +103,21 @@ public class CarrierResource {
         log.debug("REST request to get Carrier : {}", id);
         Optional<Carrier> carrier = carrierService.findOne(id);
         return ResponseUtil.wrapOrNotFound(carrier);
+    }
+
+
+    /**
+     * GET  /ratings : get all the ratings.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of ratings in body
+     */
+    @GetMapping("/carriers/{id}/ratings")
+    public ResponseEntity<List<Rating>> getCarrierRatings(@PathVariable Long id, Pageable pageable) {
+        log.debug("REST request to get a page of Carrier {} Ratings", id);
+        Page<Rating> page = ratingExtService.findCarrierRatings(id, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ratings");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
