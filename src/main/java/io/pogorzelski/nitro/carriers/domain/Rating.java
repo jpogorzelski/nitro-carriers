@@ -10,6 +10,7 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import io.pogorzelski.nitro.carriers.domain.enumeration.CargoType;
@@ -26,7 +27,7 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 public class Rating implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -39,6 +40,12 @@ public class Rating implements Serializable {
     @NotNull
     @Column(name = "discharge_postal_code", nullable = false)
     private String dischargePostalCode;
+
+    @Column(name = "total_price", precision = 10, scale = 2)
+    private BigDecimal totalPrice;
+
+    @Column(name = "price_per_km", precision = 10, scale = 2)
+    private BigDecimal pricePerKm;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -77,6 +84,9 @@ public class Rating implements Serializable {
 
     @Column(name = "remarks")
     private String remarks;
+
+    @Column(name = "white_list")
+    private Boolean whiteList;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -145,6 +155,32 @@ public class Rating implements Serializable {
 
     public void setDischargePostalCode(String dischargePostalCode) {
         this.dischargePostalCode = dischargePostalCode;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public Rating totalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+        return this;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getPricePerKm() {
+        return pricePerKm;
+    }
+
+    public Rating pricePerKm(BigDecimal pricePerKm) {
+        this.pricePerKm = pricePerKm;
+        return this;
+    }
+
+    public void setPricePerKm(BigDecimal pricePerKm) {
+        this.pricePerKm = pricePerKm;
     }
 
     public CargoType getCargoType() {
@@ -249,6 +285,19 @@ public class Rating implements Serializable {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Boolean isWhiteList() {
+        return whiteList;
+    }
+
+    public Rating whiteList(Boolean whiteList) {
+        this.whiteList = whiteList;
+        return this;
+    }
+
+    public void setWhiteList(Boolean whiteList) {
+        this.whiteList = whiteList;
     }
 
     public Carrier getCarrier() {
@@ -369,6 +418,8 @@ public class Rating implements Serializable {
             "id=" + getId() +
             ", chargePostalCode='" + getChargePostalCode() + "'" +
             ", dischargePostalCode='" + getDischargePostalCode() + "'" +
+            ", totalPrice=" + getTotalPrice() +
+            ", pricePerKm=" + getPricePerKm() +
             ", cargoType='" + getCargoType() + "'" +
             ", distance=" + getDistance() +
             ", contact=" + getContact() +
@@ -377,6 +428,7 @@ public class Rating implements Serializable {
             ", recommendation='" + getRecommendation() + "'" +
             ", average=" + getAverage() +
             ", remarks='" + getRemarks() + "'" +
+            ", whiteList='" + isWhiteList() + "'" +
             "}";
     }
 }

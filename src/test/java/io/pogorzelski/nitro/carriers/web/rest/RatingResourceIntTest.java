@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,6 +60,12 @@ public class RatingResourceIntTest {
     private static final String DEFAULT_DISCHARGE_POSTAL_CODE = "AAAAAAAAAA";
     private static final String UPDATED_DISCHARGE_POSTAL_CODE = "BBBBBBBBBB";
 
+    private static final BigDecimal DEFAULT_TOTAL_PRICE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL_PRICE = new BigDecimal(2);
+
+    private static final BigDecimal DEFAULT_PRICE_PER_KM = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PRICE_PER_KM = new BigDecimal(2);
+
     private static final CargoType DEFAULT_CARGO_TYPE = CargoType.FTL_13_6;
     private static final CargoType UPDATED_CARGO_TYPE = CargoType.EXTRA_13_6;
 
@@ -82,6 +89,9 @@ public class RatingResourceIntTest {
 
     private static final String DEFAULT_REMARKS = "AAAAAAAAAA";
     private static final String UPDATED_REMARKS = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_WHITE_LIST = false;
+    private static final Boolean UPDATED_WHITE_LIST = true;
 
     @Autowired
     private RatingRepository ratingRepository;
@@ -138,6 +148,8 @@ public class RatingResourceIntTest {
         Rating rating = new Rating()
             .chargePostalCode(DEFAULT_CHARGE_POSTAL_CODE)
             .dischargePostalCode(DEFAULT_DISCHARGE_POSTAL_CODE)
+            .totalPrice(DEFAULT_TOTAL_PRICE)
+            .pricePerKm(DEFAULT_PRICE_PER_KM)
             .cargoType(DEFAULT_CARGO_TYPE)
             .distance(DEFAULT_DISTANCE)
             .contact(DEFAULT_CONTACT)
@@ -145,7 +157,8 @@ public class RatingResourceIntTest {
             .flexibility(DEFAULT_FLEXIBILITY)
             .recommendation(DEFAULT_RECOMMENDATION)
             .average(DEFAULT_AVERAGE)
-            .remarks(DEFAULT_REMARKS);
+            .remarks(DEFAULT_REMARKS)
+            .whiteList(DEFAULT_WHITE_LIST);
         // Add required entity
         Carrier carrier = CarrierResourceIntTest.createEntity(em);
         em.persist(carrier);
@@ -191,6 +204,8 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
             .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE.toString())))
             .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE.toString())))
+            .andExpect(jsonPath("$.[*].totalPrice").value(hasItem(DEFAULT_TOTAL_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].pricePerKm").value(hasItem(DEFAULT_PRICE_PER_KM.intValue())))
             .andExpect(jsonPath("$.[*].cargoType").value(hasItem(DEFAULT_CARGO_TYPE.toString())))
             .andExpect(jsonPath("$.[*].distance").value(hasItem(DEFAULT_DISTANCE.doubleValue())))
             .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
@@ -198,7 +213,8 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))
             .andExpect(jsonPath("$.[*].recommendation").value(hasItem(DEFAULT_RECOMMENDATION.toString())))
             .andExpect(jsonPath("$.[*].average").value(hasItem(DEFAULT_AVERAGE.doubleValue())))
-            .andExpect(jsonPath("$.[*].remarks").value(hasItem(DEFAULT_REMARKS.toString())));
+            .andExpect(jsonPath("$.[*].remarks").value(hasItem(DEFAULT_REMARKS.toString())))
+            .andExpect(jsonPath("$.[*].whiteList").value(hasItem(DEFAULT_WHITE_LIST.booleanValue())));
     }
 
     @Test
@@ -214,6 +230,8 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.id").value(rating.getId().intValue()))
             .andExpect(jsonPath("$.chargePostalCode").value(DEFAULT_CHARGE_POSTAL_CODE.toString()))
             .andExpect(jsonPath("$.dischargePostalCode").value(DEFAULT_DISCHARGE_POSTAL_CODE.toString()))
+            .andExpect(jsonPath("$.totalPrice").value(DEFAULT_TOTAL_PRICE.intValue()))
+            .andExpect(jsonPath("$.pricePerKm").value(DEFAULT_PRICE_PER_KM.intValue()))
             .andExpect(jsonPath("$.cargoType").value(DEFAULT_CARGO_TYPE.toString()))
             .andExpect(jsonPath("$.distance").value(DEFAULT_DISTANCE.doubleValue()))
             .andExpect(jsonPath("$.contact").value(DEFAULT_CONTACT))
@@ -221,7 +239,8 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.flexibility").value(DEFAULT_FLEXIBILITY))
             .andExpect(jsonPath("$.recommendation").value(DEFAULT_RECOMMENDATION.toString()))
             .andExpect(jsonPath("$.average").value(DEFAULT_AVERAGE.doubleValue()))
-            .andExpect(jsonPath("$.remarks").value(DEFAULT_REMARKS.toString()));
+            .andExpect(jsonPath("$.remarks").value(DEFAULT_REMARKS.toString()))
+            .andExpect(jsonPath("$.whiteList").value(DEFAULT_WHITE_LIST.booleanValue()));
     }
 
     @Test
@@ -247,6 +266,8 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
             .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE)))
             .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE)))
+            .andExpect(jsonPath("$.[*].totalPrice").value(hasItem(DEFAULT_TOTAL_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].pricePerKm").value(hasItem(DEFAULT_PRICE_PER_KM.intValue())))
             .andExpect(jsonPath("$.[*].cargoType").value(hasItem(DEFAULT_CARGO_TYPE.toString())))
             .andExpect(jsonPath("$.[*].distance").value(hasItem(DEFAULT_DISTANCE.doubleValue())))
             .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT)))
@@ -254,7 +275,8 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].flexibility").value(hasItem(DEFAULT_FLEXIBILITY)))
             .andExpect(jsonPath("$.[*].recommendation").value(hasItem(DEFAULT_RECOMMENDATION.toString())))
             .andExpect(jsonPath("$.[*].average").value(hasItem(DEFAULT_AVERAGE.doubleValue())))
-            .andExpect(jsonPath("$.[*].remarks").value(hasItem(DEFAULT_REMARKS)));
+            .andExpect(jsonPath("$.[*].remarks").value(hasItem(DEFAULT_REMARKS)))
+            .andExpect(jsonPath("$.[*].whiteList").value(hasItem(DEFAULT_WHITE_LIST.booleanValue())));
     }
 
     @Test
