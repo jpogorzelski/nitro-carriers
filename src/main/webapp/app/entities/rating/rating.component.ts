@@ -28,6 +28,7 @@ export class RatingComponent implements OnInit, OnDestroy {
     currentSearch: string;
 
     searchEnabled = true;
+    headerEnabled = true;
 
     constructor(
         protected ratingService: RatingService,
