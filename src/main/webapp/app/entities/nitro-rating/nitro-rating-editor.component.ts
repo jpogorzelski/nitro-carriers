@@ -86,11 +86,11 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         const nameAndTransId = lines[personLineIndex].split(',');
         const fullName = nameAndTransId[0].split(' ');
         const transId = nameAndTransId[1].split('-');
-        result.carrier = new Carrier();
+        result.carrier = result.carrier || new Carrier();
         result.carrier.name = lines[0];
         result.carrier.transId = Number(transId[0]);
 
-        result.person = new Person();
+        result.person = result.person || new Person();
         result.person.firstName = fullName[0];
         result.person.lastName = fullName[1];
         result.person.companyId = Number(transId[1]);
