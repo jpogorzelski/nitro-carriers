@@ -29,6 +29,14 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="total_price" type="decimal(10,2)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="price_per_km" type="decimal(10,2)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="cargo_type" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -58,6 +66,10 @@
             </column>
 
             <column name="remarks" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="white_list" type="boolean">
                 <constraints nullable="true" />
             </column>
 

@@ -32,6 +32,16 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.totalPrice" for="field_totalPrice">Total Price</label>
+                    <input type="number" class="form-control" name="totalPrice" id="field_totalPrice"
+                        [(ngModel)]="rating.totalPrice" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.pricePerKm" for="field_pricePerKm">Price Per Km</label>
+                    <input type="number" class="form-control" name="pricePerKm" id="field_pricePerKm"
+                        [(ngModel)]="rating.pricePerKm" />
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.cargoType" for="field_cargoType">Cargo Type</label>
                     <select class="form-control" name="cargoType" [(ngModel)]="rating.cargoType" id="field_cargoType"  required>
                         <option value="FTL_13_6">{{'nitroCarriersApp.CargoType.FTL_13_6' | translate}}</option>
@@ -162,6 +172,11 @@
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.remarks" for="field_remarks">Remarks</label>
                     <input type="text" class="form-control" name="remarks" id="field_remarks"
                         [(ngModel)]="rating.remarks" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.whiteList" for="field_whiteList">White List</label>
+                    <input type="checkbox" class="form-control" name="whiteList" id="field_whiteList"
+                        [(ngModel)]="rating.whiteList" />
                 </div>
 
                 <div class="form-group">

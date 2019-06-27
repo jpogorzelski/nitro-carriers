@@ -16,6 +16,14 @@
             ]
         },
         {
+            "fieldName": "totalPrice",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "pricePerKm",
+            "fieldType": "BigDecimal"
+        },
+        {
             "fieldName": "cargoType",
             "fieldType": "CargoType",
             "fieldValues": "FTL_13_6,EXTRA_13_6,REEFER,EXTRA_REEFER,SOLO,FULL_BUS_BLASZKA,FULL_BUS_PLANDEKA,EXTRA_BUS,OVERSIZED,OTHER",
@@ -78,6 +86,10 @@
         {
             "fieldName": "remarks",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "whiteList",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [

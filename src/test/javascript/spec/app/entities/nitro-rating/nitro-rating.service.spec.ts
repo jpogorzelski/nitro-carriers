@@ -7,6 +7,8 @@ import { CargoType, Grade, Rating } from 'app/shared/model/rating.model';
 import { Carrier } from 'app/shared/model/carrier.model';
 import { Country } from 'app/shared/model/country.model';
 import { Person } from 'app/shared/model/person.model';
+import { City } from 'app/shared/model/city.model';
+import { User } from 'app/core';
 
 describe('Service Tests', () => {
     describe('NitroRating Service', () => {
@@ -25,10 +27,13 @@ describe('Service Tests', () => {
             const carrier = new Carrier(0, 'Nitro sp zoo', 12312, [], []);
             const person = new Person(0, 'Jan', 'Kowalski');
             const country = new Country(0, 'Polska');
+            const city = new City(0, 'Warszawa');
             elemDefault = new Rating(
                 0,
                 '11-111',
                 '11-111',
+                0,
+                0,
                 CargoType.EXTRA_REEFER,
                 333.75,
                 1,
@@ -37,10 +42,13 @@ describe('Service Tests', () => {
                 Grade.DEF_YES,
                 3,
                 'test remarks',
+                true,
                 carrier,
                 person,
                 country,
-                country
+                city,
+                country,
+                city
             );
         });
 

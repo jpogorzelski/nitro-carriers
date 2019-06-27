@@ -23,13 +23,17 @@ entity Person {
 entity Rating {
 chargePostalCode String required,
 dischargePostalCode String required,
+totalPrice BigDecimal
+pricePerKm BigDecimal
 cargoType CargoType required,
 distance Double required,
 contact Integer min(1) max(6) required,
 price Integer min(1) max(6) required,
 flexibility Integer min(1) max(6) required,
 recommendation Grade required,
-average Double
+average Double,
+remarks String,
+whiteList Boolean
 
 }
 
