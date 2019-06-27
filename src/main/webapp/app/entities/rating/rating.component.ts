@@ -37,20 +37,7 @@ export class RatingComponent implements OnInit, OnDestroy {
         protected parseLinks: JhiParseLinks,
         protected activatedRoute: ActivatedRoute,
         protected accountService: AccountService
-    ) {
-        this.ratings = [];
-        this.itemsPerPage = ITEMS_PER_PAGE;
-        this.page = 0;
-        this.links = {
-            last: 0
-        };
-        this.predicate = 'id';
-        this.reverse = true;
-        this.currentSearch =
-            this.searchEnabled && this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
-                : '';
-    }
+    ) {}
 
     loadAll() {
         if (this.currentSearch && this.searchEnabled) {
@@ -67,6 +54,10 @@ export class RatingComponent implements OnInit, OnDestroy {
                 );
             return;
         }
+        this.loadRatings();
+    }
+
+    loadRatings() {
         this.ratingService
             .query({
                 page: this.page,
@@ -118,6 +109,18 @@ export class RatingComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.ratings = [];
+        this.itemsPerPage = ITEMS_PER_PAGE;
+        this.page = 0;
+        this.links = {
+            last: 0
+        };
+        this.predicate = 'id';
+        this.reverse = true;
+        this.currentSearch =
+            this.searchEnabled && this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
+                ? this.activatedRoute.snapshot.params['search']
+                : '';
         this.loadAll();
         this.accountService.identity().then(account => {
             this.currentAccount = account;

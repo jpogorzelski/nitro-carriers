@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-10">
         <div *ngIf="carrier">
             <h2><span jhiTranslate="nitroCarriersApp.carrier.detail.title">Carrier</span> {{carrier.id}}</h2>
             <hr>
@@ -27,6 +27,6 @@
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>
         </div>
-        <jhi-carrier-ratings></jhi-carrier-ratings>
+        <jhi-carrier-ratings [id]="carrier.id"></jhi-carrier-ratings>
     </div>
 </div>

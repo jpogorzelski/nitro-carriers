@@ -60,12 +60,12 @@
                 <td><a [routerLink]="['/rating', rating.id, 'view' ]">{{rating.id}}</a></td>
                 <td>
                     <div *ngIf="rating.carrier">
-                        <a [routerLink]="['../carrier', rating.carrier?.id, 'view' ]">{{rating.carrier?.name}}</a>
+                        <a [routerLink]="['/carrier', rating.carrier?.id, 'view' ]">{{rating.carrier?.name}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="rating.person">
-                        <a [routerLink]="['../person', rating.person?.id, 'view' ]">{{rating.person?.firstName + ' ' + rating.person.lastName}}</a>
+                        <a [routerLink]="['/person', rating.person?.id, 'view' ]">{{rating.person?.firstName + ' ' + rating.person.lastName}}</a>
                     </div>
                 </td>
                 <td>{{rating.chargeCountry?.countryNamePL + ', ' + rating.chargePostalCode}}</td>
