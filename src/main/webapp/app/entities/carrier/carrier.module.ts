@@ -10,6 +10,7 @@ import {
     CarrierUpdateComponent,
     CarrierDeletePopupComponent,
     CarrierDeleteDialogComponent,
+    CarrierRatingsComponent,
     carrierRoute,
     carrierPopupRoute
 } from './';
@@ -22,6 +23,7 @@ const ENTITY_STATES = [...carrierRoute, ...carrierPopupRoute];
         CarrierComponent,
         CarrierDetailComponent,
         CarrierUpdateComponent,
+        CarrierRatingsComponent,
         CarrierDeleteDialogComponent,
         CarrierDeletePopupComponent
     ],
