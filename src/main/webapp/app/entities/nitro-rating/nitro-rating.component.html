@@ -1,5 +1,5 @@
 <div>
-    <h2 id="page-heading">
+    <h2 id="page-heading" *ngIf="headerEnabled">
         <span jhiTranslate="nitroCarriersApp.rating.home.title">Ratings</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-rating" [routerLink]="['/nitro-rating/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
