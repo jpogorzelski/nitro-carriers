@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { ICarrier } from 'app/shared/model/carrier.model';
+import { IRating } from 'app/shared/model/rating.model';
 
 type EntityResponseType = HttpResponse<ICarrier>;
 type EntityArrayResponseType = HttpResponse<ICarrier[]>;
@@ -25,6 +26,10 @@ export class CarrierService {
 
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<ICarrier>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    }
+
+    findRatings(id: number): Observable<HttpResponse<IRating[]>> {
+        return this.http.get<IRating[]>(`${this.resourceUrl}/${id}/ratings`, { observe: 'response' });
     }
 
     query(req?: any): Observable<EntityArrayResponseType> {
