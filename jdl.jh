@@ -1,3 +1,9 @@
+/* DO NOT CHANGE  - STEPS to change sth in model:
+1. modify .jhipster/<name>.json, then
+2. run jhipster entity <name>
+3. ./gradlew liquibaseDiffChangelog -PrunList=diffLog
+*/
+
 entity Country {
     countryCode String required
 	countryNamePL String required

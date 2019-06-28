@@ -27,7 +27,7 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 public class Rating implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -41,7 +41,8 @@ public class Rating implements Serializable {
     @Column(name = "discharge_postal_code", nullable = false)
     private String dischargePostalCode;
 
-    @Column(name = "total_price", precision = 10, scale = 2)
+    @NotNull
+    @Column(name = "total_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal totalPrice;
 
     @Column(name = "price_per_km", precision = 10, scale = 2)
