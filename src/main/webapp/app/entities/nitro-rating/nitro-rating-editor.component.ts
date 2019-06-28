@@ -1,7 +1,7 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Observable, Observer, EMPTY } from 'rxjs';
+import { EMPTY, Observable, Observer } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { Grade, IRating } from 'app/shared/model/rating.model';
@@ -27,6 +27,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     chargeCities: ICity[] = [];
     dischargeCities: ICity[] = [];
     carriers: ICarrier[];
+    negativeGrade = false;
 
     constructor(
         protected jhiAlertService: JhiAlertService,
@@ -76,6 +77,20 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         if (this.rating.contact && this.rating.price && this.rating.flexibility && this.rating.recommendation) {
             const recommendation = this.getRecommendationAsInt();
             this.rating.average = (this.rating.contact + this.rating.price + this.rating.flexibility + recommendation) / 4;
+        }
+        if (this.rating.totalPrice && this.rating.distance) {
+            const exactPricePerKm = this.rating.totalPrice / this.rating.distance;
+            this.rating.pricePerKm = Number(exactPricePerKm.toFixed(2));
+        }
+
+        //white list stuff
+        if ([Grade.BLACK_LIST as Grade, Grade.DEF_NO as Grade, Grade.NO as Grade].includes(this.rating.recommendation as Grade)) {
+            console.log('yiiiis');
+            this.negativeGrade = true;
+            this.rating.whiteList = false;
+        } else {
+            console.log('no: ' + this.rating.recommendation);
+            this.negativeGrade = false;
         }
     }
 

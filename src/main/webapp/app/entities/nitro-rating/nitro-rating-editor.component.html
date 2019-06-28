@@ -192,6 +192,26 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.totalPrice" for="field_totalPrice">Total Price</label>
+                    <input type="number" class="form-control" name="totalPrice" id="field_totalPrice"
+                           [(ngModel)]="rating.totalPrice" required/>
+                    <div [hidden]="!(editForm.controls.totalPrice?.dirty && editForm.controls.totalPrice?.invalid)">
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.totalPrice?.errors?.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.totalPrice?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.pricePerKm" for="field_pricePerKm">Price Per Km</label>
+                    <input type="number" class="form-control" name="pricePerKm" id="field_pricePerKm"
+                           [(ngModel)]="rating.pricePerKm" readonly />
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.contact"
                            for="field_contact">Contact</label>
                     <select class="form-control" name="contact" [(ngModel)]="rating.contact"
@@ -262,6 +282,11 @@
                                jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.whiteList" for="field_whiteList">White List</label>
+                        <input type="checkbox" class="form-control" name="whiteList" id="field_whiteList" [disabled]="negativeGrade"
+                               [(ngModel)]="rating.whiteList" />
                     </div>
                 </div>
                 <div class="form-group">
