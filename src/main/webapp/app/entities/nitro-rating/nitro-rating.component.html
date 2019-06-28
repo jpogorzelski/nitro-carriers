@@ -46,10 +46,13 @@
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th jhiSortBy="distance"><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="totalPrice"><span jhiTranslate="nitroCarriersApp.rating.totalPrice">Total Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="pricePerKm"><span jhiTranslate="nitroCarriersApp.rating.pricePerKm">Price Per Km</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="contact"><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="price"><span jhiTranslate="nitroCarriersApp.rating.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="flexibility"><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="recommendation"><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="whiteList"><span jhiTranslate="nitroCarriersApp.rating.whiteList">White List</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="average"><span jhiTranslate="nitroCarriersApp.rating.average">Average</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="createdBy.login"><span jhiTranslate="nitroCarriersApp.rating.createdBy">Created By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th></th>
@@ -68,14 +71,17 @@
                         <a [routerLink]="['/person', rating.person?.id, 'view' ]">{{rating.person?.firstName + ' ' + rating.person.lastName}}</a>
                     </div>
                 </td>
-                <td>{{rating.chargeCountry?.countryNamePL + ', ' + rating.chargePostalCode}}</td>
-                <td>{{rating.dischargeCountry?.countryNamePL + ', ' + rating.dischargePostalCode}}</td>
+                <td>{{rating.chargeCountry?.countryNamePL + ', ' + rating.chargeCity?.cityName + ', '+ rating.chargePostalCode}}</td>
+                <td>{{rating.dischargeCountry?.countryNamePL + ', ' + rating.dischargeCity?.cityName + ', '+ rating.dischargePostalCode}}</td>
                 <td jhiTranslate="{{'nitroCarriersApp.CargoType.' + rating.cargoType}}">{{rating.cargoType}}</td>
                 <td>{{rating.distance}} km</td>
+                <td>{{rating.totalPrice}}</td>
+                <td>{{rating.pricePerKm}}</td>
                 <td>{{rating.contact}}</td>
                 <td>{{rating.price}}</td>
                 <td>{{rating.flexibility}}</td>
                 <td jhiTranslate="{{'nitroCarriersApp.Grade.' + rating.recommendation}}">{{rating.recommendation}}</td>
+                <td>{{rating.whiteList}}</td>
                 <td>{{rating.average}}</td>
                 <td>{{rating.createdBy?.login}}</td>
                 <td class="text-right">
