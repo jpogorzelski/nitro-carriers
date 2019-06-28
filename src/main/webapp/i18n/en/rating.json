@@ -22,6 +22,7 @@
             "recommendation": "Recommendation",
             "average": "Average",
             "person": "Person",
+            "altPerson": "Alternative Person",
             "personFirstName": "Contact person first name",
             "personLastName": "Contact person last name",
             "personTransId": "Contact person Trans ID",
@@ -38,7 +39,10 @@
             "carrierTransId": "Carrier Trans ID",
             "carrierName": "Carrier Name",
             "carrier": "Carrier",
+            "altCarrier": "Alternative Carrier",
             "carrierAndPerson": "Carrier and contact person data",
+            "altCarrierAndPerson": "Alternative carrier and contact person data",
+            "addAlternatives": "Do you want to add alternative carrier and contact person data?",
             "distance": "Distance (km)",
             "remarks": "Remarks",
             "totalPrice": "Total Price",
@@ -47,7 +51,8 @@
             "countryPlaceholder": "Select country...",
             "cityPlaceholder": "Select city...",
             "cargoTypePlaceholder": "Select cargo type...",
-            "selectPlaceholder": "-- choose --"
+            "selectPlaceholder": "-- choose --",
+            "copyFromBasic": "Copy from basic carrier and person data"
         }
     }
 }

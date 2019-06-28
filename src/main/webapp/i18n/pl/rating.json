@@ -22,6 +22,7 @@
             "recommendation": "Polecam",
             "average": "Średnia ocena",
             "person": "Osoba kontaktowa",
+            "altPerson": "Alternatywna osoba kontaktowa",
             "personFirstName": "Imię",
             "personLastName": "Nazwisko",
             "personTransId": "Trans ID",
@@ -37,7 +38,10 @@
             "carrierName": "Nazwa firmy",
             "carrierTransId": "Trans ID firmy",
             "carrier": "Firma",
+            "altCarrier": "Alternatywna Firma",
             "carrierAndPerson": "Dane firmy i osoby kontaktowej",
+            "altCarrierAndPerson": "Dane alternatywnej firmy i osoby kontaktowej",
+            "addAlternatives": "Czy chcesz dodać dane alternatywnej firmy i osoby kontaktowej?",
             "distance": "Dystans (km)",
             "createdBy": "Utworzył",
             "remarks": "Uwagi",
@@ -47,7 +51,8 @@
             "countryPlaceholder": "Wybierz kraj...",
             "cityPlaceholder": "Wybierz miasto...",
             "cargoTypePlaceholder": "Wybierz typ ładunku...",
-            "selectPlaceholder": "-- wybierz --"
+            "selectPlaceholder": "-- wybierz --",
+            "copyFromBasic": "Kopiuj dane podstawowe"
         }
     }
 }

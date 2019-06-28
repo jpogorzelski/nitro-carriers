@@ -20,6 +20,18 @@
                                  referencedColumnNames="id"
                                  referencedTableName="person"/>
 
+        <addForeignKeyConstraint baseColumnNames="alt_carrier_id"
+                                 baseTableName="rating"
+                                 constraintName="fk_rating_alt_carrier_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="carrier"/>
+
+        <addForeignKeyConstraint baseColumnNames="alt_person_id"
+                                 baseTableName="rating"
+                                 constraintName="fk_rating_alt_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="person"/>
+
         <addForeignKeyConstraint baseColumnNames="charge_country_id"
                                  baseTableName="rating"
                                  constraintName="fk_rating_charge_country_id"

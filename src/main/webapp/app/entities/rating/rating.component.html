@@ -45,6 +45,8 @@
             <th jhiSortBy="whiteList"><span jhiTranslate="nitroCarriersApp.rating.whiteList">White List</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="carrier.name"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="person.firstName"><span jhiTranslate="nitroCarriersApp.rating.person">Person</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="altCarrier.name"><span jhiTranslate="nitroCarriersApp.rating.altCarrier">Alt Carrier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="altPerson.firstName"><span jhiTranslate="nitroCarriersApp.rating.altPerson">Alt Person</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="chargeCountry.countryNamePL"><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="chargeCity.cityName"><span jhiTranslate="nitroCarriersApp.rating.chargeCity">Charge City</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="dischargeCountry.countryNamePL"><span jhiTranslate="nitroCarriersApp.rating.dischargeCountry">Discharge Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -77,6 +79,16 @@
                 <td>
                     <div *ngIf="rating.person">
                         <a [routerLink]="['../person', rating.person?.id, 'view' ]" >{{rating.person?.firstName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="rating.altCarrier">
+                        <a [routerLink]="['../carrier', rating.altCarrier?.id, 'view' ]" >{{rating.altCarrier?.name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="rating.altPerson">
+                        <a [routerLink]="['../person', rating.altPerson?.id, 'view' ]" >{{rating.altPerson?.firstName}}</a>
                     </div>
                 </td>
                 <td>

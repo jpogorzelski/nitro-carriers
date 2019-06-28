@@ -114,6 +114,20 @@
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipName": "altCarrier",
+            "otherEntityName": "carrier",
+            "otherEntityField": "name",
+            "otherEntityRelationshipName": "rating"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "altPerson",
+            "otherEntityName": "person",
+            "otherEntityField": "firstName",
+            "otherEntityRelationshipName": "rating"
+        },
+        {
+            "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "chargeCountry",
             "otherEntityName": "country",

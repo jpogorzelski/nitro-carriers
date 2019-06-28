@@ -69,6 +69,18 @@
                         <a [routerLink]="['/person', rating.person?.id, 'view']">{{rating.person?.firstName}}</a>
                     </div>
                 </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.altCarrier">Alt Carrier</span></dt>
+                <dd>
+                    <div *ngIf="rating.altCarrier">
+                        <a [routerLink]="['/carrier', rating.altCarrier?.id, 'view']">{{rating.altCarrier?.name}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.rating.altPerson">Alt Person</span></dt>
+                <dd>
+                    <div *ngIf="rating.altPerson">
+                        <a [routerLink]="['/person', rating.altPerson?.id, 'view']">{{rating.altPerson?.firstName}}</a>
+                    </div>
+                </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.rating.chargeCountry">Charge Country</span></dt>
                 <dd>
                     <div *ngIf="rating.chargeCountry">

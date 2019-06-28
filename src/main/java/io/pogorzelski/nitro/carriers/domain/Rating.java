@@ -99,6 +99,14 @@ public class Rating implements Serializable {
     @JsonIgnoreProperties("ratings")
     private Person person;
 
+    @ManyToOne
+    @JsonIgnoreProperties("ratings")
+    private Carrier altCarrier;
+
+    @ManyToOne
+    @JsonIgnoreProperties("ratings")
+    private Person altPerson;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("ratings")
@@ -325,6 +333,32 @@ public class Rating implements Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public Carrier getAltCarrier() {
+        return altCarrier;
+    }
+
+    public Rating altCarrier(Carrier carrier) {
+        this.altCarrier = carrier;
+        return this;
+    }
+
+    public void setAltCarrier(Carrier carrier) {
+        this.altCarrier = carrier;
+    }
+
+    public Person getAltPerson() {
+        return altPerson;
+    }
+
+    public Rating altPerson(Person person) {
+        this.altPerson = person;
+        return this;
+    }
+
+    public void setAltPerson(Person person) {
+        this.altPerson = person;
     }
 
     public Country getChargeCountry() {
