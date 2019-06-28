@@ -17,7 +17,10 @@
         },
         {
             "fieldName": "totalPrice",
-            "fieldType": "BigDecimal"
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "pricePerKm",
