@@ -43,6 +43,8 @@ export interface IRating {
     whiteList?: boolean;
     carrier?: ICarrier;
     person?: IPerson;
+    altCarrier?: ICarrier;
+    altPerson?: IPerson;
     chargeCountry?: ICountry;
     chargeCity?: ICity;
     dischargeCountry?: ICountry;
@@ -68,6 +70,8 @@ export class Rating implements IRating {
         public whiteList?: boolean,
         public carrier?: ICarrier,
         public person?: IPerson,
+        public altCarrier?: ICarrier,
+        public altPerson?: IPerson,
         public chargeCountry?: ICountry,
         public chargeCity?: ICity,
         public dischargeCountry?: ICountry,

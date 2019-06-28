@@ -1,11 +1,7 @@
 package io.pogorzelski.nitro.carriers.service;
 
 import io.pogorzelski.nitro.carriers.domain.*;
-import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
-import io.pogorzelski.nitro.carriers.repository.CityRepository;
-import io.pogorzelski.nitro.carriers.repository.CountryRepository;
-import io.pogorzelski.nitro.carriers.repository.PersonRepository;
-import io.pogorzelski.nitro.carriers.repository.RatingRepository;
+import io.pogorzelski.nitro.carriers.repository.*;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,15 +91,74 @@ public class RatingExtService {
 
         rating.setCreatedBy(getUser());
 
-        Carrier dbCarrier = carrierRepository.save(rating.getCarrier());
-        Person dbPerson = personRepository.save(rating.getPerson());
-        dbPerson.setCarrier(dbCarrier);
+        Integer carrierTransId = rating.getCarrier().getTransId();
+        Carrier carrier = carrierRepository.findByTransId(carrierTransId);
+        if (carrier == null) {
+            Carrier carrierDTO = rating.getCarrier();
+            carrier = carrierRepository.saveAndFlush(carrierDTO);
+        }
+
+        Integer personCompanyId = rating.getPerson().getCompanyId();
+        Person person = personRepository.findByCarrier_TransIdAndCompanyId(carrierTransId, personCompanyId);
+        if (person == null) {
+            Person personDTO = rating.getPerson();
+            personRepository.saveAndFlush(personDTO);
+        }
+        person.setCarrier(carrier);
+
+        Integer altCarrierTransId = rating.getCarrier().getTransId();
+        Carrier altCarrier = carrierRepository.findByTransId(altCarrierTransId);
+        if (altCarrier == null) {
+            Carrier altCarrierDTO = rating.getAltCarrier();
+            altCarrier = carrierRepository.saveAndFlush(altCarrierDTO);
+        }
+
+
+        Integer altPersonCompanyId = rating.getAltPerson().getCompanyId();
+        Person altPerson = personRepository.findByCarrier_TransIdAndCompanyId(altCarrierTransId, altPersonCompanyId);
+        if (altPerson == null) {
+            Person altPersonDTO = rating.getAltPerson();
+            personRepository.saveAndFlush(altPersonDTO);
+        }
+        person.setCarrier(altCarrier);
 
         Rating result = ratingRepository.save(rating);
         ratingSearchRepository.save(rating);
         return result;
     }
 
+    /*
+
+
+        Carrier carrierDTO = rating.getCarrier();
+        Carrier dbCarrier = carrierRepository.saveAndFlush(carrierDTO);
+        Person personDTO = rating.getPerson();
+        Person dbPerson = personRepository.saveAndFlush(personDTO);
+        dbPerson.setCarrier(dbCarrier);
+
+        Carrier altCarrierDTO = rating.getAltCarrier();
+        Carrier dbAltCarrier;
+        if (carrierDTO.getName().equals(altCarrierDTO.getName()) &&
+            carrierDTO.getTransId().equals(altCarrierDTO.getTransId())) {
+            dbAltCarrier = dbCarrier;
+        } else {
+            dbAltCarrier = carrierRepository.saveAndFlush(altCarrierDTO);
+        }
+
+
+        Person altPersonDTO = rating.getAltPerson();
+        Person dbAltPerson;
+        if (personDTO.getCompanyId().equals(altPersonDTO.getCompanyId())
+            && personDTO.getFirstName().equals(altPersonDTO.getFirstName())
+            && personDTO.getLastName().equals(altPersonDTO.getLastName())
+//            && personDTO.getCarrier().equals(altPersonDTO.getCarrier())
+        ) {
+            dbAltPerson = dbPerson;
+        } else {
+            dbAltPerson = personRepository.saveAndFlush(altPersonDTO);
+        }
+        dbAltPerson.setCarrier(dbAltCarrier);
+     */
     public User getUser() {
         return userService.getUserWithAuthorities()
             .orElseThrow(() -> new AccessDeniedException("You are not logged in!"));

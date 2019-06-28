@@ -216,6 +216,20 @@
                     </small>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.altCarrier" for="field_altCarrier">Alt Carrier</label>
+                    <select class="form-control" id="field_altCarrier" name="altCarrier" [(ngModel)]="rating.altCarrier" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="carrierOption.id === rating.altCarrier?.id ? rating.altCarrier : carrierOption" *ngFor="let carrierOption of carriers; trackBy: trackCarrierById">{{carrierOption.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.altPerson" for="field_altPerson">Alt Person</label>
+                    <select class="form-control" id="field_altPerson" name="altPerson" [(ngModel)]="rating.altPerson" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="personOption.id === rating.altPerson?.id ? rating.altPerson : personOption" *ngFor="let personOption of people; trackBy: trackPersonById">{{personOption.firstName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.chargeCountry" for="field_chargeCountry">Charge Country</label>
                     <select class="form-control" id="field_chargeCountry" name="chargeCountry" [(ngModel)]="rating.chargeCountry"  required>
                         <option *ngIf="!editForm.value.chargeCountry" [ngValue]="null" selected></option>

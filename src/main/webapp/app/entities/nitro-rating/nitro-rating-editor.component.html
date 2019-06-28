@@ -10,8 +10,7 @@
                     <input type="text" class="form-control" id="id" name="id"
                            [(ngModel)]="rating.id" readonly/>
                 </div>
-
-                <fieldset>
+                 <fieldset>
                     <legend jhiTranslate="nitroCarriersApp.rating.carrierAndPerson">Carrier and person</legend>
                     <div class="form-group">
                         <textarea [(ngModel)]="carrierAndPerson" class="form-control" name="carrierAndPerson"
@@ -20,6 +19,28 @@
                             [hidden]="!(editForm.controls.carrierAndPerson?.dirty && editForm.controls.carrierAndPerson?.invalid)">
                             <small class="form-text text-danger"
                                    [hidden]="!editForm.controls.carrierAndPerson?.errors?.required"
+                                   jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.addAlternatives" for="field_addAlternatives">Add alternative carrier and person</label>
+                    <input type="checkbox" class="form-control" name="addAlternatives" id="field_addAlternatives" [(ngModel)]="addAlternative"/>
+                </div>
+                <fieldset *ngIf="addAlternative">
+                    <legend jhiTranslate="nitroCarriersApp.rating.altCarrierAndPerson">Alternative carrier and person</legend>
+                    <div class="form-group">
+                        <button type="button" id="copyFromBasicCarrierAndPerson" class="btn btn-secondary" (click)="copyFromBasic()">
+                            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="nitroCarriersApp.rating.copyFromBasic">Copy from basic</span>
+                        </button>
+                        <textarea [(ngModel)]="altCarrierAndPerson" class="form-control" name="altCarrierAndPerson"
+                                  id="field_altCarrierAndPerson" required rows="5"></textarea>
+                        <div
+                                [hidden]="!(editForm.controls.altCarrierAndPerson?.dirty && editForm.controls.altCarrierAndPerson?.invalid)">
+                            <small class="form-text text-danger"
+                                   [hidden]="!editForm.controls.altCarrierAndPerson?.errors?.required"
                                    jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>

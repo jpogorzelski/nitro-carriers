@@ -19,6 +19,7 @@ import { CityService } from 'app/entities/city';
 })
 export class NitroRatingEditorComponent implements OnInit, DoCheck {
     carrierAndPerson: string;
+    altCarrierAndPerson: string;
     rating: IRating;
     isSaving: boolean;
 
@@ -28,6 +29,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     dischargeCities: ICity[] = [];
     carriers: ICarrier[];
     negativeGrade = false;
+    addAlternative = false;
 
     constructor(
         protected jhiAlertService: JhiAlertService,
@@ -43,16 +45,11 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.activatedRoute.data.subscribe(({rating}) => {
             this.rating = rating;
             if (this.rating.id) {
-                this.carrierAndPerson =
-                    this.rating.carrier.name +
-                    '\n' +
-                    this.rating.person.firstName +
-                    ' ' +
-                    this.rating.person.lastName +
-                    ', ' +
-                    this.rating.carrier.transId +
-                    '-' +
-                    this.rating.person.companyId;
+                this.carrierAndPerson = this.joinCarrierAndPersonData(this.rating.carrier, this.rating.person);
+                this.altCarrierAndPerson = this.joinCarrierAndPersonData(this.rating.altCarrier, this.rating.altPerson);
+                if (this.altCarrierAndPerson) {
+                    this.addAlternative = true;
+                }
             }
         });
 
@@ -73,6 +70,18 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     }
 
+    private joinCarrierAndPersonData(carrier: ICarrier, person: IPerson) {
+        return carrier.name +
+            '\n' +
+            person.firstName +
+            ' ' +
+            person.lastName +
+            ', ' +
+            carrier.transId +
+            '-' +
+            person.companyId;
+    }
+
     ngDoCheck(): void {
         if (this.rating.contact && this.rating.price && this.rating.flexibility && this.rating.recommendation) {
             const recommendation = this.getRecommendationAsInt();
@@ -83,7 +92,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
             this.rating.pricePerKm = Number(exactPricePerKm.toFixed(2));
         }
 
-        //white list stuff
+        // white list stuff
         if ([Grade.BLACK_LIST as Grade, Grade.DEF_NO as Grade, Grade.NO as Grade].includes(this.rating.recommendation as Grade)) {
             console.log('yiiiis');
             this.negativeGrade = true;
@@ -97,15 +106,18 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     extractCarrierAndPerson(rating: IRating, str: string): IRating {
         const result = rating;
         const lines = str.split('\n');
+        console.table('lines', lines);
         const personLineIndex = getPersonLineIndex();
+
+        console.table('personLineIndex', personLineIndex);
         const nameAndTransId = lines[personLineIndex].split(',');
         const fullName = nameAndTransId[0].split(' ');
         const transId = nameAndTransId[1].split('-');
-        result.carrier = result.carrier || new Carrier();
+        result.carrier = new Carrier();
         result.carrier.name = lines[0];
         result.carrier.transId = Number(transId[0]);
 
-        result.person = result.person || new Person();
+        result.person = new Person();
         result.person.firstName = fullName[0];
         result.person.lastName = fullName[1];
         result.person.companyId = Number(transId[1]);
@@ -161,7 +173,14 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     }
 
     save() {
-        this.rating = this.extractCarrierAndPerson(this.rating, this.carrierAndPerson);
+        let extractedRating = this.extractCarrierAndPerson(this.rating, this.carrierAndPerson);
+        this.rating.carrier = extractedRating.carrier;
+        this.rating.person = extractedRating.person;
+
+        extractedRating = this.extractCarrierAndPerson(this.rating, this.altCarrierAndPerson);
+        this.rating.altCarrier = extractedRating.carrier;
+        this.rating.altPerson = extractedRating.person;
+
         this.isSaving = true;
         if (this.rating.id !== undefined) {
             this.subscribeToSaveResponse(this.ratingExtService.update(this.rating));
@@ -233,5 +252,9 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         }
         return EMPTY;
 
+    }
+
+    copyFromBasic() {
+        this.altCarrierAndPerson = this.carrierAndPerson;
     }
 }
