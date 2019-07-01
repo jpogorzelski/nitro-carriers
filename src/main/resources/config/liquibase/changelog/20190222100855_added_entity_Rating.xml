@@ -29,6 +29,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="add_alternative" type="boolean">
+                <constraints nullable="true" />
+            </column>
+
             <column name="total_price" type="decimal(10,2)">
                 <constraints nullable="false" />
             </column>

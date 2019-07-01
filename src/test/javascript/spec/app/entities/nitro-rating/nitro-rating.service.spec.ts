@@ -32,6 +32,7 @@ describe('Service Tests', () => {
                 0,
                 '11-111',
                 '11-111',
+                false,
                 0,
                 0,
                 CargoType.EXTRA_REEFER,

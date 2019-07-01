@@ -41,6 +41,9 @@ public class Rating implements Serializable {
     @Column(name = "discharge_postal_code", nullable = false)
     private String dischargePostalCode;
 
+    @Column(name = "add_alternative")
+    private Boolean addAlternative;
+
     @NotNull
     @Column(name = "total_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal totalPrice;
@@ -164,6 +167,19 @@ public class Rating implements Serializable {
 
     public void setDischargePostalCode(String dischargePostalCode) {
         this.dischargePostalCode = dischargePostalCode;
+    }
+
+    public Boolean isAddAlternative() {
+        return addAlternative;
+    }
+
+    public Rating addAlternative(Boolean addAlternative) {
+        this.addAlternative = addAlternative;
+        return this;
+    }
+
+    public void setAddAlternative(Boolean addAlternative) {
+        this.addAlternative = addAlternative;
     }
 
     public BigDecimal getTotalPrice() {
@@ -453,6 +469,7 @@ public class Rating implements Serializable {
             "id=" + getId() +
             ", chargePostalCode='" + getChargePostalCode() + "'" +
             ", dischargePostalCode='" + getDischargePostalCode() + "'" +
+            ", addAlternative='" + isAddAlternative() + "'" +
             ", totalPrice=" + getTotalPrice() +
             ", pricePerKm=" + getPricePerKm() +
             ", cargoType='" + getCargoType() + "'" +

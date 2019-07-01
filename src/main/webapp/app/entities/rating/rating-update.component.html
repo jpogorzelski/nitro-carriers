@@ -32,6 +32,11 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.addAlternative" for="field_addAlternative">Add Alternative</label>
+                    <input type="checkbox" class="form-control" name="addAlternative" id="field_addAlternative"
+                        [(ngModel)]="rating.addAlternative" />
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.totalPrice" for="field_totalPrice">Total Price</label>
                     <input type="number" class="form-control" name="totalPrice" id="field_totalPrice"
                         [(ngModel)]="rating.totalPrice" required/>

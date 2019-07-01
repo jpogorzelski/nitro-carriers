@@ -60,6 +60,9 @@ public class RatingResourceIntTest {
     private static final String DEFAULT_DISCHARGE_POSTAL_CODE = "AAAAAAAAAA";
     private static final String UPDATED_DISCHARGE_POSTAL_CODE = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_ADD_ALTERNATIVE = false;
+    private static final Boolean UPDATED_ADD_ALTERNATIVE = true;
+
     private static final BigDecimal DEFAULT_TOTAL_PRICE = new BigDecimal(1);
     private static final BigDecimal UPDATED_TOTAL_PRICE = new BigDecimal(2);
 
@@ -148,6 +151,7 @@ public class RatingResourceIntTest {
         Rating rating = new Rating()
             .chargePostalCode(DEFAULT_CHARGE_POSTAL_CODE)
             .dischargePostalCode(DEFAULT_DISCHARGE_POSTAL_CODE)
+            .addAlternative(DEFAULT_ADD_ALTERNATIVE)
             .totalPrice(DEFAULT_TOTAL_PRICE)
             .pricePerKm(DEFAULT_PRICE_PER_KM)
             .cargoType(DEFAULT_CARGO_TYPE)
@@ -204,6 +208,7 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
             .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE.toString())))
             .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE.toString())))
+            .andExpect(jsonPath("$.[*].addAlternative").value(hasItem(DEFAULT_ADD_ALTERNATIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].totalPrice").value(hasItem(DEFAULT_TOTAL_PRICE.intValue())))
             .andExpect(jsonPath("$.[*].pricePerKm").value(hasItem(DEFAULT_PRICE_PER_KM.intValue())))
             .andExpect(jsonPath("$.[*].cargoType").value(hasItem(DEFAULT_CARGO_TYPE.toString())))
@@ -230,6 +235,7 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.id").value(rating.getId().intValue()))
             .andExpect(jsonPath("$.chargePostalCode").value(DEFAULT_CHARGE_POSTAL_CODE.toString()))
             .andExpect(jsonPath("$.dischargePostalCode").value(DEFAULT_DISCHARGE_POSTAL_CODE.toString()))
+            .andExpect(jsonPath("$.addAlternative").value(DEFAULT_ADD_ALTERNATIVE.booleanValue()))
             .andExpect(jsonPath("$.totalPrice").value(DEFAULT_TOTAL_PRICE.intValue()))
             .andExpect(jsonPath("$.pricePerKm").value(DEFAULT_PRICE_PER_KM.intValue()))
             .andExpect(jsonPath("$.cargoType").value(DEFAULT_CARGO_TYPE.toString()))
@@ -266,6 +272,7 @@ public class RatingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
             .andExpect(jsonPath("$.[*].chargePostalCode").value(hasItem(DEFAULT_CHARGE_POSTAL_CODE)))
             .andExpect(jsonPath("$.[*].dischargePostalCode").value(hasItem(DEFAULT_DISCHARGE_POSTAL_CODE)))
+            .andExpect(jsonPath("$.[*].addAlternative").value(hasItem(DEFAULT_ADD_ALTERNATIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].totalPrice").value(hasItem(DEFAULT_TOTAL_PRICE.intValue())))
             .andExpect(jsonPath("$.[*].pricePerKm").value(hasItem(DEFAULT_PRICE_PER_KM.intValue())))
             .andExpect(jsonPath("$.[*].cargoType").value(hasItem(DEFAULT_CARGO_TYPE.toString())))

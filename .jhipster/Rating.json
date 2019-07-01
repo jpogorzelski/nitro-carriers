@@ -16,6 +16,10 @@
             ]
         },
         {
+            "fieldName": "addAlternative",
+            "fieldType": "Boolean"
+        },
+        {
             "fieldName": "totalPrice",
             "fieldType": "BigDecimal",
             "fieldValidateRules": [

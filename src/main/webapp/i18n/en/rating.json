@@ -42,7 +42,7 @@
             "altCarrier": "Alternative Carrier",
             "carrierAndPerson": "Carrier and contact person data",
             "altCarrierAndPerson": "Alternative carrier and contact person data",
-            "addAlternatives": "Do you want to add alternative carrier and contact person data?",
+            "addAlternative": "Do you want to add alternative carrier and contact person data?",
             "distance": "Distance (km)",
             "remarks": "Remarks",
             "totalPrice": "Total Price",

@@ -1,11 +1,7 @@
 package io.pogorzelski.nitro.carriers.web.rest;
 
 import io.pogorzelski.nitro.carriers.NitroCarriersApp;
-import io.pogorzelski.nitro.carriers.domain.Carrier;
-import io.pogorzelski.nitro.carriers.domain.City;
-import io.pogorzelski.nitro.carriers.domain.Country;
-import io.pogorzelski.nitro.carriers.domain.Person;
-import io.pogorzelski.nitro.carriers.domain.Rating;
+import io.pogorzelski.nitro.carriers.domain.*;
 import io.pogorzelski.nitro.carriers.domain.enumeration.CargoType;
 import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 import io.pogorzelski.nitro.carriers.repository.RatingRepository;
@@ -16,7 +12,7 @@ import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
@@ -29,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingConversionService;
@@ -49,6 +46,15 @@ public class RatingResourceExtIntTest {
 
     private static final String DEFAULT_POSTAL_CODE = "15-111";
     private static final String UPDATED_POSTAL_CODE = "99-999";
+
+    private static final Boolean DEFAULT_ADD_ALTERNATIVE = false;
+    private static final Boolean UPDATED_ADD_ALTERNATIVE = true;
+
+    private static final BigDecimal DEFAULT_TOTAL_PRICE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL_PRICE = new BigDecimal(2);
+
+    private static final BigDecimal DEFAULT_PRICE_PER_KM = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PRICE_PER_KM = new BigDecimal(2);
 
     private static final CargoType DEFAULT_CARGO_TYPE = CargoType.FTL_13_6;
     private static final CargoType UPDATED_CARGO_TYPE = CargoType.EXTRA_13_6;
@@ -73,6 +79,9 @@ public class RatingResourceExtIntTest {
 
     private static final String DEFAULT_REMARKS = "AAAAAAAAAA";
     private static final String UPDATED_REMARKS = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_WHITE_LIST = false;
+    private static final Boolean UPDATED_WHITE_LIST = true;
 
     @Autowired
     private RatingRepository ratingRepository;
@@ -150,12 +159,18 @@ public class RatingResourceExtIntTest {
             .remarks(DEFAULT_REMARKS)
             .carrier(carrier)
             .person(person)
+            .addAlternative(DEFAULT_ADD_ALTERNATIVE)
+            .altCarrier(carrier)
+            .altPerson(person)
             .chargeCountry(country)
             .chargeCity(city)
             .chargePostalCode(DEFAULT_POSTAL_CODE)
             .dischargeCountry(country)
             .dischargeCity(city)
             .dischargePostalCode(DEFAULT_POSTAL_CODE)
+            .totalPrice(DEFAULT_TOTAL_PRICE)
+            .pricePerKm(DEFAULT_PRICE_PER_KM)
+            .whiteList(DEFAULT_WHITE_LIST)
             .cargoType(DEFAULT_CARGO_TYPE);
     }
 
@@ -189,6 +204,12 @@ public class RatingResourceExtIntTest {
         assertThat(testRating.getRecommendation()).isEqualTo(DEFAULT_RECOMMENDATION);
         assertThat(testRating.getAverage()).isEqualTo(DEFAULT_AVERAGE);
         assertThat(testRating.getRemarks()).isEqualTo(DEFAULT_REMARKS);
+        assertThat(testRating.getTotalPrice()).isEqualTo(DEFAULT_TOTAL_PRICE);
+        assertThat(testRating.getPricePerKm()).isEqualTo(DEFAULT_PRICE_PER_KM);
+        assertThat(testRating.isWhiteList()).isEqualTo(DEFAULT_WHITE_LIST);
+        assertThat(testRating.isAddAlternative()).isEqualTo(DEFAULT_ADD_ALTERNATIVE);
+        assertThat(testRating.getAltCarrier()).isNull();
+        assertThat(testRating.getAltPerson()).isNull();
 
         // Validate the Rating in Elasticsearch
         verify(mockRatingSearchRepository, times(1)).save(testRating);
@@ -353,6 +374,9 @@ public class RatingResourceExtIntTest {
 
         int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
 
+        Carrier carrier = new Carrier().name("test").transId(666);
+        Person person = new Person().firstName("John").lastName("Doe").carrier(carrier).companyId(44);
+
         // Update the rating
         Rating updatedRating = ratingRepository.findById(rating.getId()).get();
         // Disconnect from session so that the updates on updatedRating are not directly saved in db
@@ -367,7 +391,13 @@ public class RatingResourceExtIntTest {
             .flexibility(UPDATED_FLEXIBILITY)
             .recommendation(UPDATED_RECOMMENDATION)
             .average(UPDATED_AVERAGE)
-            .remarks(UPDATED_REMARKS);
+            .remarks(UPDATED_REMARKS)
+            .totalPrice(UPDATED_TOTAL_PRICE)
+            .pricePerKm(UPDATED_PRICE_PER_KM)
+            .whiteList(UPDATED_WHITE_LIST)
+            .addAlternative(UPDATED_ADD_ALTERNATIVE)
+            .altCarrier(carrier)
+            .altPerson(person);
 
         restRatingMockMvc.perform(put("/api/ext/ratings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -388,8 +418,15 @@ public class RatingResourceExtIntTest {
         assertThat(testRating.getRecommendation()).isEqualTo(UPDATED_RECOMMENDATION);
         assertThat(testRating.getAverage()).isEqualTo(UPDATED_AVERAGE);
         assertThat(testRating.getRemarks()).isEqualTo(UPDATED_REMARKS);
+        assertThat(testRating.getTotalPrice()).isEqualTo(UPDATED_TOTAL_PRICE);
+        assertThat(testRating.getPricePerKm()).isEqualTo(UPDATED_PRICE_PER_KM);
+        assertThat(testRating.isWhiteList()).isEqualTo(UPDATED_WHITE_LIST);
         assertThat(testRating.getCarrier().getId()).isEqualTo(ratingDB.getCarrier().getId());
         assertThat(testRating.getPerson().getId()).isEqualTo(ratingDB.getPerson().getId());
+
+        assertThat(testRating.isAddAlternative()).isEqualTo(UPDATED_ADD_ALTERNATIVE);
+        assertThat(testRating.getAltCarrier().getTransId()).isEqualTo(carrier.getTransId());
+        assertThat(testRating.getAltPerson().getCompanyId()).isEqualTo(person.getCompanyId());
 
         // Validate the Rating in Elasticsearch
         verify(mockRatingSearchRepository, times(1)).save(testRating);

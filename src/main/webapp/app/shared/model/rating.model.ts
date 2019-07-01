@@ -30,6 +30,7 @@ export interface IRating {
     id?: number;
     chargePostalCode?: string;
     dischargePostalCode?: string;
+    addAlternative?: boolean;
     totalPrice?: number;
     pricePerKm?: number;
     cargoType?: CargoType;
@@ -57,6 +58,7 @@ export class Rating implements IRating {
         public id?: number,
         public chargePostalCode?: string,
         public dischargePostalCode?: string,
+        public addAlternative?: boolean,
         public totalPrice?: number,
         public pricePerKm?: number,
         public cargoType?: CargoType,
@@ -78,6 +80,7 @@ export class Rating implements IRating {
         public dischargeCity?: ICity,
         public createdBy?: IUser
     ) {
+        this.addAlternative = this.addAlternative || false;
         this.whiteList = this.whiteList || false;
     }
 }

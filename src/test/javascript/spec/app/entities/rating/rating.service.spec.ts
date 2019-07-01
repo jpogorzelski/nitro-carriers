@@ -21,7 +21,23 @@ describe('Service Tests', () => {
             service = injector.get(RatingService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Rating(0, 'AAAAAAA', 'AAAAAAA', 0, 0, CargoType.FTL_13_6, 0, 0, 0, 0, Grade.DEF_YES, 0, 'AAAAAAA', false);
+            elemDefault = new Rating(
+                0,
+                'AAAAAAA',
+                'AAAAAAA',
+                false,
+                0,
+                0,
+                CargoType.FTL_13_6,
+                0,
+                0,
+                0,
+                0,
+                Grade.DEF_YES,
+                0,
+                'AAAAAAA',
+                false
+            );
         });
 
         describe('Service methods', async () => {
@@ -57,6 +73,7 @@ describe('Service Tests', () => {
                     {
                         chargePostalCode: 'BBBBBB',
                         dischargePostalCode: 'BBBBBB',
+                        addAlternative: true,
                         totalPrice: 1,
                         pricePerKm: 1,
                         cargoType: 'BBBBBB',
@@ -86,6 +103,7 @@ describe('Service Tests', () => {
                     {
                         chargePostalCode: 'BBBBBB',
                         dischargePostalCode: 'BBBBBB',
+                        addAlternative: true,
                         totalPrice: 1,
                         pricePerKm: 1,
                         cargoType: 'BBBBBB',
