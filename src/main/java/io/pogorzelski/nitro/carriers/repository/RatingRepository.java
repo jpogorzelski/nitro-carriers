@@ -19,6 +19,6 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     @Query("select rating from Rating rating where rating.createdBy.login = ?#{principal.username}")
     List<Rating> findByCreatedByIsCurrentUser();
 
-    Page<Rating> findByCarrier_Id(Pageable pageable, Long carrierId);
+    Page<Rating> findByCarrier_IdOrAltCarrier_Id(Pageable pageable, Long carrierId, Long altCarrierId);
 
 }

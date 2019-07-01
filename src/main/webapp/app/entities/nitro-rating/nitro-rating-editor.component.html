@@ -26,10 +26,10 @@
                     </div>
                 </fieldset>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.addAlternatives" for="field_addAlternatives">Add alternative carrier and person</label>
-                    <input type="checkbox" class="form-control" name="addAlternatives" id="field_addAlternatives" [(ngModel)]="addAlternative"/>
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.addAlternative" for="field_addAlternative">Add alternative carrier and person</label>
+                    <input type="checkbox" class="form-control" name="addAlternative" id="field_addAlternative" [(ngModel)]="rating.addAlternative"/>
                 </div>
-                <fieldset *ngIf="addAlternative">
+                <fieldset *ngIf="rating.addAlternative">
                     <legend jhiTranslate="nitroCarriersApp.rating.altCarrierAndPerson">Alternative carrier and person</legend>
                     <div class="form-group">
                         <button type="button" id="copyFromBasicCarrierAndPerson" class="btn btn-secondary" (click)="copyFromBasic()">

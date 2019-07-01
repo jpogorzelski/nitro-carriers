@@ -29,7 +29,6 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     dischargeCities: ICity[] = [];
     carriers: ICarrier[];
     negativeGrade = false;
-    addAlternative = false;
 
     constructor(
         protected jhiAlertService: JhiAlertService,
@@ -46,9 +45,8 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
             this.rating = rating;
             if (this.rating.id) {
                 this.carrierAndPerson = this.joinCarrierAndPersonData(this.rating.carrier, this.rating.person);
-                this.altCarrierAndPerson = this.joinCarrierAndPersonData(this.rating.altCarrier, this.rating.altPerson);
-                if (this.altCarrierAndPerson) {
-                    this.addAlternative = true;
+                if (this.rating.addAlternative) {
+                    this.altCarrierAndPerson = this.joinCarrierAndPersonData(this.rating.altCarrier, this.rating.altPerson);
                 }
             }
         });
@@ -68,6 +66,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.onChargeCountrySelect(this.rating.chargeCountry);
         this.onDischargeCountrySelect(this.rating.dischargeCountry);
 
+        console.table('on init:', this.rating);
     }
 
     private joinCarrierAndPersonData(carrier: ICarrier, person: IPerson) {
@@ -94,22 +93,17 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
         // white list stuff
         if ([Grade.BLACK_LIST as Grade, Grade.DEF_NO as Grade, Grade.NO as Grade].includes(this.rating.recommendation as Grade)) {
-            console.log('yiiiis');
             this.negativeGrade = true;
             this.rating.whiteList = false;
         } else {
-            console.log('no: ' + this.rating.recommendation);
             this.negativeGrade = false;
         }
     }
 
     extractCarrierAndPerson(rating: IRating, str: string): IRating {
-        const result = rating;
+        const result = JSON.parse(JSON.stringify(rating));
         const lines = str.split('\n');
-        console.table('lines', lines);
         const personLineIndex = getPersonLineIndex();
-
-        console.table('personLineIndex', personLineIndex);
         const nameAndTransId = lines[personLineIndex].split(',');
         const fullName = nameAndTransId[0].split(' ');
         const transId = nameAndTransId[1].split('-');
@@ -177,9 +171,11 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.rating.carrier = extractedRating.carrier;
         this.rating.person = extractedRating.person;
 
-        extractedRating = this.extractCarrierAndPerson(this.rating, this.altCarrierAndPerson);
-        this.rating.altCarrier = extractedRating.carrier;
-        this.rating.altPerson = extractedRating.person;
+        if (this.rating.addAlternative) {
+            extractedRating = this.extractCarrierAndPerson(this.rating, this.altCarrierAndPerson);
+            this.rating.altCarrier = extractedRating.carrier;
+            this.rating.altPerson = extractedRating.person;
+        }
 
         this.isSaving = true;
         if (this.rating.id !== undefined) {

@@ -102,63 +102,41 @@ public class RatingExtService {
         Person person = personRepository.findByCarrier_TransIdAndCompanyId(carrierTransId, personCompanyId);
         if (person == null) {
             Person personDTO = rating.getPerson();
-            personRepository.saveAndFlush(personDTO);
+            person = personRepository.saveAndFlush(personDTO);
         }
         person.setCarrier(carrier);
 
-        Integer altCarrierTransId = rating.getCarrier().getTransId();
-        Carrier altCarrier = carrierRepository.findByTransId(altCarrierTransId);
-        if (altCarrier == null) {
+        rating.setCarrier(carrier);
+        rating.setPerson(person);
+
+        if (rating.isAddAlternative()) {
             Carrier altCarrierDTO = rating.getAltCarrier();
-            altCarrier = carrierRepository.saveAndFlush(altCarrierDTO);
-        }
+            Integer altCarrierTransId = altCarrierDTO.getTransId();
+            Carrier altCarrier = carrierRepository.findByTransId(altCarrierTransId);
+            if (altCarrier == null) {
+                altCarrier = carrierRepository.saveAndFlush(altCarrierDTO);
+            }
 
-
-        Integer altPersonCompanyId = rating.getAltPerson().getCompanyId();
-        Person altPerson = personRepository.findByCarrier_TransIdAndCompanyId(altCarrierTransId, altPersonCompanyId);
-        if (altPerson == null) {
             Person altPersonDTO = rating.getAltPerson();
-            personRepository.saveAndFlush(altPersonDTO);
+            Integer altPersonCompanyId = altPersonDTO.getCompanyId();
+            Person altPerson = personRepository.findByCarrier_TransIdAndCompanyId(altCarrierTransId, altPersonCompanyId);
+            if (altPerson == null) {
+                altPerson = personRepository.saveAndFlush(altPersonDTO);
+                altPerson.setCarrier(altCarrier);
+            }
+
+            rating.setAltCarrier(altCarrier);
+            rating.setAltPerson(altPerson);
+        } else {
+            rating.setAltCarrier(null);
+            rating.setAltPerson(null);
         }
-        person.setCarrier(altCarrier);
 
         Rating result = ratingRepository.save(rating);
         ratingSearchRepository.save(rating);
         return result;
     }
 
-    /*
-
-
-        Carrier carrierDTO = rating.getCarrier();
-        Carrier dbCarrier = carrierRepository.saveAndFlush(carrierDTO);
-        Person personDTO = rating.getPerson();
-        Person dbPerson = personRepository.saveAndFlush(personDTO);
-        dbPerson.setCarrier(dbCarrier);
-
-        Carrier altCarrierDTO = rating.getAltCarrier();
-        Carrier dbAltCarrier;
-        if (carrierDTO.getName().equals(altCarrierDTO.getName()) &&
-            carrierDTO.getTransId().equals(altCarrierDTO.getTransId())) {
-            dbAltCarrier = dbCarrier;
-        } else {
-            dbAltCarrier = carrierRepository.saveAndFlush(altCarrierDTO);
-        }
-
-
-        Person altPersonDTO = rating.getAltPerson();
-        Person dbAltPerson;
-        if (personDTO.getCompanyId().equals(altPersonDTO.getCompanyId())
-            && personDTO.getFirstName().equals(altPersonDTO.getFirstName())
-            && personDTO.getLastName().equals(altPersonDTO.getLastName())
-//            && personDTO.getCarrier().equals(altPersonDTO.getCarrier())
-        ) {
-            dbAltPerson = dbPerson;
-        } else {
-            dbAltPerson = personRepository.saveAndFlush(altPersonDTO);
-        }
-        dbAltPerson.setCarrier(dbAltCarrier);
-     */
     public User getUser() {
         return userService.getUserWithAuthorities()
             .orElseThrow(() -> new AccessDeniedException("You are not logged in!"));
@@ -186,7 +164,7 @@ public class RatingExtService {
 
     @Transactional(readOnly = true)
     public Page<Rating> findCarrierRatings(Long id, Pageable pageable) {
-        return ratingRepository.findByCarrier_Id(pageable, id);
+        return ratingRepository.findByCarrier_IdOrAltCarrier_Id(pageable, id, id);
 
     }
 }
