@@ -27,7 +27,7 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.Grade;
 public class Rating implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -86,7 +86,8 @@ public class Rating implements Serializable {
     @Column(name = "average")
     private Double average;
 
-    @Column(name = "remarks")
+    @Size(max = 1000)
+    @Column(name = "remarks", length = 1000)
     private String remarks;
 
     @Column(name = "white_list")
