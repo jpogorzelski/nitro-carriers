@@ -7,6 +7,11 @@
                 "createOrEditLabel": "Create or edit a Rating",
                 "search": "Search for Rating"
             },
+            "tabs": {
+                "main": "All Ratings",
+                "whitelist": "White list",
+                "blacklist": "Black list"
+            },
             "created": "A new Rating is created with identifier {{ param }}",
             "updated": "A Rating is updated with identifier {{ param }}",
             "deleted": "A Rating is deleted with identifier {{ param }}",

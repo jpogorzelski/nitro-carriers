@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, Observer } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
@@ -10,6 +10,7 @@ import { AccountService } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { RatingService } from './rating.service';
+import { ICity } from 'app/shared/model/city.model';
 
 @Component({
     selector: 'jhi-rating',
@@ -155,9 +156,14 @@ export class RatingComponent implements OnInit, OnDestroy {
         for (let i = 0; i < data.length; i++) {
             this.ratings.push(data[i]);
         }
+        this.filter();
     }
 
     protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    protected filter() {
+        // no filter by default
     }
 }

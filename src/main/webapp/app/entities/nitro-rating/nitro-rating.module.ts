@@ -13,6 +13,8 @@ import {
     NitroRatingEditorComponent,
     NitroRatingDeleteDialogComponent,
     NitroRatingDeletePopupComponent,
+    NitroRatingListComponent,
+    NitroRatingCustomComponent,
     nitroRatingRoute,
     nitroRatingPopupRoute
 } from './';
@@ -26,14 +28,18 @@ const ENTITY_STATES = [...nitroRatingRoute, ...nitroRatingPopupRoute];
         NitroRatingDetailComponent,
         NitroRatingEditorComponent,
         NitroRatingDeleteDialogComponent,
-        NitroRatingDeletePopupComponent
+        NitroRatingDeletePopupComponent,
+        NitroRatingListComponent,
+        NitroRatingCustomComponent
     ],
     entryComponents: [
         NitroRatingComponent,
         NitroRatingDetailComponent,
         NitroRatingEditorComponent,
         NitroRatingDeleteDialogComponent,
-        NitroRatingDeletePopupComponent
+        NitroRatingDeletePopupComponent,
+        NitroRatingListComponent,
+        NitroRatingCustomComponent
     ],
     providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
