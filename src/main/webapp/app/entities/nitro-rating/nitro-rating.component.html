@@ -92,6 +92,12 @@
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
+                        <button type="submit"
+                                [routerLink]="['/nitro-rating', rating.id, 'copy' ]"
+                                class="btn btn-success btn-sm">
+                            <fa-icon [icon]="'copy'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.copy">Copy</span>
+                        </button>
                         <button type="submit" [hidden]="rating.createdBy?.login != currentAccount.login"
                                 [routerLink]="['/nitro-rating', rating.id, 'edit']"
                                 class="btn btn-primary btn-sm">

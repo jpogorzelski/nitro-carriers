@@ -48,6 +48,9 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
                 if (this.rating.addAlternative) {
                     this.altCarrierAndPerson = this.joinCarrierAndPersonData(this.rating.altCarrier, this.rating.altPerson);
                 }
+                if (this.activatedRoute.toString().includes(':id/copy')) {
+                    this.prepareForCopy();
+                }
             }
         });
 
@@ -67,6 +70,16 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.onDischargeCountrySelect(this.rating.dischargeCountry);
 
         console.table('on init:', this.rating);
+    }
+
+    private prepareForCopy() {
+        delete this.rating.id;
+        delete this.rating.contact;
+        delete this.rating.price;
+        delete this.rating.flexibility;
+        delete this.rating.recommendation;
+        delete this.rating.whiteList;
+        delete this.rating.remarks;
     }
 
     private joinCarrierAndPersonData(carrier: ICarrier, person: IPerson) {
