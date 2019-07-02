@@ -15,4 +15,5 @@
     <include file="config/liquibase/changelog/20190222100855_added_entity_constraints_Rating.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190619110302_added_entity_constraints_City.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <include file="config/liquibase/changelog/20190702135002_make_Rating_remarks_length_1000.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>
