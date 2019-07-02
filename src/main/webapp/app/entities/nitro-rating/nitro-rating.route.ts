@@ -72,6 +72,18 @@ export const nitroRatingRoute: Routes = [
             pageTitle: 'nitroCarriersApp.rating.home.title'
         },
         canActivate: [UserRouteAccessService]
+    },
+    {
+        path: ':id/copy',
+        component: NitroRatingEditorComponent,
+        resolve: {
+            rating: NitroRatingResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'nitroCarriersApp.rating.home.title'
+        },
+        canActivate: [UserRouteAccessService]
     }
 ];
 
