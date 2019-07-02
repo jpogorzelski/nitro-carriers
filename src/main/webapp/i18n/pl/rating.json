@@ -7,6 +7,11 @@
                 "createOrEditLabel": "Dodaj lub edytuj: Ocena",
                 "search": "Wyszukaj Ocenę"
             },
+            "tabs": {
+                "main": "Wszystkie Oceny",
+                "whitelist": "Biała lista",
+                "blacklist": "Czarna lista"
+            },
             "created": "Utworzono nowy obiekt typu Ocena z identyfikatorem {{ param }}",
             "updated": "Uaktualniono obiekt typu Ocena z identyfikatorem {{ param }}",
             "deleted": "Usunięto obiekt typu Ocena z identyfikatorem {{ param }}",

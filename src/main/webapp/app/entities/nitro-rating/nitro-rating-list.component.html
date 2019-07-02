@@ -1,0 +1,17 @@
+<ngb-tabset class="tabset1">
+    <ngb-tab title="{{ 'nitroCarriersApp.rating.tabs.main' | translate }}">
+        <ng-template ngbTabContent>
+            <jhi-carrier-ratings-custom></jhi-carrier-ratings-custom>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab title="{{ 'nitroCarriersApp.rating.tabs.whitelist' | translate }}">
+        <ng-template ngbTabContent>
+            <jhi-carrier-ratings-custom [query]="{'whitelist': 'true'}"></jhi-carrier-ratings-custom>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab title="{{ 'nitroCarriersApp.rating.tabs.blacklist' | translate }}">
+        <ng-template ngbTabContent>
+            <jhi-carrier-ratings-custom [query]="{'blacklist': 'true'}"></jhi-carrier-ratings-custom>
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>
