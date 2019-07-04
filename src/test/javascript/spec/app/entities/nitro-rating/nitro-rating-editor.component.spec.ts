@@ -43,20 +43,25 @@ describe('Component Tests', () => {
             expect(result.person.firstName).toEqual('Anna');
             expect(result.person.lastName).toEqual('Gotlib');
             expect(result.person.companyId).toEqual(1);
+            return result;
         }
 
         describe('NitroRating mapping text to obj', () => {
             it('Should map correctly full', fakeAsync(() => {
-                verifyMappedFields(src);
+                const result = verifyMappedFields(src);
+                expect(result.person.phoneNumber).toEqual('577902102');
             }));
             it('Should map correctly without tel', fakeAsync(() => {
-                verifyMappedFields(srcWithoutTel);
+                const result = verifyMappedFields(srcWithoutTel);
+                expect(result.person.phoneNumber).toBeUndefined();
             }));
             it('Should map correctly without address', fakeAsync(() => {
-                verifyMappedFields(srcWithoutAddress);
+                const result = verifyMappedFields(srcWithoutAddress);
+                expect(result.person.phoneNumber).toEqual('577902102');
             }));
             it('Should map correctly without tel and address', fakeAsync(() => {
-                verifyMappedFields(srcWithoutTelAndAddress);
+                const result = verifyMappedFields(srcWithoutTelAndAddress);
+                expect(result.person.phoneNumber).toBeUndefined();
             }));
         });
         describe('save', () => {

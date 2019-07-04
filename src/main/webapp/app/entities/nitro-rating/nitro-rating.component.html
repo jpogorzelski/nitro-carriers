@@ -29,13 +29,15 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-                <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <!--                <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>-->
                 <th jhiSortBy="carrier.name"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th jhiSortBy="person.firstName"><span jhiTranslate="nitroCarriersApp.rating.person">Person</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
+                <!--                <th><span jhiTranslate="nitroCarriersApp.person.phoneNumber">Phone number</span></th>-->
+                <!--                <th><span jhiTranslate="nitroCarriersApp.carrier.transId">Trans ID</span></th>-->
                 <th jhiSortBy="chargePostalCode"><span jhiTranslate="nitroCarriersApp.rating.chargeAddress">Charge Address</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
@@ -45,12 +47,12 @@
                 <th jhiSortBy="cargoType.name"><span jhiTranslate="nitroCarriersApp.rating.cargoType">Cargo Type</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th jhiSortBy="distance"><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="totalPrice"><span jhiTranslate="nitroCarriersApp.rating.totalPrice">Total Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="pricePerKm"><span jhiTranslate="nitroCarriersApp.rating.pricePerKm">Price Per Km</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="contact"><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="price"><span jhiTranslate="nitroCarriersApp.rating.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="flexibility"><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th><span jhiTranslate="nitroCarriersApp.rating.distance">Distance</span></th>
+                <th><span jhiTranslate="nitroCarriersApp.rating.totalPrice">Total Price</span></th>
+                <th><span jhiTranslate="nitroCarriersApp.rating.pricePerKm">Price Per Km</span></th>
+                <th><span jhiTranslate="nitroCarriersApp.rating.contact">Contact</span></th>
+                <th><span jhiTranslate="nitroCarriersApp.rating.price">Price</span></th>
+                <th><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span></th>
                 <th jhiSortBy="recommendation"><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="whiteList"><span jhiTranslate="nitroCarriersApp.rating.whiteList">White List</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="average"><span jhiTranslate="nitroCarriersApp.rating.average">Average</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -60,7 +62,7 @@
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let rating of ratings ;trackBy: trackId">
-                <td><a [routerLink]="['/rating', rating.id, 'view' ]">{{rating.id}}</a></td>
+                <!--                <td><a [routerLink]="['/nitro-rating', rating.id, 'view' ]">{{rating.id}}</a></td>-->
                 <td>
                     <div *ngIf="rating.carrier">
                         <a [routerLink]="['/carrier', rating.carrier?.id, 'view' ]">{{rating.carrier?.name}}</a>
@@ -68,7 +70,7 @@
                 </td>
                 <td>
                     <div *ngIf="rating.person">
-                        <a [routerLink]="['/person', rating.person?.id, 'view' ]">{{rating.person?.firstName + ' ' + rating.person.lastName}}</a>
+                        <a [routerLink]="['/person', rating.person?.id, 'view' ]" [innerHTML]="printPerson(rating)"></a>
                     </div>
                 </td>
                 <td>{{rating.chargeCountry?.countryNamePL + ', ' + rating.chargeCity?.cityName + ', '+ rating.chargePostalCode}}</td>

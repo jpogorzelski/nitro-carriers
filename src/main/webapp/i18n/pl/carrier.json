@@ -2,24 +2,24 @@
     "nitroCarriersApp": {
         "carrier": {
             "home": {
-                "title": "Carrier",
-                "createLabel": "Dodaj Carrier",
-                "createOrEditLabel": "Dodaj lub edytuj: Carrier",
-                "search": "Szukaj Carrier"
+                "title": "Firma",
+                "createLabel": "Dodaj Firmę",
+                "createOrEditLabel": "Dodaj lub edytuj: Firma",
+                "search": "Szukaj Firmy"
             },
-            "created": "Utworzono nowy obiekt typu Carrier z identyfikatorem {{ param }}",
-            "updated": "Uaktualniono obiekt typu Carrier z identyfikatorem {{ param }}",
-            "deleted": "Usunięto obiekt typu Carrier z identyfikatorem {{ param }}",
+            "created": "Utworzono nowy obiekt typu Firma z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono obiekt typu Firma z identyfikatorem {{ param }}",
+            "deleted": "Usunięto obiekt typu Firma z identyfikatorem {{ param }}",
             "delete": {
-                "question": "Czy na pewno chcesz usunąć Carrier {{ id }}?"
+                "question": "Czy na pewno chcesz usunąć Firmę {{ id }}?"
             },
             "detail": {
-                "title": "Carrier"
+                "title": "Firma"
             },
-            "name": "Name",
+            "name": "Nazwa",
             "transId": "Trans Id",
-            "people": "People",
-            "ratings": "Ratings"
+            "people": "Osoby",
+            "ratings": "Oceny"
         }
     }
 }

@@ -41,7 +41,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     ngOnInit() {
         this.isSaving = false;
-        this.activatedRoute.data.subscribe(({rating}) => {
+        this.activatedRoute.data.subscribe(({ rating }) => {
             this.rating = rating;
             if (this.rating.id) {
                 this.carrierAndPerson = this.joinCarrierAndPersonData(this.rating.carrier, this.rating.person);
@@ -83,15 +83,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     }
 
     private joinCarrierAndPersonData(carrier: ICarrier, person: IPerson) {
-        return carrier.name +
-            '\n' +
-            person.firstName +
-            ' ' +
-            person.lastName +
-            ', ' +
-            carrier.transId +
-            '-' +
-            person.companyId;
+        return carrier.name + '\n' + person.firstName + ' ' + person.lastName + ', ' + carrier.transId + '-' + person.companyId;
     }
 
     ngDoCheck(): void {
@@ -115,8 +107,9 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     extractCarrierAndPerson(rating: IRating, str: string): IRating {
         const result = JSON.parse(JSON.stringify(rating));
-        const lines = str.split('\n');
+        const lines = str.trim().split('\n');
         const personLineIndex = getPersonLineIndex();
+        const phoneIndex = personLineIndex + 1;
         const nameAndTransId = lines[personLineIndex].split(',');
         const fullName = nameAndTransId[0].split(' ');
         const transId = nameAndTransId[1].split('-');
@@ -128,6 +121,9 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         result.person.firstName = fullName[0];
         result.person.lastName = fullName[1];
         result.person.companyId = Number(transId[1]);
+        if (lines.length > 2 && lines.length > phoneIndex) {
+            result.person.phoneNumber = lines[phoneIndex].replace('tel. ', '');
+        }
         return result;
 
         function getPersonLineIndex() {
@@ -224,7 +220,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     }
 
     addCity(cityName: string) {
-        return Object.assign(new City(), {cityName});
+        return Object.assign(new City(), { cityName });
     }
 
     onChargeCountrySelect(country: ICountry) {
@@ -252,15 +248,17 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
                         filter((mayBeOk: HttpResponse<ICity[]>) => mayBeOk.ok),
                         map((response: HttpResponse<ICity[]>) => response.body)
                     )
-                    .subscribe((res: ICity[]) => {
-                        console.table('Downloaded cities: ', cities);
-                        observer.next(res);
-                        observer.complete();
-                    }, (res: HttpErrorResponse) => this.onError(res.message));
+                    .subscribe(
+                        (res: ICity[]) => {
+                            console.table('Downloaded cities: ', cities);
+                            observer.next(res);
+                            observer.complete();
+                        },
+                        (res: HttpErrorResponse) => this.onError(res.message)
+                    );
             });
         }
         return EMPTY;
-
     }
 
     copyFromBasic() {

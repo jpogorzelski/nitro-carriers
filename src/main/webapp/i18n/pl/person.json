@@ -2,25 +2,25 @@
     "nitroCarriersApp": {
         "person": {
             "home": {
-                "title": "Person",
-                "createLabel": "Dodaj Person",
-                "createOrEditLabel": "Dodaj lub edytuj: Person",
-                "search": "Szukaj Person"
+                "title": "Osoba",
+                "createLabel": "Dodaj Osobę",
+                "createOrEditLabel": "Dodaj lub edytuj: Osoba",
+                "search": "Szukaj Osoby"
             },
-            "created": "Utworzono nowy obiekt typu Person z identyfikatorem {{ param }}",
-            "updated": "Uaktualniono obiekt typu Person z identyfikatorem {{ param }}",
-            "deleted": "Usunięto obiekt typu Person z identyfikatorem {{ param }}",
+            "created": "Utworzono nowy obiekt typu Osoba z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono obiekt typu Osoba z identyfikatorem {{ param }}",
+            "deleted": "Usunięto obiekt typu Osoba z identyfikatorem {{ param }}",
             "delete": {
-                "question": "Czy na pewno chcesz usunąć Person {{ id }}?"
+                "question": "Czy na pewno chcesz usunąć Osobę {{ id }}?"
             },
             "detail": {
-                "title": "Person"
+                "title": "Osoba"
             },
-            "firstName": "First Name",
-            "lastName": "Last Name",
-            "companyId": "Company Id",
-            "phoneNumber": "Phone Number",
-            "carrier": "Carrier"
+            "firstName": "Imię",
+            "lastName": "Nazwiskp",
+            "companyId": "Trans Id",
+            "phoneNumber": "Numer telefonu",
+            "carrier": "Firma"
         }
     }
 }
