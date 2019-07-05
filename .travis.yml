@@ -35,11 +35,11 @@ script:
   - ./gradlew clean test
   - ./gradlew npm_run_test -PnodeInstall --no-daemon
   - ./gradlew bootWar -Pprod -x test
-#deploy:
-#    provider: script
-#    script: ./gradlew deployHeroku
-#    on:
-#        branch: master
+deploy:
+    provider: heroku
+    api_key: $HEROKU_API_KEY
+    on:
+        branch: master
 notifications:
   webhooks:
     on_success: change  # options: [always|never|change] default: always
