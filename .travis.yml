@@ -36,8 +36,9 @@ script:
   - ./gradlew npm_run_test -PnodeInstall --no-daemon
   - ./gradlew bootWar -Pprod -x test
 deploy:
+    skip_cleanup: true
     provider: script
-    script: ./gradlew bootWar -Pprod -x test deployHeroku
+    script: ./gradlew deployHeroku
     on:
         branch: master
 notifications:
