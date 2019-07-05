@@ -36,8 +36,8 @@ script:
   - ./gradlew npm_run_test -PnodeInstall --no-daemon
   - ./gradlew bootWar -Pprod -x test
 deploy:
-    provider: heroku
-    api_key: $HEROKU_API_KEY
+    provider: script
+    script: ./gradlew bootWar -Pprod -x test deployHeroku
     on:
         branch: master
 notifications:
