@@ -1,16 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, Observable, Observer } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { Subscription } from 'rxjs';
+import { JhiAlertService, JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 
 import { IRating } from 'app/shared/model/rating.model';
 import { AccountService } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { RatingService } from './rating.service';
-import { ICity } from 'app/shared/model/city.model';
 
 @Component({
     selector: 'jhi-rating',
@@ -151,9 +149,10 @@ export class RatingComponent implements OnInit, OnDestroy {
     }
 
     printPerson(rating: IRating): string {
+        const phoneNo = rating.person.phoneNumber ? `tel. ${rating.person.phoneNumber}<br />` : '';
         return (
             `${rating.person.firstName} ${rating.person.lastName}<br/>` +
-            `tel. ${rating.person.phoneNumber}<br />` +
+            `${phoneNo}` +
             `${rating.carrier.transId}-${rating.person.companyId}`
         );
     }
