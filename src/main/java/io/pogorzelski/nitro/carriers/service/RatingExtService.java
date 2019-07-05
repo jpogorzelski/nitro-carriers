@@ -92,38 +92,16 @@ public class RatingExtService {
         rating.setCreatedBy(getUser());
 
         Integer carrierTransId = rating.getCarrier().getTransId();
-        Carrier carrier = carrierRepository.findByTransId(carrierTransId);
-        if (carrier == null) {
-            Carrier carrierDTO = rating.getCarrier();
-            carrier = carrierRepository.saveAndFlush(carrierDTO);
-        }
-
-        Integer personCompanyId = rating.getPerson().getCompanyId();
-        Person person = personRepository.findByCarrier_TransIdAndCompanyId(carrierTransId, personCompanyId);
-        if (person == null) {
-            Person personDTO = rating.getPerson();
-            person = personRepository.saveAndFlush(personDTO);
-        }
-        person.setCarrier(carrier);
+        Carrier carrier = getCarrier(rating.getCarrier(), carrierTransId);
+        Person person = getPerson(rating.getPerson(), carrier, carrierTransId);
 
         rating.setCarrier(carrier);
         rating.setPerson(person);
 
         if (rating.isAddAlternative()) {
-            Carrier altCarrierDTO = rating.getAltCarrier();
-            Integer altCarrierTransId = altCarrierDTO.getTransId();
-            Carrier altCarrier = carrierRepository.findByTransId(altCarrierTransId);
-            if (altCarrier == null) {
-                altCarrier = carrierRepository.saveAndFlush(altCarrierDTO);
-            }
-
-            Person altPersonDTO = rating.getAltPerson();
-            Integer altPersonCompanyId = altPersonDTO.getCompanyId();
-            Person altPerson = personRepository.findByCarrier_TransIdAndCompanyId(altCarrierTransId, altPersonCompanyId);
-            if (altPerson == null) {
-                altPerson = personRepository.saveAndFlush(altPersonDTO);
-                altPerson.setCarrier(altCarrier);
-            }
+            Integer altCarrierTransId = rating.getAltCarrier().getTransId();
+            Carrier altCarrier = getCarrier(rating.getAltCarrier(), altCarrierTransId);
+            Person altPerson = getPerson(rating.getAltPerson(), altCarrier, altCarrierTransId);
 
             rating.setAltCarrier(altCarrier);
             rating.setAltPerson(altPerson);
@@ -135,6 +113,24 @@ public class RatingExtService {
         Rating result = ratingRepository.save(rating);
         ratingSearchRepository.save(rating);
         return result;
+    }
+
+    private Carrier getCarrier(Carrier carrierDTO, Integer carrierTransId) {
+        Carrier carrier = carrierRepository.findByTransId(carrierTransId);
+        if (carrier == null) {
+            carrier = carrierRepository.saveAndFlush(carrierDTO);
+        }
+        return carrier;
+    }
+
+    private Person getPerson(Person personDTO, Carrier carrier, Integer carrierTransId) {
+        Integer personCompanyId = personDTO.getCompanyId();
+        Person person = personRepository.findByCarrier_TransIdAndCompanyId(carrierTransId, personCompanyId);
+        if (person == null) {
+            personDTO.setCarrier(carrier);
+            person = personRepository.saveAndFlush(personDTO);
+        }
+        return person;
     }
 
     public User getUser() {
