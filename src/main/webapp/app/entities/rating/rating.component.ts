@@ -150,6 +150,14 @@ export class RatingComponent implements OnInit, OnDestroy {
         return result;
     }
 
+    printPerson(rating: IRating): string {
+        return (
+            `${rating.person.firstName} ${rating.person.lastName}<br/>` +
+            `tel. ${rating.person.phoneNumber}<br />` +
+            `${rating.carrier.transId}-${rating.person.companyId}`
+        );
+    }
+
     protected paginateRatings(data: IRating[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
