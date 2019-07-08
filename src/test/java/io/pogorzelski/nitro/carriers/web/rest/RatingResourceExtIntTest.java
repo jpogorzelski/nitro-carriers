@@ -8,6 +8,7 @@ import io.pogorzelski.nitro.carriers.repository.RatingRepository;
 import io.pogorzelski.nitro.carriers.repository.UserRepository;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
+import io.pogorzelski.nitro.carriers.web.rest.errors.ErrorConstants;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -430,6 +432,211 @@ public class RatingResourceExtIntTest {
 
         // Validate the Rating in Elasticsearch
         verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void updatePerson() throws Exception {
+        // Initialize the database
+        Rating ratingDB = mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+
+        String phoneNumber = "660110550";
+        Person person = updatedRating.getPerson()
+            .phoneNumber(phoneNumber);
+
+        em.detach(updatedRating);
+        updatedRating
+            .person(person);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getPerson().getId()).isEqualTo(ratingDB.getPerson().getId());
+        assertThat(testRating.getPerson().getPhoneNumber()).isEqualTo(phoneNumber);
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void addAltCarrierAndPerson() throws Exception {
+        // Initialize the database
+        mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+
+        Person altPerson = new Person()
+            .companyId(12)
+            .firstName("Marian")
+            .lastName("Kowalski")
+            .phoneNumber("123321123");
+
+        Carrier altCarrier = new Carrier()
+            .transId(12345)
+            .name("Marian Transport sp. z o.o.");
+
+        em.detach(updatedRating);
+
+        updatedRating
+            .addAlternative(true)
+            .altPerson(altPerson)
+            .altCarrier(altCarrier);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getAltPerson()).isNotNull();
+        assertThat(testRating.getAltPerson().getCompanyId()).isEqualTo(12);
+        assertThat(testRating.getAltPerson().getFirstName()).isEqualTo("Marian");
+        assertThat(testRating.getAltPerson().getLastName()).isEqualTo("Kowalski");
+        assertThat(testRating.getAltPerson().getPhoneNumber()).isEqualTo("123321123");
+        assertThat(testRating.getAltPerson().getCarrier()).isEqualTo(testRating.getAltCarrier());
+        assertThat(testRating.getAltCarrier()).isNotNull();
+        assertThat(testRating.getAltCarrier().getTransId()).isEqualTo(12345);
+        assertThat(testRating.getAltCarrier().getName()).isEqualTo("Marian Transport sp. z o.o.");
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void addAltCarrierAndPersonFailFalseAddAlternative() throws Exception {
+        // Initialize the database
+        mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+
+        Person altPerson = new Person()
+            .companyId(12)
+            .firstName("Marian")
+            .lastName("Kowalski")
+            .phoneNumber("123321123");
+
+        Carrier altCarrier = new Carrier()
+            .transId(12345)
+            .name("Marian Transport sp. z o.o.");
+
+        em.detach(updatedRating);
+
+        updatedRating
+            .addAlternative(false)
+            .altPerson(altPerson)
+            .altCarrier(altCarrier);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.isAddAlternative()).isFalse();
+        assertThat(testRating.getAltPerson()).isNull();
+        assertThat(testRating.getAltCarrier()).isNull();
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void addAltCarrierFailMissingAltPerson() throws Exception {
+        // Initialize the database
+        mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+
+        Carrier altCarrier = new Carrier()
+            .transId(12345)
+            .name("Marian Transport sp. z o.o.");
+
+        em.detach(updatedRating);
+
+        updatedRating
+            .addAlternative(true)
+            .altCarrier(altCarrier);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.title").value("Person cannot be null"));
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void addAltPersonFailMissingAltCarrier() throws Exception {
+        // Initialize the database
+        mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+
+        Person altPerson = new Person()
+            .companyId(12)
+            .firstName("Marian")
+            .lastName("Kowalski")
+            .phoneNumber("123321123");
+
+        em.detach(updatedRating);
+
+        updatedRating
+            .addAlternative(true)
+            .altPerson(altPerson);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.title").value("Carrier cannot be null"));
     }
 
     @Test

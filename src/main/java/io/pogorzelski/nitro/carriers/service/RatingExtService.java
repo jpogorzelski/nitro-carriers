@@ -3,6 +3,7 @@ package io.pogorzelski.nitro.carriers.service;
 import io.pogorzelski.nitro.carriers.domain.*;
 import io.pogorzelski.nitro.carriers.repository.*;
 import io.pogorzelski.nitro.carriers.repository.search.RatingSearchRepository;
+import io.pogorzelski.nitro.carriers.web.rest.errors.RatingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -91,17 +92,15 @@ public class RatingExtService {
 
         rating.setCreatedBy(getUser());
 
-        Integer carrierTransId = rating.getCarrier().getTransId();
-        Carrier carrier = getCarrier(rating.getCarrier(), carrierTransId);
-        Person person = getPerson(rating.getPerson(), carrier, carrierTransId);
+        Carrier carrier = getCarrier(rating.getCarrier());
+        Person person = getPerson(rating.getPerson(), carrier);
 
         rating.setCarrier(carrier);
         rating.setPerson(person);
 
         if (rating.isAddAlternative()) {
-            Integer altCarrierTransId = rating.getAltCarrier().getTransId();
-            Carrier altCarrier = getCarrier(rating.getAltCarrier(), altCarrierTransId);
-            Person altPerson = getPerson(rating.getAltPerson(), altCarrier, altCarrierTransId);
+            Carrier altCarrier = getCarrier(rating.getAltCarrier());
+            Person altPerson = getPerson(rating.getAltPerson(), altCarrier);
 
             rating.setAltCarrier(altCarrier);
             rating.setAltPerson(altPerson);
@@ -115,7 +114,11 @@ public class RatingExtService {
         return result;
     }
 
-    private Carrier getCarrier(Carrier carrierDTO, Integer carrierTransId) {
+    private Carrier getCarrier(Carrier carrierDTO) {
+        if (carrierDTO == null) {
+            throw new RatingException("Carrier cannot be null");
+        }
+        Integer carrierTransId = carrierDTO.getTransId();
         Carrier carrier = carrierRepository.findByTransId(carrierTransId);
         if (carrier == null) {
             carrier = carrierRepository.saveAndFlush(carrierDTO);
@@ -123,12 +126,20 @@ public class RatingExtService {
         return carrier;
     }
 
-    private Person getPerson(Person personDTO, Carrier carrier, Integer carrierTransId) {
+    private Person getPerson(Person personDTO, Carrier carrier) {
+        if (personDTO == null) {
+            throw new RatingException("Person cannot be null");
+        }
+        Integer carrierTransId = carrier.getTransId();
         Integer personCompanyId = personDTO.getCompanyId();
         Person person = personRepository.findByCarrier_TransIdAndCompanyId(carrierTransId, personCompanyId);
         if (person == null) {
             personDTO.setCarrier(carrier);
             person = personRepository.saveAndFlush(personDTO);
+        } else {
+            if (personDTO.getPhoneNumber() != null) {
+                person.setPhoneNumber(personDTO.getPhoneNumber());
+            }
         }
         return person;
     }

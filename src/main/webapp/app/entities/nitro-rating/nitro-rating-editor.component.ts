@@ -83,7 +83,11 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     }
 
     private joinCarrierAndPersonData(carrier: ICarrier, person: IPerson) {
-        return carrier.name + '\n' + person.firstName + ' ' + person.lastName + ', ' + carrier.transId + '-' + person.companyId;
+        let result = carrier.name + '\n' + person.firstName + ' ' + person.lastName + ', ' + carrier.transId + '-' + person.companyId;
+        if (person.phoneNumber) {
+            result += '\n' + 'tel. ' + person.phoneNumber;
+        }
+        return result;
     }
 
     ngDoCheck(): void {
@@ -122,7 +126,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         result.person.lastName = fullName[1];
         result.person.companyId = Number(transId[1]);
         if (lines.length > 2 && lines.length > phoneIndex) {
-            result.person.phoneNumber = lines[phoneIndex].replace('tel. ', '');
+            result.person.phoneNumber = lines[phoneIndex].replace('tel.', '').trim();
         }
         return result;
 
@@ -131,7 +135,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
                 case 2: // only company name line and person with transId line
                     return 1;
                 case 3: // missing telephone line or address line
-                    if (lines[2].startsWith('tel')) {
+                    if (lines[2].trim().startsWith('tel')) {
                         return 1;
                     } else {
                         return 2;
