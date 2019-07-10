@@ -24,6 +24,18 @@
                             </small>
                         </div>
                     </div>
+                     <div class="form-group">
+                         <label class="form-control-label" jhiTranslate="nitroCarriersApp.carrier.acronym"
+                                for="field_acronym">Acronym</label>
+                         <input type="text" class="form-control" name="carrier.acronym" id="field_acronym"
+                                [(ngModel)]="rating.carrier.acronym" required/>
+                     </div>
+                     <div class="form-group">
+                         <label class="form-control-label" jhiTranslate="nitroCarriersApp.carrier.nip"
+                                for="field_nip">NIP</label>
+                         <input type="text" class="form-control" name="nip" id="field_nip"
+                                [(ngModel)]="rating.carrier.nip" required/>
+                     </div>
                 </fieldset>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.rating.addAlternative" for="field_addAlternative">Add alternative carrier and person</label>
@@ -45,6 +57,18 @@
                                 This field is required.
                             </small>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.carrier.acronym"
+                               for="field_alt_acronym">Acronym</label>
+                        <input type="text" class="form-control" name="altCarrier.acronym" id="field_alt_acronym"
+                               [(ngModel)]="rating.altCarrier.acronym" required/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.carrier.nip"
+                               for="field_alt_nip">NIP</label>
+                        <input type="text" class="form-control" name="altNip" id="field_alt_nip"
+                               [(ngModel)]="rating.altCarrier.nip" required/>
                     </div>
                 </fieldset>
                 <fieldset>

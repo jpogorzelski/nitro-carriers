@@ -24,7 +24,7 @@ describe('Service Tests', () => {
             service = injector.get(NitroRatingService);
             httpMock = injector.get(HttpTestingController);
 
-            const carrier = new Carrier(0, 'Nitro sp zoo', 12312, [], []);
+            const carrier = new Carrier(0, 'Nitro sp zoo', 12312, 'NS','5423123212', [], []);
             const person = new Person(0, 'Jan', 'Kowalski');
             const country = new Country(0, 'Polska');
             const city = new City(0, 'Warszawa');

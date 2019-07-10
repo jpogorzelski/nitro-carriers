@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(CarrierService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Carrier(0, 'AAAAAAA', 0);
+            elemDefault = new Carrier(0, 'AAAAAAA', 0, 'AAAAAAA', 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
@@ -56,7 +56,9 @@ describe('Service Tests', () => {
                 const returnedFromService = Object.assign(
                     {
                         name: 'BBBBBB',
-                        transId: 1
+                        transId: 1,
+                        acronym: 'BBBBBB',
+                        nip: 'BBBBBB'
                     },
                     elemDefault
                 );
@@ -74,7 +76,9 @@ describe('Service Tests', () => {
                 const returnedFromService = Object.assign(
                     {
                         name: 'BBBBBB',
-                        transId: 1
+                        transId: 1,
+                        acronym: 'BBBBBB',
+                        nip: 'BBBBBB'
                     },
                     elemDefault
                 );
