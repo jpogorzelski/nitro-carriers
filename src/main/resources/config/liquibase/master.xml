@@ -16,4 +16,5 @@
     <include file="config/liquibase/changelog/20190619110302_added_entity_constraints_City.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20190702135002_make_Rating_remarks_length_1000.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190710162085_alter_Carrier_added_acronym_and_nip.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

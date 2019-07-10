@@ -44,6 +44,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.activatedRoute.data.subscribe(({ rating }) => {
             this.rating = rating;
             if (this.rating.id) {
+                console.dir(this.rating);
                 this.carrierAndPerson = this.joinCarrierAndPersonData(this.rating.carrier, this.rating.person);
                 if (this.rating.addAlternative) {
                     this.altCarrierAndPerson = this.joinCarrierAndPersonData(this.rating.altCarrier, this.rating.altPerson);
@@ -181,8 +182,8 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
 
     save() {
         let extractedRating = this.extractCarrierAndPerson(this.rating, this.carrierAndPerson);
-        this.rating.carrier = extractedRating.carrier;
-        this.rating.person = extractedRating.person;
+        this.rating.carrier = { ...this.rating.carrier, ...filterUndefined(extractedRating.carrier)};
+        this.rating.person = { ...this.rating.person, ...filterUndefined(extractedRating.person)};
 
         if (this.rating.addAlternative) {
             extractedRating = this.extractCarrierAndPerson(this.rating, this.altCarrierAndPerson);
@@ -195,6 +196,14 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
             this.subscribeToSaveResponse(this.ratingExtService.update(this.rating));
         } else {
             this.subscribeToSaveResponse(this.ratingExtService.create(this.rating));
+        }
+
+        function filterUndefined(obj) {
+            const ret = {};
+            Object.keys(obj)
+                .filter((key) => obj[key] !== undefined)
+                .forEach((key) => ret[key] = obj[key]);
+            return ret;
         }
     }
 

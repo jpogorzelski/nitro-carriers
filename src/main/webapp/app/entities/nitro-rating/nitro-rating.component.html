@@ -58,10 +58,9 @@
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let rating of ratings ;trackBy: trackId">
-                <!--                <td><a [routerLink]="['/nitro-rating', rating.id, 'view' ]">{{rating.id}}</a></td>-->
                 <td>
                     <div *ngIf="rating.carrier">
-                        <a [routerLink]="['/carrier', rating.carrier?.id, 'view' ]">{{rating.carrier?.name}}</a>
+                        <a [routerLink]="['/carrier', rating.carrier?.id, 'view' ]" [innerHTML]="printCarrier(rating)"></a>
                     </div>
                 </td>
                 <td>

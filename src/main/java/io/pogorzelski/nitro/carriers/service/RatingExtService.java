@@ -120,10 +120,17 @@ public class RatingExtService {
         }
         Integer carrierTransId = carrierDTO.getTransId();
         Carrier carrier = carrierRepository.findByTransId(carrierTransId);
-        if (carrier == null) {
-            carrier = carrierRepository.saveAndFlush(carrierDTO);
+        if (carrier != null) {
+            if (!carrier.getId().equals(carrierDTO.getId())) {
+                log.warn("Carrier has changed transId! Reassigning to different Carrier.");
+                carrierDTO.setId(carrier.getId());
+            }
+        } else {
+            log.warn("No Carrier with transId exist! Reassigning to new Carrier.");
+            carrierDTO.setId(null);
         }
-        return carrier;
+
+        return carrierRepository.saveAndFlush(carrierDTO);
     }
 
     private Person getPerson(Person personDTO, Carrier carrier) {
@@ -133,15 +140,17 @@ public class RatingExtService {
         Integer carrierTransId = carrier.getTransId();
         Integer personCompanyId = personDTO.getCompanyId();
         Person person = personRepository.findByCarrier_TransIdAndCompanyId(carrierTransId, personCompanyId);
-        if (person == null) {
-            personDTO.setCarrier(carrier);
-            person = personRepository.saveAndFlush(personDTO);
-        } else {
-            if (personDTO.getPhoneNumber() != null) {
-                person.setPhoneNumber(personDTO.getPhoneNumber());
+        if (person != null) {
+            if (!person.getId().equals(personDTO.getId())){
+                log.warn("Person has changed transId! Reassigning to different Person.");
+                personDTO.setId(person.getId());
             }
+        } else {
+            log.warn("No Person with transId exist! Reassigning to new Person.");
+            personDTO.setId(null);
         }
-        return person;
+        personDTO.setCarrier(carrier);
+        return personRepository.saveAndFlush(personDTO);
     }
 
     public User getUser() {

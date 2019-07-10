@@ -6,11 +6,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
 
 /**
  * A Carrier.
@@ -21,7 +22,7 @@ import java.util.Set;
 public class Carrier implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -33,6 +34,12 @@ public class Carrier implements Serializable {
 
     @Column(name = "trans_id")
     private Integer transId;
+
+    @Column(name = "acronym")
+    private String acronym;
+
+    @Column(name = "nip")
+    private String nip;
 
     @OneToMany(mappedBy = "carrier")
     @JsonIgnore
@@ -76,6 +83,32 @@ public class Carrier implements Serializable {
 
     public void setTransId(Integer transId) {
         this.transId = transId;
+    }
+
+    public String getAcronym() {
+        return acronym;
+    }
+
+    public Carrier acronym(String acronym) {
+        this.acronym = acronym;
+        return this;
+    }
+
+    public void setAcronym(String acronym) {
+        this.acronym = acronym;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public Carrier nip(String nip) {
+        this.nip = nip;
+        return this;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
     }
 
     public Set<Person> getPeople() {
@@ -155,6 +188,8 @@ public class Carrier implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", transId=" + getTransId() +
+            ", acronym='" + getAcronym() + "'" +
+            ", nip='" + getNip() + "'" +
             "}";
     }
 }

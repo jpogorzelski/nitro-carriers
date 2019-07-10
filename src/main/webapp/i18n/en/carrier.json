@@ -4,8 +4,7 @@
             "home": {
                 "title": "Carriers",
                 "createLabel": "Create a new Carrier",
-                "createOrEditLabel": "Create or edit a Carrier",
-                "search": "Search for Carrier"
+                "createOrEditLabel": "Create or edit a Carrier"
             },
             "created": "A new Carrier is created with identifier {{ param }}",
             "updated": "A Carrier is updated with identifier {{ param }}",
@@ -18,6 +17,8 @@
             },
             "name": "Name",
             "transId": "Trans Id",
+            "acronym": "Acronym",
+            "nip": "NIP",
             "people": "People",
             "ratings": "Ratings"
         }

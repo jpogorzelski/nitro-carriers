@@ -11,6 +11,14 @@
         {
             "fieldName": "transId",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "acronym",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nip",
+            "fieldType": "String"
         }
     ],
     "relationships": [
@@ -27,7 +35,7 @@
             "otherEntityRelationshipName": "carrier"
         }
     ],
-    "changelogDate": "20190123145852",
+    "changelogDate": "2019023145852",
     "entityTableName": "carrier",
     "dto": "no",
     "pagination": "no",
@@ -35,5 +43,6 @@
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "searchEngine": false
 }

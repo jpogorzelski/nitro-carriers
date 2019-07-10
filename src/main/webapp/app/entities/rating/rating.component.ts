@@ -157,6 +157,12 @@ export class RatingComponent implements OnInit, OnDestroy {
         );
     }
 
+    printCarrier(rating: IRating): string {
+        const acronym = rating.carrier.acronym ? rating.carrier.acronym : rating.carrier.name;
+        const nip = rating.carrier.nip ? `, NIP: ${rating.carrier.nip}` : '';
+        return acronym + nip;
+    }
+
     protected paginateRatings(data: IRating[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);

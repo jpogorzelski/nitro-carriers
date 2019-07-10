@@ -5,10 +5,20 @@ export interface ICarrier {
     id?: number;
     name?: string;
     transId?: number;
+    acronym?: string;
+    nip?: string;
     people?: IPerson[];
     ratings?: IRating[];
 }
 
 export class Carrier implements ICarrier {
-    constructor(public id?: number, public name?: string, public transId?: number, public people?: IPerson[], public ratings?: IRating[]) {}
+    constructor(
+        public id?: number,
+        public name?: string,
+        public transId?: number,
+        public acronym?: string,
+        public nip?: string,
+        public people?: IPerson[],
+        public ratings?: IRating[]
+    ) {}
 }

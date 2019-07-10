@@ -18,6 +18,8 @@
             },
             "name": "Nazwa",
             "transId": "Trans Id",
+            "acronym": "Akronim",
+            "nip": "NIP",
             "people": "Osoby",
             "ratings": "Oceny"
         }

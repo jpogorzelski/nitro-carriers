@@ -1,11 +1,13 @@
 package io.pogorzelski.nitro.carriers.web.rest;
 
 import io.pogorzelski.nitro.carriers.NitroCarriersApp;
+
 import io.pogorzelski.nitro.carriers.domain.Carrier;
 import io.pogorzelski.nitro.carriers.repository.CarrierRepository;
 import io.pogorzelski.nitro.carriers.service.CarrierService;
 import io.pogorzelski.nitro.carriers.service.RatingExtService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +25,7 @@ import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+
 
 import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,6 +47,12 @@ public class CarrierResourceIntTest {
 
     private static final Integer DEFAULT_TRANS_ID = 1;
     private static final Integer UPDATED_TRANS_ID = 2;
+
+    private static final String DEFAULT_ACRONYM = "AAAAAAAAAA";
+    private static final String UPDATED_ACRONYM = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NIP = "AAAAAAAAAA";
+    private static final String UPDATED_NIP = "BBBBBBBBBB";
 
     @Autowired
     private CarrierRepository carrierRepository;
@@ -94,7 +103,9 @@ public class CarrierResourceIntTest {
     public static Carrier createEntity(EntityManager em) {
         Carrier carrier = new Carrier()
             .name(DEFAULT_NAME)
-            .transId(DEFAULT_TRANS_ID);
+            .transId(DEFAULT_TRANS_ID)
+            .acronym(DEFAULT_ACRONYM)
+            .nip(DEFAULT_NIP);
         return carrier;
     }
 
@@ -120,6 +131,8 @@ public class CarrierResourceIntTest {
         Carrier testCarrier = carrierList.get(carrierList.size() - 1);
         assertThat(testCarrier.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCarrier.getTransId()).isEqualTo(DEFAULT_TRANS_ID);
+        assertThat(testCarrier.getAcronym()).isEqualTo(DEFAULT_ACRONYM);
+        assertThat(testCarrier.getNip()).isEqualTo(DEFAULT_NIP);
     }
 
     @Test
@@ -171,7 +184,9 @@ public class CarrierResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(carrier.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].transId").value(hasItem(DEFAULT_TRANS_ID)));
+            .andExpect(jsonPath("$.[*].transId").value(hasItem(DEFAULT_TRANS_ID)))
+            .andExpect(jsonPath("$.[*].acronym").value(hasItem(DEFAULT_ACRONYM.toString())))
+            .andExpect(jsonPath("$.[*].nip").value(hasItem(DEFAULT_NIP.toString())));
     }
 
     @Test
@@ -186,7 +201,9 @@ public class CarrierResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(carrier.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.transId").value(DEFAULT_TRANS_ID));
+            .andExpect(jsonPath("$.transId").value(DEFAULT_TRANS_ID))
+            .andExpect(jsonPath("$.acronym").value(DEFAULT_ACRONYM.toString()))
+            .andExpect(jsonPath("$.nip").value(DEFAULT_NIP.toString()));
     }
 
     @Test
@@ -202,6 +219,7 @@ public class CarrierResourceIntTest {
     public void updateCarrier() throws Exception {
         // Initialize the database
         carrierService.save(carrier);
+
         int databaseSizeBeforeUpdate = carrierRepository.findAll().size();
 
         // Update the carrier
@@ -210,7 +228,9 @@ public class CarrierResourceIntTest {
         em.detach(updatedCarrier);
         updatedCarrier
             .name(UPDATED_NAME)
-            .transId(UPDATED_TRANS_ID);
+            .transId(UPDATED_TRANS_ID)
+            .acronym(UPDATED_ACRONYM)
+            .nip(UPDATED_NIP);
 
         restCarrierMockMvc.perform(put("/api/carriers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -223,6 +243,8 @@ public class CarrierResourceIntTest {
         Carrier testCarrier = carrierList.get(carrierList.size() - 1);
         assertThat(testCarrier.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCarrier.getTransId()).isEqualTo(UPDATED_TRANS_ID);
+        assertThat(testCarrier.getAcronym()).isEqualTo(UPDATED_ACRONYM);
+        assertThat(testCarrier.getNip()).isEqualTo(UPDATED_NIP);
     }
 
     @Test

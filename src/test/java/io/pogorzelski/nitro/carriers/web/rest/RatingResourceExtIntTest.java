@@ -383,6 +383,8 @@ public class RatingResourceExtIntTest {
         Rating updatedRating = ratingRepository.findById(rating.getId()).get();
         // Disconnect from session so that the updates on updatedRating are not directly saved in db
         em.detach(updatedRating);
+        em.detach(updatedRating.getCarrier());
+        em.detach(updatedRating.getPerson());
         updatedRating
             .chargePostalCode(UPDATED_POSTAL_CODE)
             .dischargePostalCode(UPDATED_POSTAL_CODE)
@@ -448,11 +450,16 @@ public class RatingResourceExtIntTest {
         // Update the rating
         Rating updatedRating = ratingRepository.findById(rating.getId()).get();
 
+        em.detach(updatedRating);
+        em.detach(updatedRating.getCarrier());
+        em.detach(updatedRating.getPerson());
+
         String phoneNumber = "660110550";
         Person person = updatedRating.getPerson()
+            .firstName("Jan")
+            .lastName("Kowalski")
             .phoneNumber(phoneNumber);
 
-        em.detach(updatedRating);
         updatedRating
             .person(person);
 
@@ -466,7 +473,340 @@ public class RatingResourceExtIntTest {
         assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
         Rating testRating = ratingList.get(ratingList.size() - 1);
         assertThat(testRating.getPerson().getId()).isEqualTo(ratingDB.getPerson().getId());
+        assertThat(testRating.getPerson().getCompanyId()).isEqualTo(ratingDB.getPerson().getCompanyId());
         assertThat(testRating.getPerson().getPhoneNumber()).isEqualTo(phoneNumber);
+        assertThat(testRating.getPerson().getFirstName()).isEqualTo("Jan");
+        assertThat(testRating.getPerson().getLastName()).isEqualTo("Kowalski");
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void updatePersonDifferentTransId() throws Exception {
+        // Initialize the database
+        Rating ratingDB = mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+
+        em.detach(updatedRating);
+        em.detach(updatedRating.getCarrier());
+        em.detach(updatedRating.getPerson());
+
+        String phoneNumber = "660110550";
+        Person person = updatedRating.getPerson()
+            .companyId(5666)
+            .firstName("Jan")
+            .lastName("Kowalski")
+            .phoneNumber(phoneNumber);
+
+        updatedRating
+            .person(person);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getPerson().getId()).isNotEqualTo(ratingDB.getPerson().getId());
+        assertThat(testRating.getPerson().getCompanyId()).isNotEqualTo(ratingDB.getPerson().getCompanyId());
+        assertThat(testRating.getPerson().getCompanyId()).isEqualTo(5666);
+        assertThat(testRating.getPerson().getPhoneNumber()).isEqualTo(phoneNumber);
+        assertThat(testRating.getPerson().getFirstName()).isEqualTo("Jan");
+        assertThat(testRating.getPerson().getLastName()).isEqualTo("Kowalski");
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void updatePersonDifferentTransIdNullId() throws Exception {
+        // Initialize the database
+        Rating ratingDB = mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        Long personId = updatedRating.getPerson().getId();
+
+        em.detach(updatedRating);
+        em.detach(updatedRating.getCarrier());
+        em.detach(updatedRating.getPerson());
+
+        String phoneNumber = "660110550";
+        Person person = new Person()
+            .companyId(5666)
+            .firstName("Jan")
+            .lastName("Kowalski")
+            .phoneNumber(phoneNumber);
+        person.setId(null);
+        updatedRating
+            .person(person);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getPerson().getId()).isNotEqualTo(personId);
+        assertThat(testRating.getPerson().getCompanyId()).isNotEqualTo(ratingDB.getPerson().getCompanyId());
+        assertThat(testRating.getPerson().getCompanyId()).isEqualTo(5666);
+        assertThat(testRating.getPerson().getPhoneNumber()).isEqualTo(phoneNumber);
+        assertThat(testRating.getPerson().getFirstName()).isEqualTo("Jan");
+        assertThat(testRating.getPerson().getLastName()).isEqualTo("Kowalski");
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void updatePersonNullIdStaysUnchanged() throws Exception {
+        // Initialize the database
+        Rating ratingDB = mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        Long personId = updatedRating.getPerson().getId();
+
+        em.detach(updatedRating);
+        em.detach(updatedRating.getCarrier());
+        em.detach(updatedRating.getPerson());
+
+        Person person = new Person()
+            .firstName(updatedRating.getPerson().getFirstName())
+            .lastName(updatedRating.getPerson().getLastName())
+            .phoneNumber(updatedRating.getPerson().getPhoneNumber())
+            .companyId(updatedRating.getPerson().getCompanyId());
+
+        updatedRating
+            .person(person);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getPerson().getId()).isEqualTo(personId);
+        assertThat(testRating.getPerson().getCompanyId()).isEqualTo(ratingDB.getPerson().getCompanyId());
+        assertThat(testRating.getPerson().getPhoneNumber()).isEqualTo(ratingDB.getPerson().getPhoneNumber());
+        assertThat(testRating.getPerson().getFirstName()).isEqualTo(ratingDB.getPerson().getFirstName());
+        assertThat(testRating.getPerson().getLastName()).isEqualTo(ratingDB.getPerson().getLastName());
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void updateCarrier() throws Exception {
+        // Initialize the database
+        Rating ratingDB = mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+
+        em.detach(updatedRating);
+        em.detach(updatedRating.getCarrier());
+        em.detach(updatedRating.getPerson());
+
+        Carrier carrier = updatedRating.getCarrier()
+            .nip("NIP")
+            .acronym("NN")
+            .name("New name");
+
+        updatedRating
+            .carrier(carrier);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getCarrier().getId()).isEqualTo(ratingDB.getCarrier().getId());
+        assertThat(testRating.getCarrier().getAcronym()).isEqualTo("NN");
+        assertThat(testRating.getCarrier().getNip()).isEqualTo("NIP");
+        assertThat(testRating.getCarrier().getName()).isEqualTo("New name");
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void updateCarrierDifferentTransId() throws Exception {
+        // Initialize the database
+        Rating ratingDB = mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+
+        em.detach(updatedRating);
+        em.detach(updatedRating.getCarrier());
+        em.detach(updatedRating.getPerson());
+
+        Carrier carrier = updatedRating.getCarrier()
+            .transId(56433)
+            .nip("NIP")
+            .acronym("NN")
+            .name("New name");
+
+        updatedRating
+            .carrier(carrier);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getCarrier().getId()).isNotEqualTo(ratingDB.getCarrier().getId());
+        assertThat(testRating.getCarrier().getTransId()).isNotEqualTo(ratingDB.getCarrier().getId());
+        assertThat(testRating.getCarrier().getTransId()).isEqualTo(56433);
+        assertThat(testRating.getCarrier().getAcronym()).isEqualTo("NN");
+        assertThat(testRating.getCarrier().getNip()).isEqualTo("NIP");
+        assertThat(testRating.getCarrier().getName()).isEqualTo("New name");
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void updateCarrierDifferentTransIdNullId() throws Exception {
+        // Initialize the database
+        Rating ratingDB = mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+
+        em.detach(updatedRating);
+        em.detach(updatedRating.getCarrier());
+        em.detach(updatedRating.getPerson());
+
+        Carrier carrier = updatedRating.getCarrier()
+            .transId(56433)
+            .nip("NIP")
+            .acronym("NN")
+            .name("New name");
+        carrier.setId(null);
+
+        updatedRating
+            .carrier(carrier);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getCarrier().getId()).isNotEqualTo(ratingDB.getCarrier().getId());
+        assertThat(testRating.getCarrier().getTransId()).isNotEqualTo(ratingDB.getCarrier().getId());
+        assertThat(testRating.getCarrier().getTransId()).isEqualTo(56433);
+        assertThat(testRating.getCarrier().getAcronym()).isEqualTo("NN");
+        assertThat(testRating.getCarrier().getNip()).isEqualTo("NIP");
+        assertThat(testRating.getCarrier().getName()).isEqualTo("New name");
+
+        // Validate the Rating in Elasticsearch
+        verify(mockRatingSearchRepository, times(1)).save(testRating);
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails
+    public void updateCarrierNullIdStaysUnchanged() throws Exception {
+        // Initialize the database
+        Rating ratingDB = mockRatingExtService.save(rating);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockRatingSearchRepository);
+
+        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+
+        // Update the rating
+        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        Long carrierId = updatedRating.getCarrier().getId();
+
+        em.detach(updatedRating);
+        em.detach(updatedRating.getCarrier());
+        em.detach(updatedRating.getPerson());
+
+        Carrier carrier = new Carrier()
+            .name(updatedRating.getCarrier().getName())
+            .transId(updatedRating.getCarrier().getTransId())
+            .acronym(updatedRating.getCarrier().getAcronym())
+            .nip(updatedRating.getCarrier().getNip());
+
+        updatedRating
+            .carrier(carrier);
+
+        restRatingMockMvc.perform(put("/api/ext/ratings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedRating)))
+            .andExpect(status().isOk());
+
+        // Validate the Rating in the database
+        List<Rating> ratingList = ratingRepository.findAll();
+        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        Rating testRating = ratingList.get(ratingList.size() - 1);
+        assertThat(testRating.getCarrier().getId()).isEqualTo(carrierId);
+        assertThat(testRating.getCarrier().getTransId()).isEqualTo(ratingDB.getCarrier().getId());
+        assertThat(testRating.getCarrier().getAcronym()).isEqualTo(ratingDB.getCarrier().getAcronym());
+        assertThat(testRating.getCarrier().getNip()).isEqualTo(ratingDB.getCarrier().getNip());
+        assertThat(testRating.getCarrier().getName()).isEqualTo(ratingDB.getCarrier().getName());
 
         // Validate the Rating in Elasticsearch
         verify(mockRatingSearchRepository, times(1)).save(testRating);
@@ -485,6 +825,7 @@ public class RatingResourceExtIntTest {
 
         // Update the rating
         Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        em.detach(updatedRating);
 
         Person altPerson = new Person()
             .companyId(12)
@@ -496,7 +837,6 @@ public class RatingResourceExtIntTest {
             .transId(12345)
             .name("Marian Transport sp. z o.o.");
 
-        em.detach(updatedRating);
 
         updatedRating
             .addAlternative(true)
@@ -540,6 +880,7 @@ public class RatingResourceExtIntTest {
 
         // Update the rating
         Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        em.detach(updatedRating);
 
         Person altPerson = new Person()
             .companyId(12)
@@ -551,7 +892,6 @@ public class RatingResourceExtIntTest {
             .transId(12345)
             .name("Marian Transport sp. z o.o.");
 
-        em.detach(updatedRating);
 
         updatedRating
             .addAlternative(false)
@@ -588,12 +928,12 @@ public class RatingResourceExtIntTest {
 
         // Update the rating
         Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        em.detach(updatedRating);
 
         Carrier altCarrier = new Carrier()
             .transId(12345)
             .name("Marian Transport sp. z o.o.");
 
-        em.detach(updatedRating);
 
         updatedRating
             .addAlternative(true)
@@ -619,6 +959,7 @@ public class RatingResourceExtIntTest {
 
         // Update the rating
         Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        em.detach(updatedRating);
 
         Person altPerson = new Person()
             .companyId(12)
@@ -626,7 +967,6 @@ public class RatingResourceExtIntTest {
             .lastName("Kowalski")
             .phoneNumber("123321123");
 
-        em.detach(updatedRating);
 
         updatedRating
             .addAlternative(true)
