@@ -29,15 +29,12 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-                <!--                <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>-->
                 <th jhiSortBy="carrier.name"><span jhiTranslate="nitroCarriersApp.rating.carrier">Carrier</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th jhiSortBy="person.firstName"><span jhiTranslate="nitroCarriersApp.rating.person">Person</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <!--                <th><span jhiTranslate="nitroCarriersApp.person.phoneNumber">Phone number</span></th>-->
-                <!--                <th><span jhiTranslate="nitroCarriersApp.carrier.transId">Trans ID</span></th>-->
                 <th jhiSortBy="chargePostalCode"><span jhiTranslate="nitroCarriersApp.rating.chargeAddress">Charge Address</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
@@ -54,7 +51,6 @@
                 <th><span jhiTranslate="nitroCarriersApp.rating.price">Price</span></th>
                 <th><span jhiTranslate="nitroCarriersApp.rating.flexibility">Flexibility</span></th>
                 <th jhiSortBy="recommendation"><span jhiTranslate="nitroCarriersApp.rating.recommendation">Recommendation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="whiteList"><span jhiTranslate="nitroCarriersApp.rating.whiteList">White List</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="average"><span jhiTranslate="nitroCarriersApp.rating.average">Average</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="createdBy.login"><span jhiTranslate="nitroCarriersApp.rating.createdBy">Created By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th></th>
@@ -83,7 +79,6 @@
                 <td>{{rating.price}}</td>
                 <td>{{rating.flexibility}}</td>
                 <td jhiTranslate="{{'nitroCarriersApp.Grade.' + rating.recommendation}}">{{rating.recommendation}}</td>
-                <td>{{rating.whiteList}}</td>
                 <td>{{rating.average}}</td>
                 <td>{{rating.createdBy?.login}}</td>
                 <td class="text-right">
