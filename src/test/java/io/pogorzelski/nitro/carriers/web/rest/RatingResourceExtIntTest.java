@@ -495,6 +495,7 @@ public class RatingResourceExtIntTest {
 
         // Update the rating
         Rating updatedRating = ratingRepository.findById(rating.getId()).get();
+        Integer companyId = updatedRating.getPerson().getCompanyId();
 
         em.detach(updatedRating);
         em.detach(updatedRating.getCarrier());
@@ -520,7 +521,7 @@ public class RatingResourceExtIntTest {
         assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
         Rating testRating = ratingList.get(ratingList.size() - 1);
         assertThat(testRating.getPerson().getId()).isNotEqualTo(ratingDB.getPerson().getId());
-        assertThat(testRating.getPerson().getCompanyId()).isNotEqualTo(ratingDB.getPerson().getCompanyId());
+        assertThat(testRating.getPerson().getCompanyId()).isNotEqualTo(companyId);
         assertThat(testRating.getPerson().getCompanyId()).isEqualTo(5666);
         assertThat(testRating.getPerson().getPhoneNumber()).isEqualTo(phoneNumber);
         assertThat(testRating.getPerson().getFirstName()).isEqualTo("Jan");
@@ -544,6 +545,7 @@ public class RatingResourceExtIntTest {
         // Update the rating
         Rating updatedRating = ratingRepository.findById(rating.getId()).get();
         Long personId = updatedRating.getPerson().getId();
+        Integer companyId = updatedRating.getPerson().getCompanyId();
 
         em.detach(updatedRating);
         em.detach(updatedRating.getCarrier());
@@ -569,7 +571,7 @@ public class RatingResourceExtIntTest {
         assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
         Rating testRating = ratingList.get(ratingList.size() - 1);
         assertThat(testRating.getPerson().getId()).isNotEqualTo(personId);
-        assertThat(testRating.getPerson().getCompanyId()).isNotEqualTo(ratingDB.getPerson().getCompanyId());
+        assertThat(testRating.getPerson().getCompanyId()).isNotEqualTo(companyId);
         assertThat(testRating.getPerson().getCompanyId()).isEqualTo(5666);
         assertThat(testRating.getPerson().getPhoneNumber()).isEqualTo(phoneNumber);
         assertThat(testRating.getPerson().getFirstName()).isEqualTo("Jan");
@@ -803,7 +805,7 @@ public class RatingResourceExtIntTest {
         assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
         Rating testRating = ratingList.get(ratingList.size() - 1);
         assertThat(testRating.getCarrier().getId()).isEqualTo(carrierId);
-        assertThat(testRating.getCarrier().getTransId()).isEqualTo(ratingDB.getCarrier().getId());
+        assertThat(testRating.getCarrier().getTransId()).isEqualTo(ratingDB.getCarrier().getTransId());
         assertThat(testRating.getCarrier().getAcronym()).isEqualTo(ratingDB.getCarrier().getAcronym());
         assertThat(testRating.getCarrier().getNip()).isEqualTo(ratingDB.getCarrier().getNip());
         assertThat(testRating.getCarrier().getName()).isEqualTo(ratingDB.getCarrier().getName());
