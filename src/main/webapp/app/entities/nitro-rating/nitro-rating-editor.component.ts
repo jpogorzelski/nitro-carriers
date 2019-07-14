@@ -44,7 +44,6 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.activatedRoute.data.subscribe(({ rating }) => {
             this.rating = rating;
             if (this.rating.id) {
-                console.dir(this.rating);
                 this.carrierAndPerson = this.joinCarrierAndPersonData(this.rating.carrier, this.rating.person);
                 if (this.rating.addAlternative) {
                     this.altCarrierAndPerson = this.joinCarrierAndPersonData(this.rating.altCarrier, this.rating.altPerson);
