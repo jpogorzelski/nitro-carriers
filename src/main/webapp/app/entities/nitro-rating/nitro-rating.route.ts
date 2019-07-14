@@ -4,10 +4,10 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes } from '@a
 import { UserRouteAccessService } from 'app/core';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { Carrier } from 'app/shared/model/carrier.model';
 import { IRating, Rating } from 'app/shared/model/rating.model';
 import { NitroRatingService } from './nitro-rating.service';
 import { NitroRatingEditorComponent } from './nitro-rating-editor.component';
-import { NitroRatingComponent } from 'app/entities/nitro-rating/nitro-rating.component';
 import { NitroRatingDetailComponent } from 'app/entities/nitro-rating/nitro-rating-detail.component';
 import { NitroRatingDeletePopupComponent } from './nitro-rating-delete-dialog.component';
 import { NitroRatingListComponent } from 'app/entities/nitro-rating/nitro-rating-list.component';
@@ -24,7 +24,9 @@ export class NitroRatingResolve implements Resolve<IRating> {
                 map((rating: HttpResponse<Rating>) => rating.body)
             );
         }
-        return of(new Rating());
+        const newRating = new Rating();
+        newRating.carrier = new Carrier();
+        return of(newRating);
     }
 }
 
