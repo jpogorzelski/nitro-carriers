@@ -262,7 +262,7 @@
                     <select class="form-control" name="contact" [(ngModel)]="rating.contact"
                             id="field_contact" required>
                         <option *ngIf="!editForm.value.contact" [ngValue]="undefined" selected>{{'nitroCarriersApp.rating.selectPlaceholder' | translate }}</option>
-                        <option [ngValue]="id" *ngFor="let id of [1,2,3,4,5,6]">{{id}}</option>
+                        <option [ngValue]="id" *ngFor="let id of [1,2,3,4,5,6]"><span jhiTranslate="{{'nitroCarriersApp.rating.contactDetails.' + id}}">{{id}}</span></option>
                     </select>
                     <div
                         [hidden]="!(editForm.controls.contact?.dirty && editForm.controls.contact?.invalid)">
@@ -279,7 +279,7 @@
                     <select class="form-control" name="price" [(ngModel)]="rating.price"
                             id="field_price" required>
                         <option *ngIf="!editForm.value.price" [ngValue]="undefined" selected>{{'nitroCarriersApp.rating.selectPlaceholder' | translate }}</option>
-                        <option [ngValue]="id" *ngFor="let id of [1,2,3,4,5,6]">{{id}}</option>
+                        <option [ngValue]="id" *ngFor="let id of [1,2,3,4,5,6]"><span jhiTranslate="{{'nitroCarriersApp.rating.priceDetails.' + id}}">{{id}}</span></option>
                     </select>
                     <div
                         [hidden]="!(editForm.controls.price?.dirty && editForm.controls.price?.invalid)">
@@ -296,7 +296,7 @@
                     <select class="form-control" name="flexibility" [(ngModel)]="rating.flexibility"
                             id="field_flexibility" required>
                         <option *ngIf="!editForm.value.flexibility" [ngValue]="undefined" selected="selected">{{'nitroCarriersApp.rating.selectPlaceholder' | translate }}</option>
-                        <option [ngValue]="id" *ngFor="let id of [1,2,3,4,5,6]">{{id}}</option>
+                        <option [ngValue]="id" *ngFor="let id of [1,2,3,4,5,6]"><span jhiTranslate="{{'nitroCarriersApp.rating.flexibilityDetails.' + id}}">{{id}}</span></option>
                     </select>
                     <div
                         [hidden]="!(editForm.controls.flexibility?.dirty && editForm.controls.flexibility?.invalid)">

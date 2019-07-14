@@ -22,8 +22,32 @@
                 "title": "Ocena"
             },
             "flexibility": "Elastyczność",
+            "flexibilityDetails": {
+                "1": "1 - Chamscy, robią z igły widły, awanturują się, wydzwaniają, chcą wysokich dopłat.",
+                "2": "2 - Robią problemy, chcą duże rekompensaty.",
+                "3": "3 - Transport bez żadnych problemów z obu stron.",
+                "4": "4 - Pomimo lekkich trudności nie robili problemów.",
+                "5": "5 - Pomimo wielkich przeszkód, byli bardzo wyrozumiali.",
+                "6": "6 - Z takimi problemami mało kto by sobie poradził, do tego dobry kontakt, bardzo wyrozumiali."
+            },
             "contact": "Kontakt",
+            "contactDetails": {
+                "1": "1 - Brak kontaktu na transie i telefonicznego, zarówno ze spedytorem, jak i kierowcą.",
+                "2": "2 - Słaby kontakt, trzeba upominać się o informacje, odpisują z opóźnieniem czasowym.",
+                "3": "3 - Normalny - odpowiadają sprawnie na zadane pytania, sami jako pierwsi nie informują.",
+                "4": "4 - Dobry - pierwsi wychodzą z informacjami, piszą lub dzwonią.",
+                "5": "5 - Bardzo dobry - informują na bieżąco o wszystkim, podsyłają zdjęcia / CMRki, piszą, dzwonią.",
+                "6": "6 - Wzorowy - wszystko tak jak być powinno, można planować z nimi inne ładunki przyszłościowe."
+            },
             "price": "Cena",
+            "priceDetails": {
+                "1": "1 - Tragiczna - dużo powyżej optymalnej.",
+                "2": "2 - Wysoka - ale nie było wyjścia.",
+                "3": "3 - Poprawna - nieco wyższa od rynkowej.",
+                "4": "4 - Optymalna rynkowa.",
+                "5": "5 - Bardzo dobra - niższa od rynkowej.",
+                "6": "6 - Kosmos - niewiadomo jak przewoźnik na tym zarobił."
+            },
             "recommendation": "Polecam",
             "average": "Średnia ocena",
             "person": "Osoba kontaktowa",
