@@ -80,6 +80,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         delete this.rating.recommendation;
         delete this.rating.whiteList;
         delete this.rating.remarks;
+        delete this.rating.average;
     }
 
     private joinCarrierAndPersonData(carrier: ICarrier, person: IPerson) {
