@@ -6,12 +6,12 @@
     </ngb-tab>
     <ngb-tab title="{{ 'nitroCarriersApp.rating.tabs.whitelist' | translate }}">
         <ng-template ngbTabContent>
-            <jhi-carrier-ratings-custom [query]="{'whitelist': 'true'}"></jhi-carrier-ratings-custom>
+            <jhi-carrier-ratings-custom [itemsPerPage]="1000" [query]="{'whitelist': 'true'}"></jhi-carrier-ratings-custom>
         </ng-template>
     </ngb-tab>
     <ngb-tab title="{{ 'nitroCarriersApp.rating.tabs.blacklist' | translate }}">
         <ng-template ngbTabContent>
-            <jhi-carrier-ratings-custom [query]="{'blacklist': 'true'}"></jhi-carrier-ratings-custom>
+            <jhi-carrier-ratings-custom [itemsPerPage]="1000" [query]="{'blacklist': 'true'}"></jhi-carrier-ratings-custom>
         </ng-template>
     </ngb-tab>
 </ngb-tabset>
