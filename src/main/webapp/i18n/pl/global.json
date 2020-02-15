@@ -13,6 +13,7 @@
                 "rating": "Oceny",
                 "nitroRating": "Oceny",
                 "city": "Miasta",
+                "customer": "Klienci",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
