@@ -27,6 +27,10 @@ import { RouterModule } from '@angular/router';
             {
                 path: 'nitro-rating',
                 loadChildren: './nitro-rating/nitro-rating.module#NitroCarriersNitroRatingModule'
+            },
+            {
+                path: 'customer',
+                loadChildren: './customer/customer.module#NitroCarriersCustomerModule'
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])

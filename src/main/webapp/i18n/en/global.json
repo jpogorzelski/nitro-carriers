@@ -14,6 +14,7 @@
                 "rating": "Rating",
                 "nitroRating": "Rating",
                 "city": "City",
+                "customer": "Customer",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

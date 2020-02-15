@@ -46,6 +46,7 @@ public class CacheConfiguration {
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Person.class.getName(), jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.Rating.class.getName(), jcacheConfiguration);
             cm.createCache(io.pogorzelski.nitro.carriers.domain.City.class.getName(), jcacheConfiguration);
+            cm.createCache(io.pogorzelski.nitro.carriers.domain.Customer.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
