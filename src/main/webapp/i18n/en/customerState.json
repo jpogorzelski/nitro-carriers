@@ -1,0 +1,10 @@
+{
+    "nitroCarriersApp": {
+        "CustomerState": {
+            "null": "",
+            "AVAILABLE": "AVAILABLE",
+            "TAKEN": "TAKEN",
+            "TEMPORARILY_TAKEN": "TEMPORARILY_TAKEN"
+        }
+    }
+}

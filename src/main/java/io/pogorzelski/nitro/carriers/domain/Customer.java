@@ -12,6 +12,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.Objects;
 
+import io.pogorzelski.nitro.carriers.domain.enumeration.CustomerState;
+
 /**
  * A Customer.
  */
@@ -41,6 +43,10 @@ public class Customer implements Serializable {
 
     @Column(name = "postal_code")
     private String postalCode;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
+    private CustomerState state;
 
     @ManyToOne
     @JsonIgnoreProperties("customers")
@@ -115,6 +121,19 @@ public class Customer implements Serializable {
         this.postalCode = postalCode;
     }
 
+    public CustomerState getState() {
+        return state;
+    }
+
+    public Customer state(CustomerState state) {
+        this.state = state;
+        return this;
+    }
+
+    public void setState(CustomerState state) {
+        this.state = state;
+    }
+
     public City getCity() {
         return city;
     }
@@ -183,6 +202,7 @@ public class Customer implements Serializable {
             ", nip='" + getNip() + "'" +
             ", address='" + getAddress() + "'" +
             ", postalCode='" + getPostalCode() + "'" +
+            ", state='" + getState() + "'" +
             "}";
     }
 }

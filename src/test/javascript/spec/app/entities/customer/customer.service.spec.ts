@@ -5,7 +5,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { CustomerService } from 'app/entities/customer/customer.service';
-import { ICustomer, Customer } from 'app/shared/model/customer.model';
+import { ICustomer, Customer, CustomerState } from 'app/shared/model/customer.model';
 
 describe('Service Tests', () => {
     describe('Customer Service', () => {
@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(CustomerService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Customer(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+            elemDefault = new Customer(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', CustomerState.AVAILABLE);
         });
 
         describe('Service methods', async () => {
@@ -58,7 +58,8 @@ describe('Service Tests', () => {
                         name: 'BBBBBB',
                         nip: 'BBBBBB',
                         address: 'BBBBBB',
-                        postalCode: 'BBBBBB'
+                        postalCode: 'BBBBBB',
+                        state: 'BBBBBB'
                     },
                     elemDefault
                 );
@@ -78,7 +79,8 @@ describe('Service Tests', () => {
                         name: 'BBBBBB',
                         nip: 'BBBBBB',
                         address: 'BBBBBB',
-                        postalCode: 'BBBBBB'
+                        postalCode: 'BBBBBB',
+                        state: 'BBBBBB'
                     },
                     elemDefault
                 );

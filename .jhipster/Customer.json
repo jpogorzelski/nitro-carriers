@@ -52,6 +52,11 @@
         {
             "fieldName": "postalCode",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "CustomerState",
+            "fieldValues": "AVAILABLE,TAKEN,TEMPORARILY_TAKEN"
         }
     ],
     "changelogDate": "20200215180257",

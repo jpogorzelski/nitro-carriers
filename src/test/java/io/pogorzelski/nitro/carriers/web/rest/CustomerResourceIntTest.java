@@ -38,6 +38,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import io.pogorzelski.nitro.carriers.domain.enumeration.CustomerState;
 /**
  * Test class for the CustomerResource REST controller.
  *
@@ -58,6 +59,9 @@ public class CustomerResourceIntTest {
 
     private static final String DEFAULT_POSTAL_CODE = "AAAAAAAAAA";
     private static final String UPDATED_POSTAL_CODE = "BBBBBBBBBB";
+
+    private static final CustomerState DEFAULT_STATE = CustomerState.AVAILABLE;
+    private static final CustomerState UPDATED_STATE = CustomerState.TAKEN;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -115,7 +119,8 @@ public class CustomerResourceIntTest {
             .name(DEFAULT_NAME)
             .nip(DEFAULT_NIP)
             .address(DEFAULT_ADDRESS)
-            .postalCode(DEFAULT_POSTAL_CODE);
+            .postalCode(DEFAULT_POSTAL_CODE)
+            .state(DEFAULT_STATE);
         return customer;
     }
 
@@ -143,6 +148,7 @@ public class CustomerResourceIntTest {
         assertThat(testCustomer.getNip()).isEqualTo(DEFAULT_NIP);
         assertThat(testCustomer.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testCustomer.getPostalCode()).isEqualTo(DEFAULT_POSTAL_CODE);
+        assertThat(testCustomer.getState()).isEqualTo(DEFAULT_STATE);
 
         // Validate the Customer in Elasticsearch
         verify(mockCustomerSearchRepository, times(1)).save(testCustomer);
@@ -220,7 +226,8 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].nip").value(hasItem(DEFAULT_NIP.toString())))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
-            .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE.toString())));
+            .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE.toString())))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
     }
     
     @Test
@@ -237,7 +244,8 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.nip").value(DEFAULT_NIP.toString()))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS.toString()))
-            .andExpect(jsonPath("$.postalCode").value(DEFAULT_POSTAL_CODE.toString()));
+            .andExpect(jsonPath("$.postalCode").value(DEFAULT_POSTAL_CODE.toString()))
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
     }
 
     @Test
@@ -266,7 +274,8 @@ public class CustomerResourceIntTest {
             .name(UPDATED_NAME)
             .nip(UPDATED_NIP)
             .address(UPDATED_ADDRESS)
-            .postalCode(UPDATED_POSTAL_CODE);
+            .postalCode(UPDATED_POSTAL_CODE)
+            .state(UPDATED_STATE);
 
         restCustomerMockMvc.perform(put("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -281,6 +290,7 @@ public class CustomerResourceIntTest {
         assertThat(testCustomer.getNip()).isEqualTo(UPDATED_NIP);
         assertThat(testCustomer.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testCustomer.getPostalCode()).isEqualTo(UPDATED_POSTAL_CODE);
+        assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
 
         // Validate the Customer in Elasticsearch
         verify(mockCustomerSearchRepository, times(1)).save(testCustomer);
@@ -343,7 +353,8 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].nip").value(hasItem(DEFAULT_NIP)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
-            .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)));
+            .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
     }
 
     @Test
