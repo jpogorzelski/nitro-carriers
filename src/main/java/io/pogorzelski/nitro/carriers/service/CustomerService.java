@@ -1,19 +1,22 @@
 package io.pogorzelski.nitro.carriers.service;
 
 import io.pogorzelski.nitro.carriers.domain.Customer;
+import io.pogorzelski.nitro.carriers.domain.User;
 import io.pogorzelski.nitro.carriers.repository.CustomerRepository;
 import io.pogorzelski.nitro.carriers.repository.search.CustomerSearchRepository;
+import io.pogorzelski.nitro.carriers.security.AuthoritiesConstants;
+import io.pogorzelski.nitro.carriers.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Customer.
@@ -25,11 +28,13 @@ public class CustomerService {
     private final Logger log = LoggerFactory.getLogger(CustomerService.class);
 
     private final CustomerRepository customerRepository;
+    private final UserService userService;
 
     private final CustomerSearchRepository customerSearchRepository;
 
-    public CustomerService(CustomerRepository customerRepository, CustomerSearchRepository customerSearchRepository) {
+    public CustomerService(CustomerRepository customerRepository, UserService userService, CustomerSearchRepository customerSearchRepository) {
         this.customerRepository = customerRepository;
+        this.userService = userService;
         this.customerSearchRepository = customerSearchRepository;
     }
 
@@ -41,9 +46,21 @@ public class CustomerService {
      */
     public Customer save(Customer customer) {
         log.debug("Request to save Customer : {}", customer);
+        final User loggedInUser = getUser();
+        if (customer.getUser() == null) {
+            customer.setUser(loggedInUser);
+        } else if (!customer.getUser().equals(getUser())) {
+            log.error("User not allowed to save customer={}", customer);
+            return null;
+        }
         Customer result = customerRepository.save(customer);
         customerSearchRepository.save(result);
         return result;
+    }
+
+    public User getUser() {
+        return userService.getUserWithAuthorities()
+            .orElseThrow(() -> new AccessDeniedException("You are not logged in!"));
     }
 
     /**
@@ -55,7 +72,10 @@ public class CustomerService {
     @Transactional(readOnly = true)
     public Page<Customer> findAll(Pageable pageable) {
         log.debug("Request to get all Customers");
-        return customerRepository.findAll(pageable);
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            return customerRepository.findAll(pageable);
+        }
+        return customerRepository.findByUserIsCurrentUserOrAvailable(pageable);
     }
 
 
@@ -68,7 +88,10 @@ public class CustomerService {
     @Transactional(readOnly = true)
     public Optional<Customer> findOne(Long id) {
         log.debug("Request to get Customer : {}", id);
-        return customerRepository.findById(id);
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+            return customerRepository.findById(id);
+        }
+        return customerRepository.findByIdAndUserIsCurrentUser(id);
     }
 
     /**
