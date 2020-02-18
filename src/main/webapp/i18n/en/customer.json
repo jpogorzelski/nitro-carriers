@@ -20,6 +20,7 @@
             "nip": "Nip",
             "address": "Address",
             "postalCode": "Postal Code",
+            "state": "State",
             "city": "City",
             "country": "Country",
             "user": "User"

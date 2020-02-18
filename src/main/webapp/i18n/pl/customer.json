@@ -2,27 +2,28 @@
     "nitroCarriersApp": {
         "customer": {
             "home": {
-                "title": "Customer",
-                "createLabel": "Dodaj Customer",
-                "createOrEditLabel": "Dodaj lub edytuj: Customer",
-                "search": "Szukaj Customer"
+                "title": "Klient",
+                "createLabel": "Dodaj Klienta",
+                "createOrEditLabel": "Dodaj lub edytuj: Klient",
+                "search": "Szukaj Klienta"
             },
-            "created": "Utworzono nowy obiekt typu Customer z identyfikatorem {{ param }}",
-            "updated": "Uaktualniono obiekt typu Customer z identyfikatorem {{ param }}",
-            "deleted": "Usunięto obiekt typu Customer z identyfikatorem {{ param }}",
+            "created": "Utworzono nowy obiekt typu Klient z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono obiekt typu Klient z identyfikatorem {{ param }}",
+            "deleted": "Usunięto obiekt typu Klient z identyfikatorem {{ param }}",
             "delete": {
-                "question": "Czy na pewno chcesz usunąć Customer {{ id }}?"
+                "question": "Czy na pewno chcesz usunąć Klienta {{ id }}?"
             },
             "detail": {
-                "title": "Customer"
+                "title": "Klient"
             },
-            "name": "Name",
-            "nip": "Nip",
-            "address": "Address",
-            "postalCode": "Postal Code",
-            "city": "City",
-            "country": "Country",
-            "user": "User"
+            "name": "Nazwa",
+            "nip": "NIP",
+            "address": "Adres",
+            "postalCode": "Kod pocztowy",
+            "state": "Status",
+            "city": "Miasto",
+            "country": "Kraj",
+            "user": "Przydzielony pracownik"
         }
     }
 }

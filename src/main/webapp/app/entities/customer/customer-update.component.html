@@ -41,6 +41,14 @@
                     <input type="text" class="form-control" name="postalCode" id="field_postalCode"
                         [(ngModel)]="customer.postalCode" />
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.state" for="field_state">State</label>
+                    <select class="form-control" name="state" [(ngModel)]="customer.state" id="field_state" >
+                        <option value="AVAILABLE">{{'nitroCarriersApp.CustomerState.AVAILABLE' | translate}}</option>
+                        <option value="TAKEN">{{'nitroCarriersApp.CustomerState.TAKEN' | translate}}</option>
+                        <option value="TEMPORARILY_TAKEN">{{'nitroCarriersApp.CustomerState.TEMPORARILY_TAKEN' | translate}}</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.city" for="field_city">City</label>
