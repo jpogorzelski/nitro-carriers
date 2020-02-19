@@ -239,8 +239,8 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.[*].nip").value(hasItem(DEFAULT_NIP)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
             .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
-            .andExpect(jsonPath("$.[*].user.login").value(hasItem("user")))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(CustomerState.TAKEN.toString())));
+            .andExpect(jsonPath("$.[*].user.login").value(hasItem(customer.getUser().getLogin())))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(customer.getState().toString())));
     }
 
     @Test
@@ -277,8 +277,8 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.[*].nip").value(hasItem(DEFAULT_NIP)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
             .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
-            .andExpect(jsonPath("$.[*].user.login").value(hasItem("user")))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(CustomerState.TAKEN.toString())));
+            .andExpect(jsonPath("$.[*].user.login").value(hasItem(customer.getUser().getLogin())))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(customer.getState().toString())));
     }
 
     @Test
