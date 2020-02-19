@@ -47,9 +47,10 @@ public class CustomerService {
     public Customer save(Customer customer) {
         log.debug("Request to save Customer : {}", customer);
         final User loggedInUser = getUser();
-        if (customer.getUser() == null) {
+        if (customer.getId() == null) {
             customer.setUser(loggedInUser);
-        } else if (!customer.getUser().equals(getUser())) {
+        } else if (!customer.getUser().equals(getUser()) || !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            //reject if not assigned or not ADMIN
             log.error("User not allowed to save customer={}", customer);
             return null;
         }

@@ -4,6 +4,7 @@ import io.pogorzelski.nitro.carriers.NitroCarriersApp;
 
 import io.pogorzelski.nitro.carriers.domain.Customer;
 import io.pogorzelski.nitro.carriers.repository.CustomerRepository;
+import io.pogorzelski.nitro.carriers.repository.UserRepository;
 import io.pogorzelski.nitro.carriers.repository.search.CustomerSearchRepository;
 import io.pogorzelski.nitro.carriers.service.CustomerService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
@@ -19,8 +20,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
@@ -34,8 +37,10 @@ import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingCo
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.pogorzelski.nitro.carriers.domain.enumeration.CustomerState;
@@ -46,6 +51,7 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.CustomerState;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = NitroCarriersApp.class)
+@WithUserDetails("admin")
 public class CustomerResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
@@ -67,7 +73,9 @@ public class CustomerResourceIntTest {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerService mockCustomerService;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * This repository is mocked in the io.pogorzelski.nitro.carriers.repository.search test package.
@@ -99,8 +107,10 @@ public class CustomerResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final CustomerResource customerResource = new CustomerResource(customerService);
+        final CustomerResource customerResource = new CustomerResource(mockCustomerService);
+        doReturn(userRepository.findOneByLogin("user").get()).when(mockCustomerService).getUser();
         this.restCustomerMockMvc = MockMvcBuilders.standaloneSetup(customerResource)
+            .alwaysDo(MockMvcResultHandlers.print())
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
@@ -214,8 +224,10 @@ public class CustomerResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllCustomers() throws Exception {
+    public void getAllCustomersAsAdmin() throws Exception {
         // Initialize the database
+        customer.setUser(userRepository.findOneByLogin("user").get());
+        customer.setState(CustomerState.TAKEN);
         customerRepository.saveAndFlush(customer);
 
         // Get all the customerList
@@ -223,13 +235,52 @@ public class CustomerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(customer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].nip").value(hasItem(DEFAULT_NIP.toString())))
-            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
-            .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].nip").value(hasItem(DEFAULT_NIP)))
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
+            .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
+            .andExpect(jsonPath("$.[*].user.login").value(hasItem("user")))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(CustomerState.TAKEN.toString())));
     }
-    
+
+    @Test
+    @Transactional
+    @WithUserDetails("user2")
+    public void getAllCustomersAsDifferentUserShouldNotReturnTakenByOtherUser() throws Exception {
+        // Initialize the database
+        customer.setUser(userRepository.findOneByLogin("user").get());
+        customer.setState(CustomerState.TAKEN);
+        customerRepository.saveAndFlush(customer);
+
+        // Get all the customerList
+        restCustomerMockMvc.perform(get("/api/customers?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id", not(hasItem(customer.getId().intValue()))));
+    }
+
+    @Test
+    @Transactional
+    @WithUserDetails("user2")
+    public void getAllCustomersAsDifferentUserShouldReturnAvailableEvenIfAssignedOtherUser() throws Exception {
+        // Initialize the database
+        customer.setUser(userRepository.findOneByLogin("user").get());
+        customer.setState(CustomerState.AVAILABLE);
+        customerRepository.saveAndFlush(customer);
+
+        // Get all the customerList
+        restCustomerMockMvc.perform(get("/api/customers?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(customer.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].nip").value(hasItem(DEFAULT_NIP)))
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
+            .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
+            .andExpect(jsonPath("$.[*].user.login").value(hasItem("user")))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(CustomerState.TAKEN.toString())));
+    }
+
     @Test
     @Transactional
     public void getCustomer() throws Exception {
@@ -241,10 +292,10 @@ public class CustomerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(customer.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.nip").value(DEFAULT_NIP.toString()))
-            .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS.toString()))
-            .andExpect(jsonPath("$.postalCode").value(DEFAULT_POSTAL_CODE.toString()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.nip").value(DEFAULT_NIP))
+            .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
+            .andExpect(jsonPath("$.postalCode").value(DEFAULT_POSTAL_CODE))
             .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
     }
 
@@ -260,7 +311,7 @@ public class CustomerResourceIntTest {
     @Transactional
     public void updateCustomer() throws Exception {
         // Initialize the database
-        customerService.save(customer);
+        mockCustomerService.save(customer);
         // As the test used the service layer, reset the Elasticsearch mock repository
         reset(mockCustomerSearchRepository);
 
@@ -321,7 +372,7 @@ public class CustomerResourceIntTest {
     @Transactional
     public void deleteCustomer() throws Exception {
         // Initialize the database
-        customerService.save(customer);
+        mockCustomerService.save(customer);
 
         int databaseSizeBeforeDelete = customerRepository.findAll().size();
 
@@ -342,7 +393,7 @@ public class CustomerResourceIntTest {
     @Transactional
     public void searchCustomer() throws Exception {
         // Initialize the database
-        customerService.save(customer);
+        mockCustomerService.save(customer);
         when(mockCustomerSearchRepository.search(queryStringQuery("id:" + customer.getId()), PageRequest.of(0, 20)))
             .thenReturn(new PageImpl<>(Collections.singletonList(customer), PageRequest.of(0, 1), 1));
         // Search the customer
