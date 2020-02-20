@@ -23,8 +23,8 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         console.log('init!');
-        this.proceedWithUser();
-        this.registerAuthenticationSuccess();
+        //   this.proceedWithUser();
+        //    this.registerAuthenticationSuccess();
     }
 
     private proceedWithUser() {
