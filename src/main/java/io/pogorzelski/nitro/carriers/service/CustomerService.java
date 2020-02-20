@@ -59,28 +59,31 @@ public class CustomerService {
         final User loggedInUser = getUser();
         if (customer.getId() == null) {
             customer.setUser(loggedInUser);
-        } else if (!customer.getUser().equals(getUser()) && !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-            //reject if not assigned or not ADMIN
-            log.error("User not allowed to save customer={}", customer);
-            return null;
+        } else {
+            final boolean isAdmin = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+            if (!customer.getUser().equals(getUser()) && !isAdmin) {
+                //reject if not assigned or not ADMIN
+                log.error("User not allowed to save customer={}", customer);
+                return null;
+            }
         }
 
-        String addressCountry = customer.getCountry().getCountryNamePL();
-        Country country = countryRepository.findByCountryNamePL(addressCountry);
-        customer.setCountry(country);
-        if (country == null) {
-            throw new RuntimeException("Charge addressCountry cannot be null!");
-        }
+        final Optional<Country> country = Optional.ofNullable(customer.getCountry())
+            .map(Country::getCountryNamePL)
+            .map(countryRepository::findByCountryNamePL);
+        country.ifPresent(customer::setCountry);
 
-        String addressCity = customer.getCity().getCityName();
-        City city = cityRepository.findByCityName(addressCity);
-        if (city == null) {
-            City cityDTO = customer.getCity();
-            cityDTO.setCountry(country);
-            city = cityService.save(cityDTO);
-            cityRepository.flush();
+        if (customer.getCity() != null){
+            String addressCity = customer.getCity().getCityName();
+            City city = cityRepository.findByCityName(addressCity);
+            if (city == null) {
+                City cityDTO = customer.getCity();
+                country.ifPresent(cityDTO::setCountry);
+                city = cityService.save(cityDTO);
+                cityRepository.flush();
+            }
+            customer.setCity(city);
         }
-        customer.setCity(city);
 
         Customer result = customerRepository.save(customer);
         customerSearchRepository.save(result);
