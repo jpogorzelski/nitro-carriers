@@ -24,7 +24,9 @@
             "notes": "Notes",
             "city": "City",
             "country": "Country",
-            "user": "User"
+            "user": "User",
+            "countryPlaceholder": "Select country...",
+            "cityPlaceholder": "Select city..."
         }
     }
 }

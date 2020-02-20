@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { ICustomer } from 'app/shared/model/customer.model';
 import { CustomerService } from './customer.service';
-import { ICity } from 'app/shared/model/city.model';
+import { City, ICity } from 'app/shared/model/city.model';
 import { CityService } from 'app/entities/city';
 import { ICountry } from 'app/shared/model/country.model';
 import { CountryService } from 'app/entities/country';
@@ -103,5 +103,29 @@ export class CustomerUpdateComponent implements OnInit {
 
     trackUserById(index: number, item: IUser) {
         return item.id;
+    }
+
+    addCity(cityName: string) {
+        return Object.assign(new City(), { cityName });
+    }
+
+    onCountrySelect(country: ICountry) {
+        if (country) {
+            console.table('### Selected country: ', country.countryNamePL);
+            this.cityService
+                .search({
+                    query: country.countryNamePL
+                })
+                .pipe(
+                    filter((mayBeOk: HttpResponse<ICity[]>) => mayBeOk.ok),
+                    map((response: HttpResponse<ICity[]>) => response.body)
+                )
+                .subscribe(
+                    (res: ICity[]) => {
+                        this.cities = res;
+                    },
+                    (res: HttpErrorResponse) => this.onError(res.message)
+                );
+        }
     }
 }

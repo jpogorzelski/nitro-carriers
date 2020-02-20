@@ -1,7 +1,11 @@
 package io.pogorzelski.nitro.carriers.service;
 
+import io.pogorzelski.nitro.carriers.domain.City;
+import io.pogorzelski.nitro.carriers.domain.Country;
 import io.pogorzelski.nitro.carriers.domain.Customer;
 import io.pogorzelski.nitro.carriers.domain.User;
+import io.pogorzelski.nitro.carriers.repository.CityRepository;
+import io.pogorzelski.nitro.carriers.repository.CountryRepository;
 import io.pogorzelski.nitro.carriers.repository.CustomerRepository;
 import io.pogorzelski.nitro.carriers.repository.search.CustomerSearchRepository;
 import io.pogorzelski.nitro.carriers.security.AuthoritiesConstants;
@@ -29,12 +33,18 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final UserService userService;
+    private final CityService cityService;
+    private final CountryRepository countryRepository;
+    private final CityRepository cityRepository;
 
     private final CustomerSearchRepository customerSearchRepository;
 
-    public CustomerService(CustomerRepository customerRepository, UserService userService, CustomerSearchRepository customerSearchRepository) {
+    public CustomerService(CustomerRepository customerRepository, UserService userService, CityService cityService, CountryRepository countryService, CityRepository cityRepository, CustomerSearchRepository customerSearchRepository) {
         this.customerRepository = customerRepository;
         this.userService = userService;
+        this.cityService = cityService;
+        this.countryRepository = countryService;
+        this.cityRepository = cityRepository;
         this.customerSearchRepository = customerSearchRepository;
     }
 
@@ -49,11 +59,29 @@ public class CustomerService {
         final User loggedInUser = getUser();
         if (customer.getId() == null) {
             customer.setUser(loggedInUser);
-        } else if (!customer.getUser().equals(getUser()) || !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+        } else if (!customer.getUser().equals(getUser()) && !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             //reject if not assigned or not ADMIN
             log.error("User not allowed to save customer={}", customer);
             return null;
         }
+
+        String addressCountry = customer.getCountry().getCountryNamePL();
+        Country country = countryRepository.findByCountryNamePL(addressCountry);
+        customer.setCountry(country);
+        if (country == null) {
+            throw new RuntimeException("Charge addressCountry cannot be null!");
+        }
+
+        String addressCity = customer.getCity().getCityName();
+        City city = cityRepository.findByCityName(addressCity);
+        if (city == null) {
+            City cityDTO = customer.getCity();
+            cityDTO.setCountry(country);
+            city = cityService.save(cityDTO);
+            cityRepository.flush();
+        }
+        customer.setCity(city);
+
         Customer result = customerRepository.save(customer);
         customerSearchRepository.save(result);
         return result;
