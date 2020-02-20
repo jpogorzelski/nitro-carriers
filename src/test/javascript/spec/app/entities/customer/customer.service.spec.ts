@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(CustomerService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Customer(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', CustomerState.AVAILABLE);
+            elemDefault = new Customer(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', CustomerState.AVAILABLE, 'AAAAAAA');
         });
 
         describe('Service methods', async () => {
@@ -59,7 +59,8 @@ describe('Service Tests', () => {
                         nip: 'BBBBBB',
                         address: 'BBBBBB',
                         postalCode: 'BBBBBB',
-                        state: 'BBBBBB'
+                        state: 'BBBBBB',
+                        notes: 'BBBBBB'
                     },
                     elemDefault
                 );
@@ -80,7 +81,8 @@ describe('Service Tests', () => {
                         nip: 'BBBBBB',
                         address: 'BBBBBB',
                         postalCode: 'BBBBBB',
-                        state: 'BBBBBB'
+                        state: 'BBBBBB',
+                        notes: 'BBBBBB'
                     },
                     elemDefault
                 );

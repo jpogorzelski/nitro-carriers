@@ -21,6 +21,7 @@
             "address": "Adres",
             "postalCode": "Kod pocztowy",
             "state": "Status",
+            "notes": "Notatki",
             "city": "Miasto",
             "country": "Kraj",
             "user": "Przydzielony pracownik"

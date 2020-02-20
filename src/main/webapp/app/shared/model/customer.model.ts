@@ -15,6 +15,7 @@ export interface ICustomer {
     address?: string;
     postalCode?: string;
     state?: CustomerState;
+    notes?: string;
     city?: ICity;
     country?: ICountry;
     user?: IUser;
@@ -28,6 +29,7 @@ export class Customer implements ICustomer {
         public address?: string,
         public postalCode?: string,
         public state?: CustomerState,
+        public notes?: string,
         public city?: ICity,
         public country?: ICountry,
         public user?: IUser

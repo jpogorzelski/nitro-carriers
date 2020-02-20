@@ -69,6 +69,9 @@ public class CustomerResourceIntTest {
     private static final CustomerState DEFAULT_STATE = CustomerState.AVAILABLE;
     private static final CustomerState UPDATED_STATE = CustomerState.TAKEN;
 
+    private static final String DEFAULT_NOTES = "AAAAAAAAAA";
+    private static final String UPDATED_NOTES = "BBBBBBBBBB";
+
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -130,7 +133,8 @@ public class CustomerResourceIntTest {
             .nip(DEFAULT_NIP)
             .address(DEFAULT_ADDRESS)
             .postalCode(DEFAULT_POSTAL_CODE)
-            .state(DEFAULT_STATE);
+            .state(DEFAULT_STATE)
+            .notes(DEFAULT_NOTES);
         return customer;
     }
 
@@ -159,6 +163,7 @@ public class CustomerResourceIntTest {
         assertThat(testCustomer.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testCustomer.getPostalCode()).isEqualTo(DEFAULT_POSTAL_CODE);
         assertThat(testCustomer.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testCustomer.getNotes()).isEqualTo(DEFAULT_NOTES);
 
         // Validate the Customer in Elasticsearch
         verify(mockCustomerSearchRepository, times(1)).save(testCustomer);
@@ -240,7 +245,8 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
             .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
             .andExpect(jsonPath("$.[*].user.login").value(hasItem(customer.getUser().getLogin())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(customer.getState().toString())));
+            .andExpect(jsonPath("$.[*].state").value(hasItem(customer.getState().toString())))
+            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)));
     }
 
     @Test
@@ -278,7 +284,8 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
             .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
             .andExpect(jsonPath("$.[*].user.login").value(hasItem(customer.getUser().getLogin())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(customer.getState().toString())));
+            .andExpect(jsonPath("$.[*].state").value(hasItem(customer.getState().toString())))
+            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)));
     }
 
     @Test
@@ -296,7 +303,8 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.nip").value(DEFAULT_NIP))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
             .andExpect(jsonPath("$.postalCode").value(DEFAULT_POSTAL_CODE))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
+            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES.toString()));
     }
 
     @Test
@@ -326,7 +334,8 @@ public class CustomerResourceIntTest {
             .nip(UPDATED_NIP)
             .address(UPDATED_ADDRESS)
             .postalCode(UPDATED_POSTAL_CODE)
-            .state(UPDATED_STATE);
+            .state(UPDATED_STATE)
+            .notes(UPDATED_NOTES);
 
         restCustomerMockMvc.perform(put("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -342,6 +351,7 @@ public class CustomerResourceIntTest {
         assertThat(testCustomer.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testCustomer.getPostalCode()).isEqualTo(UPDATED_POSTAL_CODE);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testCustomer.getNotes()).isEqualTo(UPDATED_NOTES);
 
         // Validate the Customer in Elasticsearch
         verify(mockCustomerSearchRepository, times(1)).save(testCustomer);
@@ -405,7 +415,8 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.[*].nip").value(hasItem(DEFAULT_NIP)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
             .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)));
     }
 
     @Test
