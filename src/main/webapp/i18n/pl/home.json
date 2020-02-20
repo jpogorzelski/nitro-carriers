@@ -1,8 +1,9 @@
 {
     "home": {
-        "title": "Oceny Nitro Logistics",
-        "logged": {
-            "message": "Jesteś zalogowany jako użytkownik \"{{username}}\"."
+        "title": "Nitro Logistics: Przewoźnicy i Klienci",
+        "card": {
+            "ratings": "Oceny Przewoźników",
+            "customers": "Klienci"
         }
     }
 }

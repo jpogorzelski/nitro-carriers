@@ -1,8 +1,9 @@
 {
     "home": {
-        "title": "Nitro Logistics Ratings",
-        "logged": {
-            "message": "You are logged in as user \"{{username}}\"."
+        "title": "Nitro Logistics: Carriers & Customers",
+        "card": {
+            "ratings": "Carrier Ratings",
+            "customers": "Customers"
         }
     }
 }
