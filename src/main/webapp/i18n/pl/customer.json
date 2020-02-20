@@ -24,7 +24,9 @@
             "notes": "Notatki",
             "city": "Miasto",
             "country": "Kraj",
-            "user": "Przydzielony pracownik"
+            "user": "Przydzielony pracownik",
+            "countryPlaceholder": "Wybierz kraj...",
+            "cityPlaceholder": "Wybierz miasto..."
         }
     }
 }

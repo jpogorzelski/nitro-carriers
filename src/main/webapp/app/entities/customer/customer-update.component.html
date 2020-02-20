@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.nip" for="field_nip">Nip</label>
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.nip" for="field_nip">NIP</label>
                     <input type="text" class="form-control" name="nip" id="field_nip"
                         [(ngModel)]="customer.nip" required/>
                     <div [hidden]="!(editForm.controls.nip?.dirty && editForm.controls.nip?.invalid)">
@@ -31,16 +31,57 @@
                         </small>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.address" for="field_address">Address</label>
-                    <input type="text" class="form-control" name="address" id="field_address"
-                        [(ngModel)]="customer.address" />
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.address" for="field_address">Address</label>
+                        <input type="text" class="form-control" name="address" id="field_address"
+                               [(ngModel)]="customer.address" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.postalCode" for="field_postalCode">Postal Code</label>
+                        <input type="text" class="form-control" name="postalCode" id="field_postalCode"
+                               [(ngModel)]="customer.postalCode" />
+                    </div>
+                    <label class="form-control-label"
+                           jhiTranslate="nitroCarriersApp.customer.country"
+                           for="field_country">Country
+                    </label>
+                    <ng-select [items]="countries"
+                               id="field_country"
+                               name="country"
+                               bindLabel="countryNamePL"
+                               (change)="onCountrySelect($event)"
+                               placeholder="{{'nitroCarriersApp.customer.countryPlaceholder' | translate}}"n
+                               [(ngModel)]="customer.country"
+                               selectOnTab="true"
+                               required="false">
+                    </ng-select>
+
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.city" for="field_city">City</label>
+                    <ng-select [items]="cities"
+                               id="field_city"
+                               name="city"
+                               bindLabel="cityName"
+                               placeholder="{{'nitroCarriersApp.customer.cityPlaceholder' | translate}}"
+                               [(ngModel)]="customer.city"
+                               selectOnTab="true"
+                               [addTag]="addCity"
+                               required="false">
+                    </ng-select>
+
+
                 </div>
+
+
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.postalCode" for="field_postalCode">Postal Code</label>
-                    <input type="text" class="form-control" name="postalCode" id="field_postalCode"
-                        [(ngModel)]="customer.postalCode" />
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.notes" for="field_notes">Notes</label>
+                    <input type="text" class="form-control" name="notes" id="field_notes"
+                           [(ngModel)]="customer.notes" />
                 </div>
+
+
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.state" for="field_state">State</label>
                     <select class="form-control" name="state" [(ngModel)]="customer.state" id="field_state" >
@@ -49,32 +90,10 @@
                         <option value="TEMPORARILY_TAKEN">{{'nitroCarriersApp.CustomerState.TEMPORARILY_TAKEN' | translate}}</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.notes" for="field_notes">Notes</label>
-                    <input type="text" class="form-control" name="notes" id="field_notes"
-                        [(ngModel)]="customer.notes" />
-                </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.city" for="field_city">City</label>
-                    <select class="form-control" id="field_city" name="city" [(ngModel)]="customer.city" >
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="cityOption.id === customer.city?.id ? customer.city : cityOption" *ngFor="let cityOption of cities; trackBy: trackCityById">{{cityOption.cityName}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.country" for="field_country">Country</label>
-                    <select class="form-control" id="field_country" name="country" [(ngModel)]="customer.country" >
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="countryOption.id === customer.country?.id ? customer.country : countryOption" *ngFor="let countryOption of countries; trackBy: trackCountryById">{{countryOption.countryNamePL}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.user" for="field_user">User</label>
-                    <select class="form-control" id="field_user" name="user" [(ngModel)]="customer.user" >
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="userOption.id === customer.user?.id ? customer.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
-                    </select>
+                <div class="form-group" [hidden]="!customer.user">
+                    <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.user" for="field_user">Assigned user</label>
+                    <input type="text" class="form-control" id="field_user" name="createdBy" value="{{customer.user?.login}}" readonly/>
                 </div>
             </div>
             <div>
