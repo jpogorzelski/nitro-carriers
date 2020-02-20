@@ -25,6 +25,10 @@
                 <dd>
                     <span jhiTranslate="{{'nitroCarriersApp.CustomerState.' + customer.state}}">{{customer.state}}</span>
                 </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.customer.notes">Notes</span></dt>
+                <dd>
+                    <span>{{customer.notes}}</span>
+                </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.customer.city">City</span></dt>
                 <dd>
                     <div *ngIf="customer.city">

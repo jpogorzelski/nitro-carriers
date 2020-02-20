@@ -48,6 +48,9 @@ public class Customer implements Serializable {
     @Column(name = "state")
     private CustomerState state;
 
+    @Column(name = "notes")
+    private String notes;
+
     @ManyToOne
     @JsonIgnoreProperties("customers")
     private City city;
@@ -134,6 +137,19 @@ public class Customer implements Serializable {
         this.state = state;
     }
 
+    public String getNotes() {
+        return notes;
+    }
+
+    public Customer notes(String notes) {
+        this.notes = notes;
+        return this;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public City getCity() {
         return city;
     }
@@ -203,6 +219,7 @@ public class Customer implements Serializable {
             ", address='" + getAddress() + "'" +
             ", postalCode='" + getPostalCode() + "'" +
             ", state='" + getState() + "'" +
+            ", notes='" + getNotes() + "'" +
             "}";
     }
 }

@@ -57,6 +57,10 @@
             "fieldName": "state",
             "fieldType": "CustomerState",
             "fieldValues": "AVAILABLE,TAKEN,TEMPORARILY_TAKEN"
+        },
+        {
+            "fieldName": "notes",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20200215180257",

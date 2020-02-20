@@ -21,6 +21,7 @@
             "address": "Address",
             "postalCode": "Postal Code",
             "state": "State",
+            "notes": "Notes",
             "city": "City",
             "country": "Country",
             "user": "User"
