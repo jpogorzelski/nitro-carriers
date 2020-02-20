@@ -1,14 +1,13 @@
 package io.pogorzelski.nitro.carriers.web.rest;
 
 import io.pogorzelski.nitro.carriers.NitroCarriersApp;
-
 import io.pogorzelski.nitro.carriers.domain.Customer;
+import io.pogorzelski.nitro.carriers.domain.enumeration.CustomerState;
 import io.pogorzelski.nitro.carriers.repository.CustomerRepository;
 import io.pogorzelski.nitro.carriers.repository.UserRepository;
 import io.pogorzelski.nitro.carriers.repository.search.CustomerSearchRepository;
 import io.pogorzelski.nitro.carriers.service.CustomerService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +31,6 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
-
 import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -40,10 +38,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import io.pogorzelski.nitro.carriers.domain.enumeration.CustomerState;
 /**
  * Test class for the CustomerResource REST controller.
  *
@@ -111,7 +106,6 @@ public class CustomerResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final CustomerResource customerResource = new CustomerResource(mockCustomerService);
-        doReturn(userRepository.findOneByLogin("user").get()).when(mockCustomerService).getUser();
         this.restCustomerMockMvc = MockMvcBuilders.standaloneSetup(customerResource)
             .alwaysDo(MockMvcResultHandlers.print())
             .setCustomArgumentResolvers(pageableArgumentResolver)
