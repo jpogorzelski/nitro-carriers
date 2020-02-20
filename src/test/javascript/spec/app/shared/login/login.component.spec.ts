@@ -18,7 +18,6 @@ describe('Component Tests', () => {
         let mockStateStorageService: any;
         let mockRouter: any;
         let mockEventManager: any;
-        let mockActiveModal: any;
 
         beforeEach(async(() => {
             TestBed.configureTestingModule({
@@ -46,7 +45,6 @@ describe('Component Tests', () => {
             mockStateStorageService = fixture.debugElement.injector.get(StateStorageService);
             mockRouter = fixture.debugElement.injector.get(Router);
             mockEventManager = fixture.debugElement.injector.get(JhiEventManager);
-            mockActiveModal = fixture.debugElement.injector.get(NgbActiveModal);
         });
 
         it('should authenticate the user upon login when previous state was set', inject(
@@ -71,7 +69,6 @@ describe('Component Tests', () => {
 
                 // THEN
                 expect(comp.authenticationError).toEqual(false);
-                expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith('login success');
                 expect(mockEventManager.broadcastSpy).toHaveBeenCalledTimes(1);
                 expect(mockLoginService.loginSpy).toHaveBeenCalledWith(credentials);
                 expect(mockStateStorageService.getUrlSpy).toHaveBeenCalledTimes(1);
@@ -102,7 +99,6 @@ describe('Component Tests', () => {
 
                 // THEN
                 expect(comp.authenticationError).toEqual(false);
-                expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith('login success');
                 expect(mockEventManager.broadcastSpy).toHaveBeenCalledTimes(1);
                 expect(mockLoginService.loginSpy).toHaveBeenCalledWith(credentials);
                 expect(mockStateStorageService.getUrlSpy).toHaveBeenCalledTimes(1);
@@ -133,7 +129,6 @@ describe('Component Tests', () => {
             // THEN
             expect(comp.authenticationError).toEqual(false);
             expect(comp.credentials).toEqual(expected);
-            expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith('cancel');
         });
 
         it('should redirect user when register', () => {
@@ -141,7 +136,6 @@ describe('Component Tests', () => {
             comp.register();
 
             // THEN
-            expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith('to state register');
             expect(mockRouter.navigateSpy).toHaveBeenCalledWith(['/register']);
         });
 
@@ -150,7 +144,6 @@ describe('Component Tests', () => {
             comp.requestResetPassword();
 
             // THEN
-            expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith('to state requestReset');
             expect(mockRouter.navigateSpy).toHaveBeenCalledWith(['/reset', 'request']);
         });
     });
