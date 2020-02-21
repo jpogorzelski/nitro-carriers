@@ -67,9 +67,9 @@
                 <td>
                     {{customer.user?.login}}
                 </td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{user.createdDate | date:'dd/MM/yy HH:mm'}}</td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{user.lastModifiedBy}}</td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{customer.createdDate | date:'dd/MM/yy HH:mm'}}</td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{customer.lastModifiedBy}}</td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{customer.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
