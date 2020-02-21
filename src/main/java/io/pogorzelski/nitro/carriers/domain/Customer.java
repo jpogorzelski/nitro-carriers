@@ -21,10 +21,10 @@ import io.pogorzelski.nitro.carriers.domain.enumeration.CustomerState;
 @Table(name = "customer")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "customer")
-public class Customer implements Serializable {
+public class Customer extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")

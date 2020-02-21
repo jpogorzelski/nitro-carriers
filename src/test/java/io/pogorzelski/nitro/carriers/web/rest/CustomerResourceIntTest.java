@@ -11,9 +11,12 @@ import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.auditing.AuditingHandler;
+import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
@@ -71,7 +74,7 @@ public class CustomerResourceIntTest {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private CustomerService mockCustomerService;
+    private CustomerService customerService;
     @Autowired
     private UserRepository userRepository;
 
@@ -105,7 +108,7 @@ public class CustomerResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final CustomerResource customerResource = new CustomerResource(mockCustomerService);
+        final CustomerResource customerResource = new CustomerResource(customerService);
         this.restCustomerMockMvc = MockMvcBuilders.standaloneSetup(customerResource)
             .alwaysDo(MockMvcResultHandlers.print())
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -313,7 +316,7 @@ public class CustomerResourceIntTest {
     @Transactional
     public void updateCustomer() throws Exception {
         // Initialize the database
-        mockCustomerService.save(customer);
+        customerService.save(customer);
         // As the test used the service layer, reset the Elasticsearch mock repository
         reset(mockCustomerSearchRepository);
 
@@ -376,7 +379,7 @@ public class CustomerResourceIntTest {
     @Transactional
     public void deleteCustomer() throws Exception {
         // Initialize the database
-        mockCustomerService.save(customer);
+        customerService.save(customer);
 
         int databaseSizeBeforeDelete = customerRepository.findAll().size();
 
@@ -397,7 +400,7 @@ public class CustomerResourceIntTest {
     @Transactional
     public void searchCustomer() throws Exception {
         // Initialize the database
-        mockCustomerService.save(customer);
+        customerService.save(customer);
         when(mockCustomerSearchRepository.search(queryStringQuery("id:" + customer.getId()), PageRequest.of(0, 20)))
             .thenReturn(new PageImpl<>(Collections.singletonList(customer), PageRequest.of(0, 1), 1));
         // Search the customer
