@@ -21,14 +21,6 @@
                 <dd>
                     <span>{{customer.postalCode}}</span>
                 </dd>
-                <dt><span jhiTranslate="nitroCarriersApp.customer.state">State</span></dt>
-                <dd>
-                    <span jhiTranslate="{{'nitroCarriersApp.CustomerState.' + customer.state}}">{{customer.state}}</span>
-                </dd>
-                <dt><span jhiTranslate="nitroCarriersApp.customer.notes">Notes</span></dt>
-                <dd>
-                    <span>{{customer.notes}}</span>
-                </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.customer.city">City</span></dt>
                 <dd>
                     <div *ngIf="customer.city">
@@ -40,6 +32,14 @@
                     <div *ngIf="customer.country">
                         <a [routerLink]="['/country', customer.country?.id, 'view']">{{customer.country?.countryNamePL}}</a>
                     </div>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.customer.state">State</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'nitroCarriersApp.CustomerState.' + customer.state}}">{{customer.state}}</span>
+                </dd>
+                <dt><span jhiTranslate="nitroCarriersApp.customer.notes">Notes</span></dt>
+                <dd>
+                    <span>{{customer.notes}}</span>
                 </dd>
                 <dt><span jhiTranslate="nitroCarriersApp.customer.user">User</span></dt>
                 <dd>

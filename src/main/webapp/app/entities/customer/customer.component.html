@@ -34,10 +34,10 @@
             <th jhiSortBy="nip"><span jhiTranslate="nitroCarriersApp.customer.nip">Nip</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="address"><span jhiTranslate="nitroCarriersApp.customer.address">Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="postalCode"><span jhiTranslate="nitroCarriersApp.customer.postalCode">Postal Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="state"><span jhiTranslate="nitroCarriersApp.customer.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="notes"><span jhiTranslate="nitroCarriersApp.customer.notes">Notes</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="city.cityName"><span jhiTranslate="nitroCarriersApp.customer.city">City</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="country.countryNamePL"><span jhiTranslate="nitroCarriersApp.customer.country">Country</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="state"><span jhiTranslate="nitroCarriersApp.customer.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="notes"><span jhiTranslate="nitroCarriersApp.customer.notes">Notes</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="user.login"><span jhiTranslate="nitroCarriersApp.customer.user">User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
@@ -49,8 +49,6 @@
                 <td>{{customer.nip}}</td>
                 <td>{{customer.address}}</td>
                 <td>{{customer.postalCode}}</td>
-                <td jhiTranslate="{{'nitroCarriersApp.CustomerState.' + customer.state}}">{{customer.state}}</td>
-                <td>{{customer.notes}}</td>
                 <td>
                     <div *ngIf="customer.city">
                         <a [routerLink]="['../city', customer.city?.id, 'view' ]" >{{customer.city?.cityName}}</a>
@@ -61,6 +59,8 @@
                         <a [routerLink]="['../country', customer.country?.id, 'view' ]" >{{customer.country?.countryNamePL}}</a>
                     </div>
                 </td>
+                <td jhiTranslate="{{'nitroCarriersApp.CustomerState.' + customer.state}}">{{customer.state}}</td>
+                <td>{{customer.notes}}</td>
                 <td>
                     {{customer.user?.login}}
                 </td>
