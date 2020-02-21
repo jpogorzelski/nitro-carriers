@@ -4,7 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@a
 import { UserRouteAccessService } from 'app/core';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { Customer } from 'app/shared/model/customer.model';
+import { Customer, CustomerState } from 'app/shared/model/customer.model';
 import { CustomerService } from './customer.service';
 import { CustomerComponent } from './customer.component';
 import { CustomerDetailComponent } from './customer-detail.component';
@@ -24,7 +24,7 @@ export class CustomerResolve implements Resolve<ICustomer> {
                 map((customer: HttpResponse<Customer>) => customer.body)
             );
         }
-        return of(new Customer());
+        return of({ state: CustomerState.TAKEN } as Customer);
     }
 }
 
