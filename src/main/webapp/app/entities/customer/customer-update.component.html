@@ -76,16 +76,15 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.notes" for="field_notes">Notes</label>
-                    <input type="text" class="form-control" name="notes" id="field_notes"
-                           [(ngModel)]="customer.notes" />
+                    <textarea rows="8" class="form-control" name="notes" id="field_notes"
+                              [(ngModel)]="customer.notes" maxlength="1000"></textarea>
                 </div>
 
 
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="nitroCarriersApp.customer.state" for="field_state">State</label>
-                    <select class="form-control" name="state" [(ngModel)]="customer.state" id="field_state" >
-                        <option value="AVAILABLE">{{'nitroCarriersApp.CustomerState.AVAILABLE' | translate}}</option>
+                    <select class="form-control" name="state" [(ngModel)]="customer.state" id="field_state">
                         <option value="TAKEN">{{'nitroCarriersApp.CustomerState.TAKEN' | translate}}</option>
                         <option value="TEMPORARILY_TAKEN">{{'nitroCarriersApp.CustomerState.TEMPORARILY_TAKEN' | translate}}</option>
                     </select>
