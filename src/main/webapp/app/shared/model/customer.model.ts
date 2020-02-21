@@ -19,6 +19,10 @@ export interface ICustomer {
     city?: ICity;
     country?: ICountry;
     user?: IUser;
+    createdBy?: string;
+    createdDate?: Date;
+    lastModifiedBy?: string;
+    lastModifiedDate?: Date;
 }
 
 export class Customer implements ICustomer {
@@ -32,6 +36,10 @@ export class Customer implements ICustomer {
         public notes?: string,
         public city?: ICity,
         public country?: ICountry,
-        public user?: IUser
+        public user?: IUser,
+        public createdBy?: string,
+        public createdDate?: Date,
+        public lastModifiedBy?: string,
+        public lastModifiedDate?: Date
     ) {}
 }
