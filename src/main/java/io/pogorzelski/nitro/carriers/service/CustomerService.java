@@ -4,6 +4,7 @@ import io.pogorzelski.nitro.carriers.domain.City;
 import io.pogorzelski.nitro.carriers.domain.Country;
 import io.pogorzelski.nitro.carriers.domain.Customer;
 import io.pogorzelski.nitro.carriers.domain.User;
+import io.pogorzelski.nitro.carriers.domain.enumeration.CustomerState;
 import io.pogorzelski.nitro.carriers.repository.CityRepository;
 import io.pogorzelski.nitro.carriers.repository.CountryRepository;
 import io.pogorzelski.nitro.carriers.repository.CustomerRepository;
@@ -14,10 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -147,4 +151,22 @@ public class CustomerService {
     public Page<Customer> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Customers for query {}", query);
         return customerSearchRepository.search(queryStringQuery(query), pageable);    }
+
+
+
+    /**
+     * Temporarily taken customers are released to available state after 90 days
+     * <p>
+     * This is scheduled to get fired everyday, at 01:00 (am).
+     */
+    @Scheduled(cron = "0 0 1 * * ?")
+    public void releaseTemporarilyTakenCustomers() {
+        customerRepository
+            .findByStateAndCreatedDateBefore(CustomerState.TEMPORARILY_TAKEN, Instant.now().minus(90, ChronoUnit.DAYS))
+            .forEach(customer -> {
+                log.debug("Releasing not temporarily taken customer with NIP {}", customer.getNip());
+                customer.setState(CustomerState.AVAILABLE);
+                customerRepository.save(customer);
+            });
+    }
 }

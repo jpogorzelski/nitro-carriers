@@ -1,5 +1,5 @@
-id;name;nip;state;user_id
-1;zajeta;123123123;TAKEN;4
-2;zajeta czasowo;123123333;TEMPORARILY_TAKEN;4
-3;wolna firma;123456123;AVAILABLE;5
+id;name;nip;state;user_id;created_by;last_modified_by
+1;zajeta;123123123;TAKEN;4;admin;admin
+2;zajeta czasowo;123123333;TEMPORARILY_TAKEN;4;admin;admin
+3;wolna firma;123456123;AVAILABLE;5;admin;admin
 
