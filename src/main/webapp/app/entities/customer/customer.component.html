@@ -39,9 +39,6 @@
             <th jhiSortBy="state"><span jhiTranslate="nitroCarriersApp.customer.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="notes"><span jhiTranslate="nitroCarriersApp.customer.notes">Notes</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="user.login"><span jhiTranslate="nitroCarriersApp.customer.user">User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiSortBy="createdDate"><span jhiTranslate="userManagement.createdDate">Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiSortBy="lastModifiedBy"><span jhiTranslate="userManagement.lastModifiedBy">Last Modified By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiSortBy="lastModifiedDate"><span jhiTranslate="userManagement.lastModifiedDate">Last Modified Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -67,9 +64,6 @@
                 <td>
                     {{customer.user?.login}}
                 </td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{customer.createdDate | date:'dd/MM/yy HH:mm'}}</td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{customer.lastModifiedBy}}</td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{customer.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
