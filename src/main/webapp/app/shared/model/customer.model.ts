@@ -19,6 +19,7 @@ export interface ICustomer {
     city?: ICity;
     country?: ICountry;
     user?: IUser;
+    canModify?: boolean;
 }
 
 export class Customer implements ICustomer {
@@ -32,6 +33,7 @@ export class Customer implements ICustomer {
         public notes?: string,
         public city?: ICity,
         public country?: ICountry,
-        public user?: IUser
+        public user?: IUser,
+        public canModify?: boolean
     ) {}
 }

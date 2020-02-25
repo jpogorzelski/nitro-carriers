@@ -3,6 +3,7 @@ package io.pogorzelski.nitro.carriers.web.rest;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.pogorzelski.nitro.carriers.domain.Customer;
 import io.pogorzelski.nitro.carriers.service.CustomerService;
+import io.pogorzelski.nitro.carriers.service.dto.CustomerDTO;
 import io.pogorzelski.nitro.carriers.web.rest.errors.BadRequestAlertException;
 import io.pogorzelski.nitro.carriers.web.rest.util.HeaderUtil;
 import io.pogorzelski.nitro.carriers.web.rest.util.PaginationUtil;
@@ -84,9 +85,9 @@ public class CustomerResource {
      * @return the ResponseEntity with status 200 (OK) and the list of customers in body
      */
     @GetMapping("/customers")
-    public ResponseEntity<List<Customer>> getAllCustomers(Pageable pageable) {
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers(Pageable pageable) {
         log.debug("REST request to get a page of Customers");
-        Page<Customer> page = customerService.findAll(pageable);
+        Page<CustomerDTO> page = customerService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/customers");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -126,9 +127,9 @@ public class CustomerResource {
      * @return the result of the search
      */
     @GetMapping("/_search/customers")
-    public ResponseEntity<List<Customer>> searchCustomers(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<CustomerDTO>> searchCustomers(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Customers for query {}", query);
-        Page<Customer> page = customerService.searchByNip(query, pageable);
+        Page<CustomerDTO> page = customerService.searchByNip(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/customers");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

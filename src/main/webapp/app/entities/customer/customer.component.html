@@ -44,7 +44,7 @@
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let customer of customers ;trackBy: trackId">
-                <td><a [routerLink]="['/customer', customer.id, 'view' ]">{{customer.id}}</a></td>
+                <td><a [routerLink]="customer.canModify ? ['/customer', customer.id, 'view' ] : []">{{customer.id}}</a></td>
                 <td>{{customer.name}}</td>
                 <td>{{customer.nip}}</td>
                 <td>{{customer.address}}</td>
@@ -64,7 +64,7 @@
                 <td>
                     {{customer.user?.login}}
                 </td>
-                <td class="text-right">
+                <td class="text-right" *ngIf="customer.canModify">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['/customer', customer.id, 'view' ]"

@@ -11,6 +11,7 @@ import io.pogorzelski.nitro.carriers.repository.CustomerRepository;
 import io.pogorzelski.nitro.carriers.repository.search.CustomerSearchRepository;
 import io.pogorzelski.nitro.carriers.security.AuthoritiesConstants;
 import io.pogorzelski.nitro.carriers.security.SecurityUtils;
+import io.pogorzelski.nitro.carriers.service.dto.CustomerDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -64,8 +65,7 @@ public class CustomerService {
         if (customer.getId() == null) {
             customer.setUser(loggedInUser);
         } else {
-            final boolean isAdmin = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
-            if (!customer.getUser().equals(getUser()) && !isAdmin) {
+            if (!isAdminOrAssigned(customer)) {
                 //reject if not assigned or not ADMIN
                 log.error("User not allowed to save customer={}", customer);
                 return null;
@@ -106,12 +106,12 @@ public class CustomerService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<Customer> findAll(Pageable pageable) {
+    public Page<CustomerDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Customers");
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-            return customerRepository.findAll(pageable);
+            return customerRepository.findAll(pageable).map(CustomerDTO::new);
         }
-        return customerRepository.findByUserIsCurrentUserOrAvailable(pageable);
+        return customerRepository.findByUserIsCurrentUserOrAvailable(pageable).map(CustomerDTO::new);
     }
 
 
@@ -129,6 +129,7 @@ public class CustomerService {
         }
         return customerRepository.findByIdAndUserIsCurrentUser(id);
     }
+
     /**
      * Get one customer by NIP.
      *
@@ -136,8 +137,9 @@ public class CustomerService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public Page<Customer> searchByNip(String nip, Pageable pageable) {
-        return customerRepository.findByNip(nip, pageable);
+    public Page<CustomerDTO> searchByNip(String nip, Pageable pageable) {
+        return customerRepository.findByNip(nip, pageable)
+            .map(customer -> new CustomerDTO(customer, isAdminOrAssigned(customer)));
     }
 
     /**
@@ -177,5 +179,11 @@ public class CustomerService {
                 customer.setState(CustomerState.AVAILABLE);
                 customerRepository.save(customer);
             });
+    }
+
+    private boolean isAdminOrAssigned(Customer customer) {
+        final boolean isAdmin = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+        final boolean isAssigned = customer.getUser().equals(getUser());
+        return isAssigned || isAdmin;
     }
 }
