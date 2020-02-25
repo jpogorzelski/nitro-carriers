@@ -128,7 +128,7 @@ public class CustomerResource {
     @GetMapping("/_search/customers")
     public ResponseEntity<List<Customer>> searchCustomers(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Customers for query {}", query);
-        Page<Customer> page = customerService.search(query, pageable);
+        Page<Customer> page = customerService.searchByNip(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/customers");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 
 import { ICustomer } from 'app/shared/model/customer.model';
 import { AccountService } from 'app/core';
@@ -108,7 +107,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
             last: 0
         };
         this.page = 0;
-        this.predicate = '_score';
+        // this.predicate = '_score';
         this.reverse = false;
         this.currentSearch = query;
         this.loadAll();

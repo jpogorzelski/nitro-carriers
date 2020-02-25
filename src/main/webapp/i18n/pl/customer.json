@@ -5,7 +5,7 @@
                 "title": "Klient",
                 "createLabel": "Dodaj Klienta",
                 "createOrEditLabel": "Dodaj lub edytuj: Klient",
-                "search": "Szukaj Klienta"
+                "search": "Szukaj Klienta po numerze NIP"
             },
             "created": "Utworzono nowy obiekt typu Klient z identyfikatorem {{ param }}",
             "updated": "Uaktualniono obiekt typu Klient z identyfikatorem {{ param }}",

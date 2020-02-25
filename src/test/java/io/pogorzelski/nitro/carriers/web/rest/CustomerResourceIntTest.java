@@ -8,17 +8,13 @@ import io.pogorzelski.nitro.carriers.repository.UserRepository;
 import io.pogorzelski.nitro.carriers.repository.search.CustomerSearchRepository;
 import io.pogorzelski.nitro.carriers.service.CustomerService;
 import io.pogorzelski.nitro.carriers.web.rest.errors.ExceptionTranslator;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.auditing.AuditingHandler;
-import org.springframework.data.auditing.DateTimeProvider;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -31,12 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static io.pogorzelski.nitro.carriers.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.*;
@@ -52,23 +46,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithUserDetails("admin")
 public class CustomerResourceIntTest {
 
-    private static final String DEFAULT_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_NAME = "BBBBBBBBBB";
+    private static final String DEFAULT_NAME = "DefaultName";
+    private static final String UPDATED_NAME = "NewName";
 
-    private static final String DEFAULT_NIP = "AAAAAAAAAA";
-    private static final String UPDATED_NIP = "BBBBBBBBBB";
+    private static final String DEFAULT_NIP = "5421111111";
+    private static final String UPDATED_NIP = "8991111111";
 
-    private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
-    private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
+    private static final String DEFAULT_ADDRESS = "ul. Defaultowa 1";
+    private static final String UPDATED_ADDRESS = "ul. Nowa 22";
 
-    private static final String DEFAULT_POSTAL_CODE = "AAAAAAAAAA";
-    private static final String UPDATED_POSTAL_CODE = "BBBBBBBBBB";
+    private static final String DEFAULT_POSTAL_CODE = "15-111";
+    private static final String UPDATED_POSTAL_CODE = "11-155";
 
     private static final CustomerState DEFAULT_STATE = CustomerState.AVAILABLE;
     private static final CustomerState UPDATED_STATE = CustomerState.TAKEN;
 
-    private static final String DEFAULT_NOTES = "AAAAAAAAAA";
-    private static final String UPDATED_NOTES = "BBBBBBBBBB";
+    private static final String DEFAULT_NOTES = "Note1";
+    private static final String UPDATED_NOTES = "Note2";
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -398,13 +392,24 @@ public class CustomerResourceIntTest {
 
     @Test
     @Transactional
-    public void searchCustomer() throws Exception {
+    public void searchCustomerByNameShouldFail() throws Exception {
         // Initialize the database
         customerService.save(customer);
-        when(mockCustomerSearchRepository.search(queryStringQuery("id:" + customer.getId()), PageRequest.of(0, 20)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(customer), PageRequest.of(0, 1), 1));
+
         // Search the customer
-        restCustomerMockMvc.perform(get("/api/_search/customers?query=id:" + customer.getId()))
+        restCustomerMockMvc.perform(get("/api/_search/customers?query=" + customer.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*]", Matchers.empty()));
+    }
+    @Test
+    @Transactional
+    public void searchCustomerByNipShouldFindCustomer() throws Exception {
+        // Initialize the database
+        customerService.save(customer);
+
+        // Search the customer
+        restCustomerMockMvc.perform(get("/api/_search/customers?query=" + customer.getNip()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(customer.getId().intValue())))

@@ -129,6 +129,16 @@ public class CustomerService {
         }
         return customerRepository.findByIdAndUserIsCurrentUser(id);
     }
+    /**
+     * Get one customer by NIP.
+     *
+     * @param nip the NIP of the customer
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public Page<Customer> searchByNip(String nip, Pageable pageable) {
+        return customerRepository.findByNip(nip, pageable);
+    }
 
     /**
      * Delete the customer by id.
@@ -151,7 +161,6 @@ public class CustomerService {
     public Page<Customer> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Customers for query {}", query);
         return customerSearchRepository.search(queryStringQuery(query), pageable);    }
-
 
 
     /**
