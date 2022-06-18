@@ -1,5 +1,30 @@
 {
-    "extends": [
-        "config:base"
-    ]
+  "extends": ["config:base"],
+  "timezone": "Europe/Warsaw",
+  "separateMinorPatch": true,
+  "separateMultipleMajor": true,
+  "major": {
+    "schedule": ["before 8am on Saturday"]
+  },
+  "minor": {
+    "schedule": ["before 8am on Saturday"]
+  },
+  "packageRules": [
+    {
+      "matchDepTypes": ["dependencies"],
+      "groupName": "allPatch",
+      "groupSlug": "dependency-updates",
+      "matchUpdateTypes": ["patch", "pin", "digest"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "groupName": "allDevNonMajor",
+      "groupSlug": "dev-dependency-updates",
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "automergeType": "branch"
+    }
+  ]
 }
