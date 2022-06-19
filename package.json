@@ -29,7 +29,7 @@
         "ng2-select": "2.0.0",
         "ngx-cookie": "2.0.1",
         "ngx-infinite-scroll": "7.0.1",
-        "ngx-webstorage": "2.0.1",
+        "ngx-webstorage": "5.0.0",
         "rxjs": "6.3.3",
         "swagger-ui": "2.2.10",
         "tslib": "1.9.3",
