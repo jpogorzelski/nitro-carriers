@@ -233,7 +233,7 @@ dependencies {
         exclude module: 'commons-logging'
     }
     // log4j needed to create embedded elasticsearch instance
-    runtime "org.apache.logging.log4j:log4j-api:2.7"
+    runtime "org.apache.logging.log4j:log4j-api:2.17.2"
     runtime "org.apache.logging.log4j:log4j-core:2.7"
     // end of Spring Data Jest dependencies
     compile "org.springframework.boot:spring-boot-starter-security"
