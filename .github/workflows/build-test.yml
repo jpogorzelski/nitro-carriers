@@ -1,11 +1,11 @@
 name: Application CI
 on:
-  push:
-    branches:
-      - master
-      - renovate/**
-  pull_request:
-    branches: [master]
+    push:
+        branches:
+            - master
+            - renovate/**
+    pull_request:
+        branches: [master]
 jobs:
     applications:
         name: Nitro Carriers test suite
@@ -29,11 +29,17 @@ jobs:
                   cache: 'gradle'
             - name: Install node.js packages
               run: npm install
+
             - name: Run backend test
               run: |
-                 chmod +x gradlew
-                 ./gradlew test
+                  chmod +x gradlew
+                  ./gradlew test
+
             - name: Run frontend test
               run: npm run test
+
+            - name: Run frontend build
+              run: npm run build
+
             - name: Package application
               run: ./gradlew -Pprod clean bootWar

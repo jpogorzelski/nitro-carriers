@@ -69,7 +69,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
         this.onChargeCountrySelect(this.rating.chargeCountry);
         this.onDischargeCountrySelect(this.rating.dischargeCountry);
 
-        console.table('on init:', this.rating);
+        console.log('on init:', this.rating);
     }
 
     private prepareForCopy() {
@@ -249,9 +249,8 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
     }
 
     onCountrySelectInternal(country: ICountry): Observable<ICity[]> {
-        const cities: ICity[] = [];
         if (country) {
-            console.table('### Selected country: ', country.countryNamePL);
+            console.log('### Selected country: ', country.countryNamePL);
             return Observable.create((observer: Observer<ICity[]>) => {
                 this.cityService
                     .search({
@@ -263,7 +262,7 @@ export class NitroRatingEditorComponent implements OnInit, DoCheck {
                     )
                     .subscribe(
                         (res: ICity[]) => {
-                            console.table('Downloaded cities: ', cities);
+                            console.table('Downloaded cities: ', res.map(city => city.cityName));
                             observer.next(res);
                             observer.complete();
                         },
