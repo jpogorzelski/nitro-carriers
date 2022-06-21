@@ -111,7 +111,7 @@ export class CustomerUpdateComponent implements OnInit {
 
     onCountrySelect(country: ICountry) {
         if (country) {
-            console.table('### Selected country: ', country.countryNamePL);
+            console.log('### Selected country: ', country.countryNamePL);
             this.cityService
                 .search({
                     query: country.countryNamePL
