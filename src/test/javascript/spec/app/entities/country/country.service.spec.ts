@@ -1,4 +1,3 @@
-/* tslint:disable max-line-length */
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient, HttpResponse } from '@angular/common/http';
@@ -15,7 +14,7 @@ describe('Service Tests', () => {
         let elemDefault: ICountry;
         beforeEach(() => {
             TestBed.configureTestingModule({
-                imports: [HttpClientTestingModule]
+                imports: [HttpClientTestingModule],
             });
             injector = getTestBed();
             service = injector.get(CountryService);
@@ -39,7 +38,7 @@ describe('Service Tests', () => {
             it('should create a Country', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        id: 0
+                        id: 0,
                     },
                     elemDefault
                 );
@@ -57,7 +56,7 @@ describe('Service Tests', () => {
                     {
                         countryCode: 'BBBBBB',
                         countryNamePL: 'BBBBBB',
-                        countryNameEN: 'BBBBBB'
+                        countryNameEN: 'BBBBBB',
                     },
                     elemDefault
                 );
@@ -76,7 +75,7 @@ describe('Service Tests', () => {
                     {
                         countryCode: 'BBBBBB',
                         countryNamePL: 'BBBBBB',
-                        countryNameEN: 'BBBBBB'
+                        countryNameEN: 'BBBBBB',
                     },
                     elemDefault
                 );

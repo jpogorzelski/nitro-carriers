@@ -1,4 +1,3 @@
-/* tslint:disable max-line-length */
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
@@ -26,7 +25,7 @@ describe('Component Tests', () => {
         beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [NitroCarriersTestModule],
-                declarations: [NitroRatingEditorComponent]
+                declarations: [NitroRatingEditorComponent],
             })
                 .overrideTemplate(NitroRatingEditorComponent, '')
                 .compileComponents();

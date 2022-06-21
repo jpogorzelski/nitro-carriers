@@ -1,5 +1,5 @@
 /* after changing this file run 'npm run webpack:build' */
-/* tslint:disable */
+/* eslint-disable */
 import '../content/scss/vendor.scss';
 
 // Imports all fontawesome core and solid icons
@@ -42,7 +42,7 @@ import {
     faHome,
     faCopy,
     faBuilding,
-    faTruck
+    faTruck,
 } from '@fortawesome/free-solid-svg-icons';
 
 // Adds the SVG icon to the library so you can use it in your page
