@@ -13,14 +13,14 @@ import { Subscription } from 'rxjs';
                 </ngb-alert>
             </div>
         </div>
-    `
+    `,
 })
 export class JhiAlertErrorComponent implements OnDestroy {
     alerts: any[];
     cleanHttpErrorListener: Subscription;
-    /* tslint:disable */
+    /* eslint-disable */
     constructor(private alertService: JhiAlertService, private eventManager: JhiEventManager, private translateService: TranslateService) {
-        /* tslint:enable */
+        /* eslint-enable */
         this.alerts = [];
 
         this.cleanHttpErrorListener = eventManager.subscribe('nitroCarriersApp.httpError', response => {
@@ -86,7 +86,7 @@ export class JhiAlertErrorComponent implements OnDestroy {
     setClasses(alert) {
         return {
             toast: !!alert.toast,
-            [alert.position]: true
+            [alert.position]: true,
         };
     }
 
@@ -106,7 +106,7 @@ export class JhiAlertErrorComponent implements OnDestroy {
             params: data,
             timeout: 5000,
             toast: this.alertService.isToast(),
-            scoped: true
+            scoped: true,
         };
 
         this.alerts.push(this.alertService.addAlert(newAlert, this.alerts));

@@ -1,4 +1,3 @@
-/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
@@ -18,7 +17,7 @@ describe('Component Tests', () => {
             TestBed.configureTestingModule({
                 imports: [NitroCarriersTestModule],
                 declarations: [CityComponent],
-                providers: []
+                providers: [],
             })
                 .overrideTemplate(CityComponent, '')
                 .compileComponents();
@@ -35,7 +34,7 @@ describe('Component Tests', () => {
                 of(
                     new HttpResponse({
                         body: [new City(123)],
-                        headers
+                        headers,
                     })
                 )
             );

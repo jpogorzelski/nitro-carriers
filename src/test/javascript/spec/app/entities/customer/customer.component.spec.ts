@@ -1,4 +1,3 @@
-/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
@@ -29,13 +28,13 @@ describe('Component Tests', () => {
                                         pagingParams: {
                                             predicate: 'id',
                                             reverse: false,
-                                            page: 0
-                                        }
-                                    })
-                            }
-                        }
-                    }
-                ]
+                                            page: 0,
+                                        },
+                                    }),
+                            },
+                        },
+                    },
+                ],
             })
                 .overrideTemplate(CustomerComponent, '')
                 .compileComponents();
@@ -52,7 +51,7 @@ describe('Component Tests', () => {
                 of(
                     new HttpResponse({
                         body: [new Customer(123)],
-                        headers
+                        headers,
                     })
                 )
             );
@@ -72,7 +71,7 @@ describe('Component Tests', () => {
                 of(
                     new HttpResponse({
                         body: [new Customer(123)],
-                        headers
+                        headers,
                     })
                 )
             );
@@ -92,7 +91,7 @@ describe('Component Tests', () => {
                 of(
                     new HttpResponse({
                         body: [new Customer(123)],
-                        headers
+                        headers,
                     })
                 )
             );
