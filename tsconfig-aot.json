@@ -23,7 +23,6 @@
         "genDir": "build/aot",
         "skipMetadataEmit": true,
         "fullTemplateTypeCheck": true,
-        "preserveWhitespaces": true,
-        "disableTypeScriptVersionCheck": true //todo remove when upgraded to angular 8
+        "preserveWhitespaces": true
     }
 }
