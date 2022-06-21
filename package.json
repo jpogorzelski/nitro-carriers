@@ -54,7 +54,7 @@
         "browser-sync": "2.26.14",
         "browser-sync-webpack-plugin": "2.2.2",
         "cache-loader": "2.0.1",
-        "copy-webpack-plugin": "4.6.0",
+        "copy-webpack-plugin": "7.0.0",
         "css-loader": "2.1.1",
         "eslint": "^8.17.0",
         "eslint-config-prettier": "8.5.0",
