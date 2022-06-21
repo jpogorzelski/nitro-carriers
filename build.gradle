@@ -18,7 +18,7 @@ buildscript {
 
 plugins {
     id "org.sonarqube" version "3.4.0.2513"
-    id "net.ltgt.apt-eclipse" version "0.19"
+    id "net.ltgt.apt-eclipse" version "0.21"
     id "net.ltgt.apt-idea" version "0.19"
     id "net.ltgt.apt" version "0.19"
     id "io.spring.dependency-management" version "1.0.11.RELEASE"
