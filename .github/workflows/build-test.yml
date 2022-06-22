@@ -33,7 +33,7 @@ jobs:
             - name: Run frontend and backend test with coverage
               run: |
                   chmod +x gradlew
-                  ./gradlew -Pprod clean test jacocoTestReport
+                  ./gradlew -Pprod clean test jacocoTestReport sonarqube
 
             - name: Run frontend build
               run: npm run build
