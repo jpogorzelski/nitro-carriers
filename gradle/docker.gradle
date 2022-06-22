@@ -3,7 +3,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "gradle.plugin.com.google.cloud.tools:jib-gradle-plugin:0.9.13"
+        classpath "gradle.plugin.com.google.cloud.tools:jib-gradle-plugin:0.10.1"
     }
 }
 
