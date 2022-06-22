@@ -4,7 +4,7 @@ import '../content/scss/vendor.scss';
 
 // Imports all fontawesome core and solid icons
 
-import { library } from '@fortawesome/fontawesome-svg-core';
+import {IconDefinition, library } from '@fortawesome/fontawesome-svg-core';
 import {
     faUser,
     faSort,
@@ -46,42 +46,42 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 // Adds the SVG icon to the library so you can use it in your page
-library.add(faUser);
-library.add(faSort);
-library.add(faSortUp);
-library.add(faSortDown);
-library.add(faSync);
-library.add(faEye);
-library.add(faBan);
-library.add(faTimes);
-library.add(faArrowLeft);
-library.add(faSave);
-library.add(faPlus);
-library.add(faPencilAlt);
-library.add(faBars);
-library.add(faHome);
-library.add(faThList);
-library.add(faUserPlus);
-library.add(faRoad);
-library.add(faTachometerAlt);
-library.add(faHeart);
-library.add(faList);
-library.add(faBell);
-library.add(faTasks);
-library.add(faBook);
-library.add(faHdd);
-library.add(faFlag);
-library.add(faWrench);
-library.add(faClock);
-library.add(faCloud);
-library.add(faSignOutAlt);
-library.add(faSignInAlt);
-library.add(faCalendarAlt);
-library.add(faSearch);
-library.add(faTrashAlt);
-library.add(faAsterisk);
-library.add(faCopy);
-library.add(faBuilding);
-library.add(faTruck);
+library.add(faUser as IconDefinition);
+library.add(faSort as IconDefinition);
+library.add(faSortUp as IconDefinition);
+library.add(faSortDown as IconDefinition);
+library.add(faSync as IconDefinition);
+library.add(faEye as IconDefinition);
+library.add(faBan as IconDefinition);
+library.add(faTimes as IconDefinition);
+library.add(faArrowLeft as IconDefinition);
+library.add(faSave as IconDefinition);
+library.add(faPlus as IconDefinition);
+library.add(faPencilAlt as IconDefinition);
+library.add(faBars as IconDefinition);
+library.add(faHome as IconDefinition);
+library.add(faThList as IconDefinition);
+library.add(faUserPlus as IconDefinition);
+library.add(faRoad as IconDefinition);
+library.add(faTachometerAlt as IconDefinition);
+library.add(faHeart as IconDefinition);
+library.add(faList as IconDefinition);
+library.add(faBell as IconDefinition);
+library.add(faTasks as IconDefinition);
+library.add(faBook as IconDefinition);
+library.add(faHdd as IconDefinition);
+library.add(faFlag as IconDefinition);
+library.add(faWrench as IconDefinition);
+library.add(faClock as IconDefinition);
+library.add(faCloud as IconDefinition);
+library.add(faSignOutAlt as IconDefinition);
+library.add(faSignInAlt as IconDefinition);
+library.add(faCalendarAlt as IconDefinition);
+library.add(faSearch as IconDefinition);
+library.add(faTrashAlt as IconDefinition);
+library.add(faAsterisk as IconDefinition);
+library.add(faCopy as IconDefinition);
+library.add(faBuilding as IconDefinition);
+library.add(faTruck as IconDefinition);
 
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here
