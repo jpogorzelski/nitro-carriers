@@ -30,10 +30,10 @@ jobs:
             - name: Install node.js packages
               run: npm install
 
-            - name: Run backend test
+            - name: Run backend test with coverage
               run: |
                   chmod +x gradlew
-                  ./gradlew test
+                  ./gradlew -Pprod clean test jacocoTestReport
 
             - name: Run frontend test
               run: npm run test
