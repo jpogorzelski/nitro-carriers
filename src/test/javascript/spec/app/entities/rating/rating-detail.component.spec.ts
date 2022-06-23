@@ -1,3 +1,4 @@
+/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
@@ -10,13 +11,13 @@ describe('Component Tests', () => {
     describe('Rating Management Detail Component', () => {
         let comp: RatingDetailComponent;
         let fixture: ComponentFixture<RatingDetailComponent>;
-        const route = { data: of({ rating: new Rating(123) }) } as any as ActivatedRoute;
+        const route = ({ data: of({ rating: new Rating(123) }) } as any) as ActivatedRoute;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [NitroCarriersTestModule],
                 declarations: [RatingDetailComponent],
-                providers: [{ provide: ActivatedRoute, useValue: route }],
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
                 .overrideTemplate(RatingDetailComponent, '')
                 .compileComponents();

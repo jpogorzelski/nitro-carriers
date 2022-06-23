@@ -1,3 +1,4 @@
+/* tslint:disable max-line-length */
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient, HttpResponse } from '@angular/common/http';
@@ -14,7 +15,7 @@ describe('Service Tests', () => {
         let elemDefault: IPerson;
         beforeEach(() => {
             TestBed.configureTestingModule({
-                imports: [HttpClientTestingModule],
+                imports: [HttpClientTestingModule]
             });
             injector = getTestBed();
             service = injector.get(PersonService);
@@ -38,7 +39,7 @@ describe('Service Tests', () => {
             it('should create a Person', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        id: 0,
+                        id: 0
                     },
                     elemDefault
                 );
@@ -57,7 +58,7 @@ describe('Service Tests', () => {
                         firstName: 'BBBBBB',
                         lastName: 'BBBBBB',
                         companyId: 1,
-                        phoneNumber: 'BBBBBB',
+                        phoneNumber: 'BBBBBB'
                     },
                     elemDefault
                 );
@@ -77,7 +78,7 @@ describe('Service Tests', () => {
                         firstName: 'BBBBBB',
                         lastName: 'BBBBBB',
                         companyId: 1,
-                        phoneNumber: 'BBBBBB',
+                        phoneNumber: 'BBBBBB'
                     },
                     elemDefault
                 );

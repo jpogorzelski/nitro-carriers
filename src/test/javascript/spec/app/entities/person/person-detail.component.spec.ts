@@ -1,3 +1,4 @@
+/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
@@ -10,13 +11,13 @@ describe('Component Tests', () => {
     describe('Person Management Detail Component', () => {
         let comp: PersonDetailComponent;
         let fixture: ComponentFixture<PersonDetailComponent>;
-        const route = { data: of({ person: new Person(123) }) } as any as ActivatedRoute;
+        const route = ({ data: of({ person: new Person(123) }) } as any) as ActivatedRoute;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [NitroCarriersTestModule],
                 declarations: [PersonDetailComponent],
-                providers: [{ provide: ActivatedRoute, useValue: route }],
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
                 .overrideTemplate(PersonDetailComponent, '')
                 .compileComponents();

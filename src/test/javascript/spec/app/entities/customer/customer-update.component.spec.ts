@@ -1,3 +1,4 @@
+/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
@@ -16,7 +17,7 @@ describe('Component Tests', () => {
         beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [NitroCarriersTestModule],
-                declarations: [CustomerUpdateComponent],
+                declarations: [CustomerUpdateComponent]
             })
                 .overrideTemplate(CustomerUpdateComponent, '')
                 .compileComponents();

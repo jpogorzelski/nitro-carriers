@@ -1,3 +1,4 @@
+/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
@@ -10,13 +11,13 @@ describe('Component Tests', () => {
     describe('Country Management Detail Component', () => {
         let comp: CountryDetailComponent;
         let fixture: ComponentFixture<CountryDetailComponent>;
-        const route = { data: of({ country: new Country(123) }) } as any as ActivatedRoute;
+        const route = ({ data: of({ country: new Country(123) }) } as any) as ActivatedRoute;
 
         beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [NitroCarriersTestModule],
                 declarations: [CountryDetailComponent],
-                providers: [{ provide: ActivatedRoute, useValue: route }],
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
                 .overrideTemplate(CountryDetailComponent, '')
                 .compileComponents();

@@ -1,3 +1,4 @@
+/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
@@ -18,7 +19,7 @@ describe('Component Tests', () => {
         beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [NitroCarriersTestModule],
-                declarations: [CountryDeleteDialogComponent],
+                declarations: [CountryDeleteDialogComponent]
             })
                 .overrideTemplate(CountryDeleteDialogComponent, '')
                 .compileComponents();

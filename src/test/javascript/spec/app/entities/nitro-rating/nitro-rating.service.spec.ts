@@ -1,3 +1,4 @@
+/* tslint:disable max-line-length */
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { take } from 'rxjs/operators';
@@ -17,7 +18,7 @@ describe('Service Tests', () => {
         let elemDefault: Rating;
         beforeEach(() => {
             TestBed.configureTestingModule({
-                imports: [HttpClientTestingModule],
+                imports: [HttpClientTestingModule]
             });
             injector = getTestBed();
             service = injector.get(NitroRatingService);
@@ -67,7 +68,7 @@ describe('Service Tests', () => {
             it('should create a NitroRating', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        id: 0,
+                        id: 0
                     },
                     elemDefault
                 );
@@ -87,7 +88,7 @@ describe('Service Tests', () => {
                         price: 1,
                         flexibility: 1,
                         recommendation: 'BBBBBB',
-                        average: 1,
+                        average: 1
                     },
                     elemDefault
                 );

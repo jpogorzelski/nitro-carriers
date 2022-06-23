@@ -7,20 +7,12 @@
             "root": "",
             "sourceRoot": "src/main/webapp",
             "projectType": "application",
-            "architect": {
-                "lint": {
-                    "builder": "@angular-eslint/builder:lint",
-                    "options": {
-                        "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
-                    }
-                }
-            }
+            "architect": {}
         }
     },
     "defaultProject": "nitro-carriers",
     "cli": {
-        "packageManager": "npm",
-        "defaultCollection": "@angular-eslint/schematics"
+        "packageManager": "npm"
     },
     "schematics": {
         "@schematics/angular:component": {

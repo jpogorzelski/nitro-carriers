@@ -4,7 +4,7 @@ import { ITEMS_PER_PAGE } from 'app/shared';
 
 @Injectable({ providedIn: 'root' })
 export class PaginationConfig {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // tslint:disable-next-line: no-unused-variable
     constructor(private config: NgbPaginationConfig) {
         config.boundaryLinks = true;
         config.maxSize = 5;
