@@ -36,7 +36,7 @@ jobs:
                   ./gradlew test
 
             - name: Run frontend test
-              run: npm run test
+              run: npm run test:ci
 
             - name: Run frontend build
               run: npm run build
@@ -47,4 +47,5 @@ jobs:
             - name: Coverage
               uses: ArtiomTr/jest-coverage-report-action@v2
               with:
+                  test-script: npm run test
                   skip-step: all
