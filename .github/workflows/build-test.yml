@@ -30,16 +30,18 @@ jobs:
             - name: Install node.js packages
               run: npm install
 
-            - name: Run backend test
+            - name: Run frontend and backend test with coverage
               run: |
                   chmod +x gradlew
-                  ./gradlew test
-
-            - name: Run frontend test
-              run: npm run test
+                  ./gradlew -Pprod clean test jacocoTestReport sonarqube
+              env:
+                # Needed to get some information about the pull request, if any
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
+                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
             - name: Run frontend build
               run: npm run build
 
             - name: Package application
-              run: ./gradlew -Pprod clean bootWar
+              run: ./gradlew -Pprod bootWar
