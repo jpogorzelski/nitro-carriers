@@ -17,7 +17,7 @@ import { NitroCarriersAppRoutingModule } from './app-routing.module';
 import { NitroCarriersHomeModule } from './home/home.module';
 import { NitroCarriersAccountModule } from './account/account.module';
 import { NitroCarriersEntityModule } from './entities/entity.module';
-import * as moment from 'moment';
+import moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
 

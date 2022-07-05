@@ -6,31 +6,31 @@ import { RouterModule } from '@angular/router';
         RouterModule.forChild([
             {
                 path: 'country',
-                loadChildren: './country/country.module#NitroCarriersCountryModule'
+                loadChildren: () => import('./country/country.module').then(m => m.NitroCarriersCountryModule)
             },
             {
                 path: 'city',
-                loadChildren: './city/city.module#NitroCarriersCityModule'
+                loadChildren: () => import('./city/city.module').then(m => m.NitroCarriersCityModule)
             },
             {
                 path: 'carrier',
-                loadChildren: './carrier/carrier.module#NitroCarriersCarrierModule'
+                loadChildren: () => import('./carrier/carrier.module').then(m => m.NitroCarriersCarrierModule)
             },
             {
                 path: 'person',
-                loadChildren: './person/person.module#NitroCarriersPersonModule'
+                loadChildren: () => import('./person/person.module').then(m => m.NitroCarriersPersonModule)
             },
             {
                 path: 'rating',
-                loadChildren: './rating/rating.module#NitroCarriersRatingModule'
+                loadChildren: () => import('./rating/rating.module').then(m => m.NitroCarriersRatingModule)
             },
             {
                 path: 'nitro-rating',
-                loadChildren: './nitro-rating/nitro-rating.module#NitroCarriersNitroRatingModule'
+                loadChildren: () => import('./nitro-rating/nitro-rating.module').then(m => m.NitroCarriersNitroRatingModule)
             },
             {
                 path: 'customer',
-                loadChildren: './customer/customer.module#NitroCarriersCustomerModule'
+                loadChildren: () => import('./customer/customer.module').then(m => m.NitroCarriersCustomerModule)
             }
             /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
         ])
