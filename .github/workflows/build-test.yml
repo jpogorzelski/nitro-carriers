@@ -28,7 +28,7 @@ jobs:
                   java-version: '8'
                   cache: 'gradle'
             - name: Install node.js packages
-              run: npm install
+              run: npm ci
 
             - name: Run backend test
               run: |
@@ -36,10 +36,16 @@ jobs:
                   ./gradlew test
 
             - name: Run frontend test
-              run: npm run test
+              run: npm run test:ci
 
             - name: Run frontend build
               run: npm run build
 
             - name: Package application
               run: ./gradlew -Pprod clean bootWar
+
+            - name: Coverage
+              uses: ArtiomTr/jest-coverage-report-action@v2
+              with:
+                  test-script: npm run test
+                  skip-step: all
