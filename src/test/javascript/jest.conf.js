@@ -1,26 +1,37 @@
 module.exports = {
     preset: 'jest-preset-angular',
-    setupTestFrameworkScriptFile: '<rootDir>/src/test/javascript/jest.ts',
+    setupFilesAfterEnv: ['<rootDir>/src/test/javascript/jest.ts'],
     coverageDirectory: '<rootDir>/build/test-results/',
     globals: {
         'ts-jest': {
-            tsConfigFile: 'tsconfig.json'
+            stringifyContentPathRegex: '\\.html?$',
+            tsConfig: 'tsconfig.json',
         },
-        __TRANSFORM_HTML__: true
     },
     coveragePathIgnorePatterns: [
-        '<rootDir>/src/test/javascript'
+        '<rootDir>/src/test/javascript',
     ],
     moduleNameMapper: {
-        'app/(.*)': '<rootDir>/src/main/webapp/app/$1'
+        'app/(.*)': '<rootDir>/src/main/webapp/app/$1',
     },
     reporters: [
         'default',
-        [ 'jest-junit', { output: './build/test-results/TESTS-results-jest.xml' } ]
+        [
+            'jest-junit',
+            {
+                output: './build/test-results/TESTS-results-jest.xml',
+            },
+        ],
     ],
     testResultsProcessor: 'jest-sonar-reporter',
-    transformIgnorePatterns: ['node_modules/(?!@angular/common/locales)'],
-    testMatch: ['<rootDir>/src/test/javascript/spec/**/+(*.)+(spec.ts)'],
+    transformIgnorePatterns: [
+        'node_modules/(?!@angular/common/locales)',
+    ],
+    testMatch: [
+        '<rootDir>/src/test/javascript/spec/**/+(*.)+(spec.ts)',
+    ],
     rootDir: '../../../',
-    testURL: "http://localhost/"
-};
+    testURL: 'http://localhost/',
+    testRegex: [],
+}
+;
