@@ -2,8 +2,8 @@ version: '2'
 services:
     nitrocarriers-postgresql:
         image: postgres:10.4
-        # volumes:
-        #     - ~/volumes/jhipster/NitroCarriers/postgresql/:/var/lib/postgresql/data/
+        volumes:
+             - ~/volumes/jhipster/NitroCarriers/postgresql/:/var/lib/postgresql/data/
         environment:
             - POSTGRES_USER=NitroCarriers
             - POSTGRES_PASSWORD=
