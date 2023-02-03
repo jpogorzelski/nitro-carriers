@@ -41,7 +41,7 @@
         "@angular-eslint/eslint-plugin-template": "13.5.0",
         "@angular-eslint/schematics": "13.5.0",
         "@angular-eslint/template-parser": "13.5.0",
-        "@angular/cli": "8.3.29",
+        "@angular/cli": "9.1.13",
         "@angular/compiler-cli": "8.2.14",
         "@ngtools/webpack": "8.3.29",
         "@types/jest": "24.9.1",
